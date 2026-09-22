@@ -1,0 +1,3 @@
+-- Production starts without fabricated clients, ratings or technicians.
+-- Demo fixtures exist only in frontend/web/src/domain/demo.js.
+-- Create the first real administrator using: php artisan marketplace:admin

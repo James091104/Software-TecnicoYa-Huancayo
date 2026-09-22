@@ -1,0 +1,17 @@
+pipeline:
+
+  detect: true
+
+  build: true
+
+  test: true
+
+  quality: true
+
+  security: true
+
+  package: true
+
+  deploy: true
+
+  health: true

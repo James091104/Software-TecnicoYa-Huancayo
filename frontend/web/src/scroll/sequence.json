@@ -1,0 +1,39 @@
+{
+  "source": "Technicians_working_on_various_e…_20260922125620.mp4",
+  "fps": 24.0,
+  "duration": 10.01,
+  "frameCount": 240,
+  "aspectRatio": 1.7777777777777777,
+  "variants": {
+    "desktop": {
+      "width": 1280,
+      "count": 240,
+      "bytes": 19486436
+    },
+    "mobile": {
+      "width": 1280,
+      "count": 240,
+      "bytes": 14876446
+    }
+  },
+  "scenes": [
+    {
+      "id": "computo",
+      "timecode": "00:02:08",
+      "time": 2.3333333333333335,
+      "frame": 56
+    },
+    {
+      "id": "refrigeracion",
+      "timecode": "00:05:06",
+      "time": 5.25,
+      "frame": 126
+    },
+    {
+      "id": "electricidad",
+      "timecode": "00:07:07",
+      "time": 7.291666666666667,
+      "frame": 175
+    }
+  ]
+}

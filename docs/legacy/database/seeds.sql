@@ -1,0 +1,1 @@
+-- Sin solicitudes ni clientes ficticios.

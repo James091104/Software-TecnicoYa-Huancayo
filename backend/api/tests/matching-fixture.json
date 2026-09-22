@@ -1,0 +1,10 @@
+{
+ "request":{"specialty":"computo","zone":"Huancayo"},
+ "technicians":[
+  {"id":"a","name":"A","zone":"Huancayo","zones":["Huancayo"],"specialties":["computo"],"fee":50,"rating":5,"years":10,"verified":true,"available":true},
+  {"id":"b","name":"B","zone":"Huancayo","zones":["Huancayo"],"specialties":["computo"],"fee":25,"rating":4,"years":5,"verified":true,"available":true},
+  {"id":"c","name":"C","zone":"El Tambo","zones":["Huancayo","El Tambo"],"specialties":["computo"],"fee":25,"rating":5,"years":10,"verified":true,"available":true},
+  {"id":"d","name":"D","zone":"Huancayo","zones":["Huancayo"],"specialties":["computo"],"fee":10,"rating":5,"years":10,"verified":false,"available":true}
+ ],
+ "expectedIds":["b","c","a"],"expectedScores":[0.865,0.825,0.8]
+}

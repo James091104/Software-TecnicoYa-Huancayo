@@ -1,0 +1,3 @@
+include:
+  - project: "root/laboratorio-devops"
+    file: "/gitlab/student-pipeline.yml"

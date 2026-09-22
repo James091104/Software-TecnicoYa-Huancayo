@@ -1,0 +1,24 @@
+project:
+  name: tecnicoya-huancayo
+  version: 1.0.0
+  description: Marketplace de tecnicos independientes: React, Laravel, FastAPI y PostgreSQL
+
+authors:
+  - Equipo
+
+stack:
+  frontend: auto
+  backend: auto
+  python: auto
+
+database:
+  engine: auto
+
+deployment:
+  docker: auto
+
+quality:
+  sonar: true
+
+security:
+  trivy: true

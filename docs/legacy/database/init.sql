@@ -1,0 +1,11 @@
+CREATE TABLE IF NOT EXISTS service_requests (
+ code TEXT PRIMARY KEY,
+ name TEXT NOT NULL,
+ phone TEXT NOT NULL,
+ service TEXT NOT NULL,
+ device TEXT NOT NULL,
+ description TEXT NOT NULL,
+ status TEXT NOT NULL DEFAULT 'received',
+ consent_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+ created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);

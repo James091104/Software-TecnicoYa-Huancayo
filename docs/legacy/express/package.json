@@ -1,0 +1,1 @@
+{"name":"tecnicoya-api","version":"1.0.0","private":true,"type":"module","scripts":{"dev":"node --watch src/server.js","start":"node src/server.js","build":"node --check src/server.js","test":"node --test"},"dependencies":{"express":"^4.21.2","pg":"^8.16.3","@electric-sql/pglite":"^0.3.7","dotenv":"^16.6.1"}}

@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "responseMinutes": 10,
+  "maxSimultaneous": 3,
+  "pendingHours": 24,
+  "ratingHours": 48,
+  "weights": {"proximity": 0.35, "price": 0.20, "rating": 0.30, "experience": 0.15},
+  "maxExperienceYears": 10,
+  "secondaryZoneProximity": 0.5,
+  "specialties": ["computo", "refrigeracion", "electricidad"],
+  "zones": ["Huancayo", "El Tambo", "Chilca", "Pilcomayo", "Huancán"]
+}
