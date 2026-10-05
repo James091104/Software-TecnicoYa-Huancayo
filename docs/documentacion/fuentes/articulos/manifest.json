@@ -1,0 +1,290 @@
+[
+  {
+    "id": "A01",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Principal Problema\\1849_Adopción+digital+en+micro+y.pdf",
+    "sha256": "668bde3f963ae9f49ba2b3e5c0fb53b5c1b97079ce7a5c3a2b8f47e064b6a387",
+    "duplicate_of": null,
+    "pages": 17,
+    "chars": 43656,
+    "stored_path": "fuentes/articulos/A01.pdf"
+  },
+  {
+    "id": "A02",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Principal Problema\\2019ICRWidellfoodloss.pdf",
+    "sha256": "f0d156f84ab84e9c241413c59e164531f23cbdb0e539742cda52562bec5e10eb",
+    "duplicate_of": null,
+    "pages": 8,
+    "chars": 32364,
+    "stored_path": "fuentes/articulos/A02.pdf"
+  },
+  {
+    "id": "A03",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Principal Problema\\2102.02710v5 (1).pdf",
+    "sha256": "41d8b9eaef2421cd5a893ab20c481ad199c93b095b56cdae22f420c7d1c06623",
+    "duplicate_of": null,
+    "pages": 64,
+    "chars": 152577,
+    "stored_path": "fuentes/articulos/A03.pdf"
+  },
+  {
+    "id": "A04",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Principal Problema\\2102.02710v5.pdf",
+    "sha256": "41d8b9eaef2421cd5a893ab20c481ad199c93b095b56cdae22f420c7d1c06623",
+    "duplicate_of": "A03",
+    "pages": 64,
+    "chars": 152577,
+    "stored_path": "fuentes/articulos/A04.pdf"
+  },
+  {
+    "id": "A05",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Principal Problema\\2108.02852v1.pdf",
+    "sha256": "956d5f8c8002ae2f32f4abc98afff84168973e0bf71cb1334dc45d81865c2718",
+    "duplicate_of": null,
+    "pages": 35,
+    "chars": 57623,
+    "stored_path": "fuentes/articulos/A05.pdf"
+  },
+  {
+    "id": "A06",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Principal Problema\\2206.11720v2.pdf",
+    "sha256": "eea30e50185edd7184100b347746aefb9d979d7df750c12c9af3ab684ca5e008",
+    "duplicate_of": null,
+    "pages": 15,
+    "chars": 55530,
+    "stored_path": "fuentes/articulos/A06.pdf"
+  },
+  {
+    "id": "A07",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Principal Problema\\2608.17312v2.pdf",
+    "sha256": "7930fb710290ec19829a3859b729d0c3f425ef5d46e7c42d4124aecccae90a43",
+    "duplicate_of": null,
+    "pages": 37,
+    "chars": 114714,
+    "stored_path": "fuentes/articulos/A07.pdf"
+  },
+  {
+    "id": "A08",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Principal Problema\\330.pdf",
+    "sha256": "ad9d89ad557ae9b06dfc3ac98320c3d6e176ae099f709b883399578320fdb76e",
+    "duplicate_of": null,
+    "pages": 33,
+    "chars": 73237,
+    "stored_path": "fuentes/articulos/A08.pdf"
+  },
+  {
+    "id": "A09",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Principal Problema\\688845.pdf",
+    "sha256": "c42a381056e3aaf36a53c6c07185032994138aa72f9370992823efaa38c1e266",
+    "duplicate_of": null,
+    "pages": 17,
+    "chars": 37622,
+    "stored_path": "fuentes/articulos/A09.pdf"
+  },
+  {
+    "id": "A10",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Principal Problema\\81678884013.pdf",
+    "sha256": "3ba710ae42bda0f55534994ac899ee80a10b26e7445d113f5491cda4863c7caa",
+    "duplicate_of": null,
+    "pages": 12,
+    "chars": 45090,
+    "stored_path": "fuentes/articulos/A10.pdf"
+  },
+  {
+    "id": "A11",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Principal Problema\\Art8+-+Edicion.pdf",
+    "sha256": "5e4af37c529bdb7c14e99ddbc1c6c8421883e9c3a370251f31f9ac3a53670a34",
+    "duplicate_of": null,
+    "pages": 8,
+    "chars": 47063,
+    "stored_path": "fuentes/articulos/A11.pdf"
+  },
+  {
+    "id": "A12",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Principal Problema\\Asso for Info Science   Tech - 2024 - Dedema - Socio‐technical issues in the platform‐mediated gig economy  A systematic.pdf",
+    "sha256": "2a4a3828e8b3740a65dd49885011bd63fae0cb57cb2fa6912ca5c2514d9d14b7",
+    "duplicate_of": null,
+    "pages": 31,
+    "chars": 167944,
+    "stored_path": "fuentes/articulos/A12.pdf"
+  },
+  {
+    "id": "A13",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Principal Problema\\Fairness_in_the_Latin_American_platform_economy_As.pdf",
+    "sha256": "1bfc6fe23d3c51fa30eb7318f0ea6f1a9a76b41c805590afa1b11397e9099be2",
+    "duplicate_of": null,
+    "pages": 22,
+    "chars": 81322,
+    "stored_path": "fuentes/articulos/A13.pdf"
+  },
+  {
+    "id": "A14",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Principal Problema\\fcomm-09-1460321.pdf",
+    "sha256": "74704872b5630659d0dcac354d609d1208974fb1a99ce173446f65416be0a5ec",
+    "duplicate_of": null,
+    "pages": 14,
+    "chars": 86124,
+    "stored_path": "fuentes/articulos/A14.pdf"
+  },
+  {
+    "id": "A15",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Principal Problema\\On-Demand Service Platforms (1).pdf",
+    "sha256": "e783fa6859619d359e23d34aecc1be95dc8553554ac3e80e4cac577eabcf6b5d",
+    "duplicate_of": null,
+    "pages": 17,
+    "chars": 94319,
+    "stored_path": "fuentes/articulos/A15.pdf"
+  },
+  {
+    "id": "A16",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Principal Problema\\On-Demand Service Platforms.pdf",
+    "sha256": "e783fa6859619d359e23d34aecc1be95dc8553554ac3e80e4cac577eabcf6b5d",
+    "duplicate_of": "A15",
+    "pages": 17,
+    "chars": 94319,
+    "stored_path": "fuentes/articulos/A16.pdf"
+  },
+  {
+    "id": "A17",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Principal Problema\\On-demand_service_platform_operations_management_a.pdf",
+    "sha256": "e17515d436b641f5eecf18ee75e3a654b51fe6163db06d4b9cd2b4b4ad3b1f6b",
+    "duplicate_of": null,
+    "pages": 17,
+    "chars": 64525,
+    "stored_path": "fuentes/articulos/A17.pdf"
+  },
+  {
+    "id": "A18",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Principal Problema\\s10660-026-10176-7.pdf",
+    "sha256": "20a38658729ea6e902d79e7692e4a86f39f423de62d5e0cda2961d0e1d37acd4",
+    "duplicate_of": null,
+    "pages": 56,
+    "chars": 197872,
+    "stored_path": "fuentes/articulos/A18.pdf"
+  },
+  {
+    "id": "A19",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Principal Problema\\TengBotelhoSudhir2025CustomerDiscrimAmpDRAFT.pdf",
+    "sha256": "0f31a8feb11ed345e82cc4b8876f43c9d3fbf9943f4545463e753bf5461a6989",
+    "duplicate_of": null,
+    "pages": 48,
+    "chars": 107226,
+    "stored_path": "fuentes/articulos/A19.pdf"
+  },
+  {
+    "id": "A20",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Principal Problema\\Transitions into and out of the gig economy.pdf",
+    "sha256": "152ac02951b547ed973116b3824a8dcb55483830496fa5c84f991ccfc060868d",
+    "duplicate_of": null,
+    "pages": 18,
+    "chars": 57378,
+    "stored_path": "fuentes/articulos/A20.pdf"
+  },
+  {
+    "id": "A21",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Solucion\\2302.06590v1.pdf",
+    "sha256": "60d9bbb58e67a3ba5c5df28926227994086baa9767c0b0f4bc61b11035c15a9c",
+    "duplicate_of": null,
+    "pages": 19,
+    "chars": 20507,
+    "stored_path": "fuentes/articulos/A21.pdf"
+  },
+  {
+    "id": "A22",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Solucion\\2609.18341v1.pdf",
+    "sha256": "c01992ce612624caae1cdfa4652d62b2a03ad51a552e64dbcdf8fa863bed4bd7",
+    "duplicate_of": null,
+    "pages": 12,
+    "chars": 70498,
+    "stored_path": "fuentes/articulos/A22.pdf"
+  },
+  {
+    "id": "A23",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Solucion\\doc.pdf",
+    "sha256": "f270e042057ce272c308a5a5f382edefa2b13db6b7846382951c5a70c72f4e3f",
+    "duplicate_of": null,
+    "pages": 8,
+    "chars": 20578,
+    "stored_path": "fuentes/articulos/A23.pdf"
+  },
+  {
+    "id": "A24",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Solucion\\IJCRT25A3180.pdf",
+    "sha256": "cb349867edec923936755a13311ec02118bbcec6cb9d0649b109996727f8954b",
+    "duplicate_of": null,
+    "pages": 7,
+    "chars": 18587,
+    "stored_path": "fuentes/articulos/A24.pdf"
+  },
+  {
+    "id": "A25",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Solucion\\IJRAR24B1713.pdf",
+    "sha256": "62685b25fa9969f161a6765e905ee8c401c055332510ff80eec5970ec1c4b8ed",
+    "duplicate_of": null,
+    "pages": 6,
+    "chars": 21025,
+    "stored_path": "fuentes/articulos/A25.pdf"
+  },
+  {
+    "id": "A26",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Solucion\\IJSDR2009067.pdf",
+    "sha256": "b547c57717260bd223ce55baa7fb524419e878d81975171de0f433aeb2434c20",
+    "duplicate_of": null,
+    "pages": 4,
+    "chars": 8870,
+    "stored_path": "fuentes/articulos/A26.pdf"
+  },
+  {
+    "id": "A27",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Solucion\\irjmets70400364396.pdf",
+    "sha256": "97f618613be98f5448ede9c1a779fb63832304f90c7711e1622a0cc05d3aadbb",
+    "duplicate_of": null,
+    "pages": 5,
+    "chars": 14669,
+    "stored_path": "fuentes/articulos/A27.pdf"
+  },
+  {
+    "id": "A28",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Solucion\\irjmets71200065749.pdf",
+    "sha256": "ac3cd6a8a5551c60fedac7fc17ed8d4b52ffeb0d3f851c2fef96e3a72705b37e",
+    "duplicate_of": null,
+    "pages": 5,
+    "chars": 16861,
+    "stored_path": "fuentes/articulos/A28.pdf"
+  },
+  {
+    "id": "A29",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Solucion\\Paper34358.pdf",
+    "sha256": "00b16b5361f3ac0f68f411a2930885596c7d1a54764579c864d292c015b02c94",
+    "duplicate_of": null,
+    "pages": 6,
+    "chars": 20620,
+    "stored_path": "fuentes/articulos/A29.pdf"
+  },
+  {
+    "id": "A30",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Solucion\\tesis37.pdf",
+    "sha256": "02b6f321c80e0348c38d101d137735079e57af04804a0a50493b501fe7d8f7c1",
+    "duplicate_of": null,
+    "pages": 104,
+    "chars": 118473,
+    "stored_path": "fuentes/articulos/A30.pdf"
+  },
+  {
+    "id": "A31",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Solucion\\Trabajo.pdf",
+    "sha256": "7051cddbdda6eca999019e8e26a6014ee9ccfa6f2098a7d688cd82d2caeb602f",
+    "duplicate_of": null,
+    "pages": 134,
+    "chars": 201943,
+    "stored_path": "fuentes/articulos/A31.pdf"
+  },
+  {
+    "id": "A32",
+    "path": "C:\\Users\\James\\Documents\\articulos\\Solucion\\w21496.pdf",
+    "sha256": "30b07e49dbf34202e02cff9f74ee7f3303fa86f5b907170b9812e83806d4a777",
+    "duplicate_of": null,
+    "pages": 34,
+    "chars": 252008,
+    "stored_path": "fuentes/articulos/A32.pdf"
+  }
+]
