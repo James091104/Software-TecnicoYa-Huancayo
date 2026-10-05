@@ -13,6 +13,8 @@ class Technician(BaseModel):
     zone: str
     zones: list[str] = Field(max_length=50)
     specialties: list[str] = Field(max_length=10)
+    subcategories: list[str] = Field(default_factory=list, max_length=30)
+    active: bool = True
     verified: bool
     available: bool
     fee: float = Field(ge=0, le=100000, allow_inf_nan=False)
@@ -21,12 +23,15 @@ class Technician(BaseModel):
 
 class MatchRequest(BaseModel):
     specialty: str
+    subcategory: str | None = None
     zone: str
     technicians: list[Technician] = Field(max_length=5000)
     excluded: list[str] = Field(default_factory=list, max_length=5000)
 
 def rank(request):
-    eligible = [t.model_dump() for t in request.technicians if t.verified and t.available and request.specialty in t.specialties and request.zone in t.zones and t.id not in request.excluded]
+    if request.subcategory and not any(s["id"] == request.subcategory and s["specialty"] == request.specialty and s["active"] for s in RULES["subcategories"]):
+        return []
+    eligible = [t.model_dump() for t in request.technicians if t.verified and t.available and t.active and (not request.subcategory or request.subcategory in t.subcategories) and request.specialty in t.specialties and request.zone in t.zones and t.id not in request.excluded]
     if not eligible:
         return []
     minimum, maximum = min(t['fee'] for t in eligible), max(t['fee'] for t in eligible)

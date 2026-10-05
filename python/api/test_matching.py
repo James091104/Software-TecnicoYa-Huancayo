@@ -20,3 +20,21 @@ def test_rating_breaks_score_ties():
     result=rank(MatchRequest(specialty='computo',zone='Huancayo',technicians=[{**base,'id':'a','rating':4},{**base,'id':'b','rating':5,'years':6}]))
     assert result[0]['score']==result[1]['score']
     assert result[0]['id']=='b'
+
+
+def test_subcategory_filters_and_legacy_requests():
+    from app import RULES
+    base={'zone':'Huancayo','zones':['Huancayo'],'specialties':['computo'],'fee':40,'years':10,'rating':4,'verified':True,'available':True}
+    technicians=[{**base,'id':'ok','subcategories':['computo-hardware']},{**base,'id':'legacy'},{**base,'id':'other','subcategories':['computo-redes']},{**base,'id':'inactive','subcategories':['computo-hardware'],'active':False}]
+    def result(subcategory):
+        return [t['id'] for t in rank(MatchRequest(specialty='computo',subcategory=subcategory,zone='Huancayo',technicians=technicians))]
+    assert result('computo-hardware') == ['ok']
+    assert result('electricidad-tableros') == []
+    assert result('unknown') == []
+    assert len(result(None)) == 3
+    category=next(s for s in RULES['subcategories'] if s['id']=='computo-hardware')
+    category['active']=False
+    try:
+        assert result('computo-hardware') == []
+    finally:
+        category['active']=True

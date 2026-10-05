@@ -1,12 +1,239 @@
 {
-  "version": 1,
+  "version": 2,
   "responseMinutes": 10,
   "maxSimultaneous": 3,
   "pendingHours": 24,
   "ratingHours": 48,
-  "weights": {"proximity": 0.35, "price": 0.20, "rating": 0.30, "experience": 0.15},
+  "weights": {
+    "proximity": 0.35,
+    "price": 0.2,
+    "rating": 0.3,
+    "experience": 0.15
+  },
   "maxExperienceYears": 10,
   "secondaryZoneProximity": 0.5,
-  "specialties": ["computo", "refrigeracion", "electricidad"],
-  "zones": ["Huancayo", "El Tambo", "Chilca", "Pilcomayo", "Huancán"]
+  "specialties": [
+    "computo",
+    "refrigeracion",
+    "electricidad"
+  ],
+  "zones": [
+    "Huancayo",
+    "El Tambo",
+    "Chilca",
+    "Pilcomayo",
+    "Huancán"
+  ],
+  "subcategories": [
+    {
+      "id": "computo-hardware",
+      "specialty": "computo",
+      "name": "Reparación de hardware",
+      "active": true,
+      "image": "/media/services/subcategorias/computo/hardware.png"
+    },
+    {
+      "id": "computo-mantenimiento",
+      "specialty": "computo",
+      "name": "Mantenimiento preventivo",
+      "active": true,
+      "image": "/media/services/subcategorias/computo/mantenimiento.png"
+    },
+    {
+      "id": "computo-software",
+      "specialty": "computo",
+      "name": "Instalación y configuración de software",
+      "active": true,
+      "image": "/media/services/subcategorias/computo/software.png"
+    },
+    {
+      "id": "computo-redes",
+      "specialty": "computo",
+      "name": "Redes e infraestructura",
+      "active": true,
+      "image": "/media/services/subcategorias/computo/redes.png"
+    },
+    {
+      "id": "computo-datos",
+      "specialty": "computo",
+      "name": "Recuperación de datos",
+      "active": true,
+      "image": "/media/services/subcategorias/computo/datos.png"
+    },
+    {
+      "id": "computo-seguridad",
+      "specialty": "computo",
+      "name": "Eliminación de virus y seguridad informática",
+      "active": true,
+      "image": "/media/services/subcategorias/computo/seguridad.png"
+    },
+    {
+      "id": "computo-remoto",
+      "specialty": "computo",
+      "name": "Soporte técnico remoto",
+      "active": true,
+      "image": "/media/services/subcategorias/computo/remoto.png"
+    },
+    {
+      "id": "computo-impresoras",
+      "specialty": "computo",
+      "name": "Impresoras y equipos de oficina",
+      "active": true,
+      "image": "/media/services/subcategorias/computo/impresoras.png"
+    },
+    {
+      "id": "computo-pos",
+      "specialty": "computo",
+      "name": "Sistemas de punto de venta (POS)",
+      "active": true,
+      "image": "/media/services/subcategorias/computo/pos.png"
+    },
+    {
+      "id": "computo-cctv",
+      "specialty": "computo",
+      "name": "Cámaras de seguridad / CCTV",
+      "active": true,
+      "image": "/media/services/subcategorias/computo/cctv.png"
+    },
+    {
+      "id": "computo-facturacion",
+      "specialty": "computo",
+      "name": "Software de facturación electrónica",
+      "active": true,
+      "image": "/media/services/subcategorias/computo/facturacion.png"
+    },
+    {
+      "id": "refrigeracion-domestica",
+      "specialty": "refrigeracion",
+      "name": "Refrigeración doméstica",
+      "active": true,
+      "image": "/media/services/subcategorias/refrigeracion/domestica.png"
+    },
+    {
+      "id": "refrigeracion-vitrinas",
+      "specialty": "refrigeracion",
+      "name": "Refrigeración comercial y vitrinas",
+      "active": true,
+      "image": "/media/services/subcategorias/refrigeracion/vitrinas.png"
+    },
+    {
+      "id": "refrigeracion-camaras",
+      "specialty": "refrigeracion",
+      "name": "Cámaras de frío",
+      "active": true,
+      "image": "/media/services/subcategorias/refrigeracion/camaras.png"
+    },
+    {
+      "id": "refrigeracion-congeladores",
+      "specialty": "refrigeracion",
+      "name": "Congeladores industriales",
+      "active": true,
+      "image": "/media/services/subcategorias/refrigeracion/congeladores.png"
+    },
+    {
+      "id": "refrigeracion-climatizacion",
+      "specialty": "refrigeracion",
+      "name": "Aire acondicionado / climatización",
+      "active": true,
+      "image": "/media/services/subcategorias/refrigeracion/climatizacion.png"
+    },
+    {
+      "id": "refrigeracion-refrigerante",
+      "specialty": "refrigeracion",
+      "name": "Diagnóstico de fugas y recarga de refrigerante",
+      "active": true,
+      "image": "/media/services/subcategorias/refrigeracion/refrigerante.png"
+    },
+    {
+      "id": "refrigeracion-compresores",
+      "specialty": "refrigeracion",
+      "name": "Reparación de compresores",
+      "active": true,
+      "image": "/media/services/subcategorias/refrigeracion/compresores.png"
+    },
+    {
+      "id": "refrigeracion-hielo",
+      "specialty": "refrigeracion",
+      "name": "Máquinas de hielo y dispensadores",
+      "active": true,
+      "image": "/media/services/subcategorias/refrigeracion/hielo.png"
+    },
+    {
+      "id": "refrigeracion-mantenimiento",
+      "specialty": "refrigeracion",
+      "name": "Mantenimiento preventivo",
+      "active": true,
+      "image": "/media/services/subcategorias/refrigeracion/mantenimiento.png"
+    },
+    {
+      "id": "electricidad-residencial",
+      "specialty": "electricidad",
+      "name": "Instalaciones residenciales",
+      "active": true,
+      "image": "/media/services/subcategorias/electricidad/residencial.png"
+    },
+    {
+      "id": "electricidad-comercial",
+      "specialty": "electricidad",
+      "name": "Instalaciones comerciales e industriales",
+      "active": true,
+      "image": "/media/services/subcategorias/electricidad/comercial.png"
+    },
+    {
+      "id": "electricidad-tableros",
+      "specialty": "electricidad",
+      "name": "Tableros eléctricos",
+      "active": true,
+      "image": "/media/services/subcategorias/electricidad/tableros.png"
+    },
+    {
+      "id": "electricidad-iluminacion",
+      "specialty": "electricidad",
+      "name": "Iluminación",
+      "active": true,
+      "image": "/media/services/subcategorias/electricidad/iluminacion.png"
+    },
+    {
+      "id": "electricidad-tierra",
+      "specialty": "electricidad",
+      "name": "Puesta a tierra",
+      "active": true,
+      "image": "/media/services/subcategorias/electricidad/tierra.png"
+    },
+    {
+      "id": "electricidad-medidores",
+      "specialty": "electricidad",
+      "name": "Certificación y medidores",
+      "active": true,
+      "image": "/media/services/subcategorias/electricidad/medidores.png"
+    },
+    {
+      "id": "electricidad-solar",
+      "specialty": "electricidad",
+      "name": "Energía solar / paneles fotovoltaicos",
+      "active": true,
+      "image": "/media/services/subcategorias/electricidad/solar.png"
+    },
+    {
+      "id": "electricidad-generadores",
+      "specialty": "electricidad",
+      "name": "Grupos electrógenos / generadores",
+      "active": true,
+      "image": "/media/services/subcategorias/electricidad/generadores.png"
+    },
+    {
+      "id": "electricidad-alarmas",
+      "specialty": "electricidad",
+      "name": "Cercos eléctricos y alarmas",
+      "active": true,
+      "image": "/media/services/subcategorias/electricidad/alarmas.png"
+    },
+    {
+      "id": "electricidad-domotica",
+      "specialty": "electricidad",
+      "name": "Automatización básica / domótica",
+      "active": true,
+      "image": "/media/services/subcategorias/electricidad/domotica.png"
+    }
+  ]
 }

@@ -71,3 +71,4 @@ backend/api/bootstrap/cache/*
 backend/api/database/*.sqlite
 backend/api/.phpunit.result.cache
 .media-tools/
+output/
