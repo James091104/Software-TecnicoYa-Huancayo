@@ -1,0 +1,17 @@
+
+> tecnicoya-web@1.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web
+
+ ✓ src/domain/marketplace.test.js (6 tests) 14ms
+ ✓ src/VideoExperience.test.jsx (3 tests) 206ms
+ ✓ src/forms.test.jsx (1 test) 91ms
+ ✓ src/scroll/scroll.test.jsx (5 tests) 211ms
+
+ Test Files  4 passed (4)
+      Tests  15 passed (15)
+   Start at  19:42:13
+   Duration  5.32s (transform 639ms, setup 1.56s, collect 2.06s, tests 523ms, environment 12.09s, prepare 1.26s)
+

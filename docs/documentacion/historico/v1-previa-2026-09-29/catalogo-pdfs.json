@@ -1,0 +1,98 @@
+[
+  {
+    "archivo": "01-Plan-maestro-de-pruebas.pdf",
+    "titulo": "Plan maestro de pruebas",
+    "paginas": 4,
+    "sha256": "2e48062a5c620de79719988f27c3ecb817b5efeaf9c41322ff0a02f65d452244"
+  },
+  {
+    "archivo": "02-Producto-y-alcance-MVP.pdf",
+    "titulo": "Definición del producto y alcance del MVP",
+    "paginas": 3,
+    "sha256": "7f2b8e1e03d9351ab61e969091184a1331b478fda56270523be9d8b89f1bb2d2"
+  },
+  {
+    "archivo": "03-Requisitos-e-historias-de-usuario.pdf",
+    "titulo": "Requisitos e historias de usuario",
+    "paginas": 11,
+    "sha256": "97f8bb5ae10472107a5b547c345841c15798fc6c8dbdb2d162df9c327db58b3d"
+  },
+  {
+    "archivo": "04-Procesos-y-procedimientos-BPMN.pdf",
+    "titulo": "Procesos de negocio y procedimientos",
+    "paginas": 3,
+    "sha256": "545db8fcf463dca64d785a6b5f875597b91aa350e1f621892ea4760d78d0fa72"
+  },
+  {
+    "archivo": "05-Modelo-de-datos-y-reglas.pdf",
+    "titulo": "Modelo de datos y reglas de negocio",
+    "paginas": 3,
+    "sha256": "f8e9f88a8c3462d6cd1a5fe9f85a70b6e2c114cda7929be9bca007743ae4ad86"
+  },
+  {
+    "archivo": "06-Arquitectura-y-diseno-tecnico.pdf",
+    "titulo": "Arquitectura y diseño técnico",
+    "paginas": 3,
+    "sha256": "b7d32b38872de4f2e15b6b67deeeccc4f56f24100c2ccf3d9ac1801f712d78a7"
+  },
+  {
+    "archivo": "07-Experiencia-y-accesibilidad.pdf",
+    "titulo": "Experiencia de usuario y accesibilidad",
+    "paginas": 2,
+    "sha256": "74fbacbf009c1975c93b31f9cced89f333008716cda8c0ed0f827840d447f4ee"
+  },
+  {
+    "archivo": "08-Estado-del-arte-y-tecnologia.pdf",
+    "titulo": "Estado del arte y justificación tecnológica",
+    "paginas": 4,
+    "sha256": "ae8e36903c0c95e895b026572809367fccb513fcda27f9ee846f539e38bcc313"
+  },
+  {
+    "archivo": "09-Infraestructura-y-servidor.pdf",
+    "titulo": "Infraestructura y operación del servidor",
+    "paginas": 3,
+    "sha256": "1db7b670968fca3b1c351c353d457b8f65d6ed0f2c6a65e02a87eaf38c823e5c"
+  },
+  {
+    "archivo": "10-Backlog-y-planificacion-Scrum.pdf",
+    "titulo": "Backlog y planificación Scrum",
+    "paginas": 3,
+    "sha256": "44abd5c6ba3b60af78709ab3b95023ffd422aa4124e13b5da5f809c684392a79"
+  },
+  {
+    "archivo": "11-Desarrollo-y-estrategia-TDD.pdf",
+    "titulo": "Guía de desarrollo y estrategia TDD",
+    "paginas": 3,
+    "sha256": "bf776e23f9aa40275bfeaca24eea9f3bd6c0cc8b9cf9cf1bd494262732b3eb49"
+  },
+  {
+    "archivo": "12-Despliegue-y-aceptacion.pdf",
+    "titulo": "Despliegue y aceptación de versiones",
+    "paginas": 3,
+    "sha256": "51314144bf42188174fe0abbdbae394e6f850369b9acf7b887e440065e510f7b"
+  },
+  {
+    "archivo": "S01-Informe-de-sprint.pdf",
+    "titulo": "Informe de sprint S01",
+    "paginas": 2,
+    "sha256": "97428a079c45cbb576135cfe345a227a9f59a94765929639a2e0088184d1d897"
+  },
+  {
+    "archivo": "S02-Informe-de-sprint.pdf",
+    "titulo": "Informe de sprint S02",
+    "paginas": 2,
+    "sha256": "0010514f267a086cfb1d8706fc5c9870522434a2a681543b1e4a9f440eee24ce"
+  },
+  {
+    "archivo": "S03-Informe-de-sprint.pdf",
+    "titulo": "Informe de sprint S03",
+    "paginas": 2,
+    "sha256": "703b2f4644cfff77714201e6f3485af62b6c84906b2ebcaa15d1fd927490c0cf"
+  },
+  {
+    "archivo": "S04-Informe-de-sprint.pdf",
+    "titulo": "Informe de sprint S04",
+    "paginas": 2,
+    "sha256": "9e011fca8c80b9bd05d5d5091c1ac9b99b671b6c5ec71ab7d874a2d13352f58e"
+  }
+]

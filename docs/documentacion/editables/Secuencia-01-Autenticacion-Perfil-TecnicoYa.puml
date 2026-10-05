@@ -1,0 +1,241 @@
+@startuml Secuencia_01_Autenticacion_Perfil_TecnicoYa
+title TécnicoYa Huancayo · Secuencia 01: Autenticación y perfil
+autonumber
+hide footbox
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam sequenceMessageAlign left
+skinparam maxMessageSize 240
+skinparam sequence {
+  ArrowColor #334155
+  LifeLineBorderColor #64748B
+  ParticipantBackgroundColor #E0F2FE
+  ParticipantBorderColor #0284C7
+  GroupBorderColor #64748B
+  GroupBackgroundColor #F8FAFC
+}
+
+actor "Usuario\nCliente / Técnico / Administrador" as Usuario
+boundary "React\nInterfaz y cliente HTTP" as React
+boundary "API Laravel\nRutas, middleware y controladores" as API
+box "Servicios Laravel" #EFF6FF
+  control "AuthService\nIdentidad y sesión Sanctum" as Auth
+  control "ProfileService\nPerfil propio" as Perfil
+  control "Policies / Gates\nRol, relación y permiso" as Policy
+end box
+entity "Persistencia\nEloquent y driver de sesión" as Repo
+database "MySQL" as DB
+
+note over Usuario, DB
+  Precondición: cuenta previamente creada. Este diagrama cubre acceso, consulta,
+  edición del perfil y logout; no desarrolla el registro ni la recuperación de contraseña.
+  API representa la capa HTTP; las reglas residen en servicios y Policies.
+end note
+
+== 1. Inicio de sesión ==
+
+opt El usuario solicita iniciar sesión
+  Usuario -> React : Abrir formulario de acceso
+  React -> API : GET /sanctum/csrf-cookie
+  API -> Repo : Preparar sesión anónima y protección CSRF
+  Repo -> DB : Persistir sesión mediante el driver de Laravel
+  DB --> Repo : Sesión preparada
+  Repo --> API : Contexto de sesión y CSRF
+  API --> React : 204 + Set-Cookie de sesión y XSRF-TOKEN
+
+  note over React, API
+    La cookie de sesión es HttpOnly; React no la lee.
+    El navegador la envía. La cookie CSRF permite formar X-XSRF-TOKEN.
+    HTTPS, Secure y SameSite según entorno. No almacenar la sesión en localStorage.
+  end note
+
+  Usuario -> React : Introducir correo y contraseña
+  React -> API : POST /api/v1/auth/login\n{email, password}; Cookie + X-XSRF-TOKEN
+  API -> API : Middleware: cargar sesión, comprobar CSRF y limitar intentos\nForm Request: validar formato de entrada
+
+  alt CSRF ausente o inválido
+    API --> React : 419 · Renovar protección CSRF antes de un nuevo intento
+    React --> Usuario : Informar que debe reintentar el acceso
+  else Límite de intentos alcanzado
+    API --> React : 429 · Demasiados intentos
+    React --> Usuario : Mostrar espera antes del siguiente intento
+  else Entrada inválida
+    API --> React : 422 · Errores de validación
+    React --> Usuario : Corregir campos
+  else Petición de acceso válida
+    API -> Auth : Autenticar(email, password)
+    Auth -> Repo : Buscar identidad por correo normalizado
+    Repo -> DB : SELECT users y condiciones de acceso del cliente, si aplica
+    DB --> Repo : Identidad con hash / sin coincidencia; estado de acceso
+    Repo --> Auth : Datos internos de autenticación
+    Auth -> Auth : Verificar hash bcrypt sin registrar secretos\nMantener respuesta genérica para credenciales inválidas
+
+    alt Credenciales inválidas
+      Auth --> API : Acceso rechazado, sin crear sesión autenticada
+      API --> React : 401 · Credenciales no válidas
+      React --> Usuario : Mostrar mensaje genérico
+    else Credenciales válidas, cuenta inactiva o acceso bloqueado
+      Auth --> API : Acceso no permitido
+      API --> React : 403 · Acceso no disponible
+      React --> Usuario : Informar restricción sin revelar datos internos
+    else Acceso permitido
+      Auth -> Repo : Rotar sesión e invalidar su identificador anterior\nAsociar usuario mediante el driver de Laravel
+      Repo -> DB : Invalidar sesión anterior y persistir nueva sesión autenticada
+      DB --> Repo : Persistencia confirmada
+      Repo --> Auth : Sesión autenticada preparada
+      Auth --> API : Identidad mínima segura
+      API --> React : 200 · Datos mínimos + cookies actualizadas\nSin password, hash ni identificador de sesión en JSON
+      React --> Usuario : Mostrar acceso al panel correspondiente
+    end
+  end
+end
+
+note over Auth, Perfil
+  Cuenta habilitada no equivale a técnico verificado para atender.
+  Un técnico pendiente puede acceder a completar su perfil;
+  no puede autohabilitarse ni modificar su verificación.
+end note
+
+== 2. Acceso protegido y operación sobre el perfil ==
+
+note over React, API
+  Lectura: GET /api/v1/me o GET /api/v1/technicians/me/profile.
+  Edición: PATCH sobre la misma ruta, con expected_version.
+  Salida: POST /api/v1/auth/logout.
+  El endpoint técnico exige ese rol; /me corresponde siempre al usuario de la sesión.
+end note
+
+loop Por cada acción solicitada; finalizar al salir o abandonar
+  Usuario -> React : Consultar perfil, guardar cambios o cerrar sesión
+  React -> API : Petición protegida correspondiente\nCookie; X-XSRF-TOKEN para PATCH / POST
+  API -> API : Middleware: protección CSRF cuando corresponde\ny límite de peticiones
+
+  alt CSRF inválido o límite excedido
+    API --> React : 419 o 429 según la causa; no ejecutar la operación
+    React --> Usuario : Mostrar error y condición para reintentar
+  else Controles HTTP satisfechos
+    API -> Auth : Resolver sesión actual; exigir cuenta habilitada
+    Auth -> Repo : Obtener identidad, rol, permisos efectivos y estado de acceso
+    Repo -> DB : Leer sessions, users, roles, permissions,\nrole_permissions, user_permissions y bloqueo si corresponde
+    DB --> Repo : Contexto vigente / sesión inexistente o vencida
+    Repo --> Auth : Resultado del guard de sesión
+
+    alt No existe sesión autenticada vigente
+      Auth --> API : No autenticado
+      API --> React : 401 · Sesión requerida
+      React -> React : Limpiar estado privado y suscripciones locales
+      React --> Usuario : Solicitar inicio de sesión
+    else Cuenta inactiva o acceso bloqueado
+      Auth --> API : Acceso denegado
+      API --> React : 403 · Operación no permitida
+      React -> React : Retirar datos privados del panel\ny desconectar suscripciones locales
+      React --> Usuario : Informar acceso restringido
+    else Identidad autenticada y habilitada
+      Auth --> API : Actor obtenido del servidor y permisos actuales
+
+      alt GET /me o GET /technicians/me/profile
+        API -> Perfil : Consultar perfil propio(actor, tipo de endpoint)
+        Perfil -> Policy : Autorizar consulta propia y rol del endpoint
+
+        alt Sin autorización para ese recurso o endpoint
+          Policy --> Perfil : Denegar
+          Perfil --> API : Operación prohibida
+          API --> React : 403 · Sin acceso
+        else Consulta autorizada
+          Policy --> Perfil : Permitir
+          Perfil -> Repo : Cargar solo perfil del actor y campos permitidos
+          Repo -> DB : SELECT users; client_profiles o technician_profiles según ruta/rol\nSin perfil administrativo separado
+          DB --> Repo : Perfil, estado y versión del recurso
+          Repo --> Perfil : Datos del perfil propio
+          Perfil --> API : Resultado autorizado
+          API -> API : Serializar API Resource; excluir secretos
+          API --> React : 200 · Perfil + permisos/estado cuando corresponda + version
+          React --> Usuario : Mostrar perfil y acciones permitidas
+        end
+
+      else PATCH /me o PATCH /technicians/me/profile
+        API -> API : Form Request: lista de campos permitidos\nValidar tipos y expected_version
+
+        alt Campos inválidos o intento de editar privilegios
+          API --> React : 422 · Errores de validación\nNo aceptar role, permissions, is_active ni verificación
+          React --> Usuario : Corregir el formulario
+        else Payload permitido
+          API -> Perfil : Actualizar perfil propio(actor, datos validados, expected_version)
+          Perfil -> Repo : Iniciar transacción y bloquear cuenta/perfil destino
+          Repo -> DB : BEGIN; SELECT cuenta y recurso propio FOR UPDATE
+          DB --> Repo : Filas y versión actuales
+          Repo --> Perfil : Estado fresco dentro de la transacción
+          Perfil -> Policy : Revalidar propietario, rol, acceso y campos editables
+
+          alt Permiso revocado o recurso no permitido
+            Policy --> Perfil : Denegar
+            Perfil -> Repo : Revertir transacción
+            Repo -> DB : ROLLBACK
+            Repo --> Perfil : Sin cambios
+            Perfil --> API : Operación prohibida
+            API --> React : 403 · Sin acceso
+          else Permiso vigente
+            Policy --> Perfil : Permitir
+            Perfil -> Perfil : Comparar expected_version con versión del recurso
+
+            alt Versión desactualizada
+              Perfil -> Repo : Revertir transacción
+              Repo -> DB : ROLLBACK
+              Repo --> Perfil : Sin cambios
+              Perfil --> API : Conflicto de concurrencia
+              API --> React : 409 · STALE_VERSION
+              React --> Usuario : Recargar perfil y revisar cambios antes de reenviar
+            else Versión coincidente
+              Perfil -> Repo : Actualizar campos autorizados; version + 1 y updated_at
+              Repo -> DB : UPDATE del recurso propio con condición de versión
+
+              alt Error de persistencia antes de confirmar
+                DB --> Repo : Error
+                Repo -> DB : ROLLBACK
+                Repo --> Perfil : Cambio no confirmado
+                Perfil --> API : Fallo controlado
+                API --> React : 5xx · No se confirmó la actualización; sin detalles internos
+              else Escritura válida
+                DB --> Repo : Recurso actualizado
+                Repo -> DB : COMMIT
+                DB --> Repo : Commit confirmado
+                Repo --> Perfil : Perfil persistido con nueva versión
+                Perfil --> API : Resultado de actualización
+                API -> API : Serializar campos permitidos
+                API --> React : 200 · Perfil actualizado y nueva version
+                React --> Usuario : Confirmar cambios guardados
+              end
+            end
+          end
+        end
+
+      else POST /auth/logout
+        API -> Auth : Cerrar la sesión propia validada
+        Auth -> Repo : Invalidar sesión y regenerar protección CSRF\nDelegar en los mecanismos de Laravel
+        Repo -> DB : Invalidar sesión autenticada; persistir sesión anónima si corresponde
+        DB --> Repo : Sesión autenticada invalidada
+        Repo --> Auth : Cierre confirmado
+        Auth --> API : Sesión cerrada
+        API --> React : 204 · Cookies actualizadas / protección CSRF renovada
+        React -> React : Vaciar datos privados; abandonar canales\ny desconectar Echo si estaba activo
+        React --> Usuario : Volver a la pantalla de acceso
+      end
+    end
+  end
+end
+
+note over React, DB
+  Las respuestas se serializan con campos permitidos. No se devuelven hashes, tokens ni payloads de sesión.
+  Toda edición se valida en el servidor; ocultar controles de React no sustituye Policies.
+  Las tablas de perfil tienen su propia versión: expected_version corresponde al recurso editado.
+  El driver de sesión abstrae su persistencia; el diagrama no prescribe implementar cookies o sesiones a mano.
+end note
+
+legend bottom
+  -> solicitud o llamada; --> retorno o respuesta.
+  opt: acción opcional; alt/else: resultados alternativos; loop: nuevas acciones del usuario, no reintento automático.
+  Alcance: secuencia 01. Los casos de solicitud, matching, SLA, atención, calificación y reglas se documentan por separado.
+endlegend
+@enduml

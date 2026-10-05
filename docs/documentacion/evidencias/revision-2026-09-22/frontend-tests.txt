@@ -1,0 +1,39 @@
+
+> tecnicoya-web@1.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web
+
+ ✓ src/domain/marketplace.test.js (6 tests) 13ms
+ ❯ src/forms.test.jsx (0 test)
+ ✓ src/VideoExperience.test.jsx (3 tests) 303ms
+ ✓ src/scroll/scroll.test.jsx (5 tests) 272ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/forms.test.jsx [ src/forms.test.jsx ]
+Error: Failed to resolve import "./auth.css" from "src/Auth.jsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: C:/Users/James/Documents/ChatGPT/Software TecnicoYa-Huancayo/frontend/web/src/Auth.jsx:4:7
+  3  |  import { rules, specialtyNames } from "./domain/matching";
+  4  |  import { api } from "./marketplace-api";
+  5  |  import "./auth.css";
+     |          ^
+  6  |  export default function Auth({ onLogin }) {
+  7  |    const [register, setRegister] = useState(false), [role, setRole] = useState("client"), [busy, setBusy] = useState(false), [error, setError] = useState("");
+ ❯ TransformPluginContext._formatError ../../../Software%20TecnicoYa-Huancayo/frontend/web/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49258:41
+ ❯ TransformPluginContext.error ../../../Software%20TecnicoYa-Huancayo/frontend/web/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49253:16
+ ❯ normalizeUrl ../../../Software%20TecnicoYa-Huancayo/frontend/web/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64307:23
+ ❯ ../../../Software%20TecnicoYa-Huancayo/frontend/web/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64439:39
+ ❯ TransformPluginContext.transform ../../../Software%20TecnicoYa-Huancayo/frontend/web/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64366:7
+ ❯ PluginContainer.transform ../../../Software%20TecnicoYa-Huancayo/frontend/web/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49099:18
+ ❯ loadAndTransform ../../../Software%20TecnicoYa-Huancayo/frontend/web/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:51978:27
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed | 3 passed (4)
+      Tests  14 passed (14)
+   Start at  19:38:16
+   Duration  26.77s (transform 727ms, setup 18.31s, collect 5.75s, tests 587ms, environment 69.28s, prepare 3.91s)
+

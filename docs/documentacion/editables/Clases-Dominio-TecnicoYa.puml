@@ -1,0 +1,611 @@
+@startuml Clases_Dominio_TecnicoYa
+title TécnicoYa Huancayo · Diagrama de clases del dominio
+left to right direction
+hide empty members
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+skinparam class {
+  BackgroundColor #F0F9FF
+  BorderColor #0369A1
+  ArrowColor #475569
+}
+skinparam package {
+  BackgroundColor #F8FAFC
+  BorderColor #94A3B8
+}
+
+package "Identidad y oferta profesional · F / A" {
+  class Usuario <<entidad>> {
+    - id: Id
+    - nombre: Texto
+    - correo: Texto
+    - activo: Booleano
+    - version: Entero
+    + estaHabilitado(): Booleano
+    + permisosEfectivos(): ConjuntoPermisos
+  }
+  class Rol <<entidad>> {
+    - codigo: Texto
+    - nombre: Texto
+  }
+  class Permiso <<entidad>> {
+    - codigo: Texto
+    - descripcion: Texto
+  }
+  class PerfilCliente <<entidad>> {
+    - id: Id
+    - tipo: hogar_o_mype
+    - nombreNegocio: TextoOpcional
+    + actualizarDatosPermitidos(): void
+  }
+  class PerfilTecnico <<entidad>> {
+    - id: Id
+    - nombreProfesional: Texto
+    - estado: EstadoTecnico
+    - verificacion: EstadoVerificacion
+    - experienciaAnios: Entero
+    - disponibleAhora: Booleano
+    + estaHabilitadoProfesionalmente(): Booleano
+    + promedioCalificaciones(): Decimal
+  }
+  class RevisionTecnico <<entidad>> {
+    - id: Id
+    - decision: aprobar_rechazar_solicitarCambios
+    - motivo: Texto
+    - revisadoEn: InstanteUTC
+    + registrarDecision(): void
+  }
+  class DocumentoVerificacion <<entidad>> {
+    - id: Id
+    - tipo: Texto
+    - estadoRevision: EstadoVerificacion
+    - venceEn: InstanteOpcional
+  }
+  class TrabajoPortafolio <<entidad>> {
+    - id: Id
+    - titulo: Texto
+    - descripcion: Texto
+    - estado: borrador_publicado_retirado
+    + publicar(): void
+    + retirar(): void
+  }
+  class Archivo <<entidad>> {
+    - id: Id
+    - tipoContenido: Texto
+    - tamanoBytes: Entero
+    - visibilidad: publica_o_privada
+    - validacion: pendiente_limpio_rechazado
+    + puedeServirse(): Booleano
+  }
+  class BloqueoCliente <<entidad>> {
+    - id: Id
+    - motivo: Texto
+    - inicio: InstanteUTC
+    - fin: InstanteOpcional
+    - estado: activo_levantado_expirado
+    + estaVigente(ahora: InstanteUTC): Booleano
+  }
+}
+
+package "Catálogo y disponibilidad · A / F" {
+  class Especialidad <<entidad>> {
+    - id: Id
+    - nombre: Texto
+    - activa: Booleano
+  }
+  class Subcategoria <<entidad>> {
+    - id: Id
+    - nombre: Texto
+    - activa: Booleano
+    - ordenCarrusel: Entero
+    - tarifaReferencial: DineroOpcional
+  }
+  class ServicioOfrecido <<entidad>> {
+    - id: Id
+    - tarifaVigente: Dinero
+    - activo: Booleano
+    - versionTarifa: Entero
+    + cambiarTarifa(nueva: Dinero): void
+  }
+  class VersionTarifa <<entidad>> {
+    - id: Id
+    - numero: Entero
+    - tarifa: Dinero
+    - vigenteDesde: InstanteUTC
+  }
+  class Distrito <<entidad>> {
+    - id: Id
+    - codigo: Texto
+    - nombre: Texto
+    - activo: Booleano
+  }
+  class Disponibilidad <<entidad>> {
+    - id: Id
+    - patron: semanal_o_puntual
+    - zonaHoraria: Texto
+    - activa: Booleano
+    + cubre(intervalo: Intervalo): Booleano
+  }
+  class PausaTemporal <<entidad>> {
+    - id: Id
+    - inicio: InstanteUTC
+    - fin: InstanteOpcional
+    - canceladaEn: InstanteOpcional
+    + afecta(intervalo: Intervalo): Booleano
+  }
+}
+
+package "Solicitud, ofertas y atención · A / C / D" {
+  class Solicitud <<entidad>> {
+    - id: Id
+    - descripcion: Texto
+    - direccionPrivada: Texto
+    - modalidad: inmediata_o_programada
+    - origen: automatico_o_perfil
+    - estado: EstadoSolicitud
+    - tarifaReferencial: DineroOpcional
+    - pendienteVenceEn: InstanteOpcional
+    - generacionBusqueda: Entero
+    - version: Entero
+    + enviar(): void
+    + registrarPendiente(limite: InstanteUTC): void
+    + cancelar(motivo: Texto): void
+    + expirar(ahora: InstanteUTC): void
+  }
+  class EventoSolicitud <<entidad>> {
+    - id: Id
+    - tipo: Texto
+    - momento: InstanteUTC
+    - motivo: TextoOpcional
+  }
+  class RondaOferta <<entidad>> {
+    - id: Id
+    - numero: Entero
+    - generacion: Entero
+    - tipo: automatica_directa_manual_adicional
+    - estado: Texto
+    - venceEn: InstanteUTC
+    + tieneAceptacionesValidas(): Booleano
+    + cerrar(): void
+  }
+  class Oferta <<entidad>> {
+    - id: Id
+    - estado: EstadoOferta
+    - disponibleEn: InstanteUTC
+    - venceEn: InstanteUTC
+    - tarifaOfrecida: Dinero
+    + aceptar(ahora: InstanteUTC): void
+    + rechazar(motivo: Texto): void
+    + expirar(ahora: InstanteUTC): void
+  }
+  class Participacion <<entidad>> {
+    - id: Id
+    - puesto: principal_o_adicional
+    - estado: EstadoParticipacion
+    - tarifaReferencialAsignada: Dinero
+    - estadoCalificacion: no_abierta_abierta_calificada_sin_calificar
+    - finalizadaEn: InstanteOpcional
+    - calificacionVenceEn: InstanteOpcional
+    + iniciar(ahora: InstanteUTC): void
+    + finalizar(reporte: ReporteAtencion): void
+    + cerrarSinCalificar(ahora: InstanteUTC): void
+  }
+  class Cita <<entidad>> {
+    - id: Id
+    - franja: Intervalo
+    - estado: Texto
+    + reprogramar(nueva: Intervalo): void
+  }
+  class Reprogramacion <<entidad>> {
+    - id: Id
+    - anterior: Intervalo
+    - propuesta: Intervalo
+    - estado: Texto
+    - venceEn: InstanteUTC
+    + aceptar(): void
+    + rechazar(): void
+    + vencer(ahora: InstanteUTC): void
+  }
+  class ReporteAtencion <<entidad>> {
+    - id: Id
+    - trabajoRealizado: Texto
+    - resultado: Texto
+    - registradoEn: InstanteUTC
+  }
+  class Incidencia <<entidad>> {
+    - id: Id
+    - tipo: Texto
+    - descripcion: Texto
+    - estado: Texto
+    + registrarResolucion(motivo: Texto): void
+  }
+  class Reasignacion <<entidad>> {
+    - id: Id
+    - origen: automatico_o_manual
+    - motivo: Texto
+    - estado: Texto
+    + registrarResultado(): void
+  }
+}
+
+package "Matching y configuración · B / F" {
+  class EvaluacionMatching <<entidad>> {
+    - id: Id
+    - generacion: Entero
+    - calculadaEn: InstanteUTC
+    + obtenerRanking(): ListaCandidatos
+  }
+  class CandidatoMatching <<entidad>> {
+    - id: Id
+    - elegible: Booleano
+    - motivoExclusion: TextoOpcional
+    - puestoRanking: EnteroOpcional
+    - puntuacion: DecimalOpcional
+    - datosEvaluados: Instantanea
+    + explicarFactores(): Texto
+  }
+  class VersionReglas <<entidad>> {
+    - id: Id
+    - numero: Entero
+    - estado: borrador_publicada_retirada
+    - vigenteDesde: InstanteOpcional
+    - motivoCambio: Texto
+    + validarParaPublicacion(): void
+    + publicar(): void
+  }
+  class ParametroRegla <<entidad>> {
+    - id: Id
+    - codigo: Texto
+    - tipoValor: Texto
+    - unidad: Texto
+    - editable: Booleano
+  }
+  class ValorParametro <<entidad>> {
+    - valor: ValorTipado
+    + validarTipoYRango(): void
+  }
+  class PesosMatching <<valor>> {
+    - cercaniaPct: Decimal
+    - tarifaPct: Decimal
+    - historialPct: Decimal
+    - experienciaPct: Decimal
+    + suma(): Decimal
+    + validarSuma100(): void
+  }
+  class FactoresMatching <<valor>> {
+    - cercania: Decimal
+    - tarifa: Decimal
+    - historial: Decimal
+    - experiencia: Decimal
+    + validarRango0a1(): void
+    + puntuar(pesos: PesosMatching): Decimal
+  }
+}
+
+package "Calificación y reputación · E" {
+  class Calificacion <<entidad>> {
+    - id: Id
+    - puntaje: Entero
+    - comentario: Texto
+    - estado: activa_o_anulada
+    - primeraFecha: InstanteUTC
+    - editableHasta: InstanteUTC
+    - versionActual: Entero
+    + editar(puntaje: Entero, comentario: Texto): void
+    + registrarVersion(): void
+  }
+  class VersionCalificacion <<entidad>> {
+    - id: Id
+    - numero: Entero
+    - puntaje: Entero
+    - comentario: Texto
+    - motivo: TextoOpcional
+    - creadaEn: InstanteUTC
+  }
+  class RespuestaResena <<entidad>> {
+    - id: Id
+    - texto: Texto
+    - estado: publicada_oculta
+  }
+  class Apelacion <<entidad>> {
+    - id: Id
+    - motivo: Texto
+    - estado: Texto
+    - presentadaEn: InstanteUTC
+    + registrarResolucion(): void
+  }
+  class ResolucionApelacion <<entidad>> {
+    - id: Id
+    - decision: mantener_ajustar_anular
+    - motivo: Texto
+    - resueltaEn: InstanteUTC
+    + aplicarSobreVersionVigente(): void
+  }
+}
+
+package "Comunicación, soporte y control · F" {
+  class Notificacion <<entidad>> {
+    - id: Id
+    - eventoId: Texto
+    - tipoRecurso: Texto
+    - recursoId: Id
+    - leidaEn: InstanteOpcional
+    + marcarLeida(): void
+  }
+  class PreferenciaNotificacion <<entidad>> {
+    - canal: Texto
+    - tema: Texto
+    - habilitada: Booleano
+  }
+  class IntentoNotificacion <<entidad>> {
+    - numero: Entero
+    - canal: Texto
+    - estado: Texto
+    - programadoEn: InstanteUTC
+  }
+  class Comunicado <<entidad>> {
+    - id: Id
+    - titulo: Texto
+    - estado: Texto
+    - vigencia: IntervaloOpcional
+    + visiblePara(rol: Rol, ahora: InstanteUTC): Booleano
+  }
+  class TicketSoporte <<entidad>> {
+    - id: Id
+    - asunto: Texto
+    - estado: Texto
+    + registrarActualizacion(): void
+    + resolver(motivo: Texto): void
+  }
+  class RegistroAuditoria <<entidad>> {
+    - id: Id
+    - actorTipo: usuario_o_sistema
+    - accion: Texto
+    - recursoTipo: Texto
+    - recursoId: IdOpcional
+    - motivo: Texto
+    - ocurridoEn: InstanteUTC
+  }
+  class MetodoPago <<entidad>> {
+    - id: Id
+    - nombre: Texto
+    - activo: Booleano
+  }
+  class PagoSimulado <<entidad>> {
+    - id: Id
+    - importe: Dinero
+    - estado: Texto
+    - esSimulado: Booleano
+    + registrarEventoSimulado(): void
+  }
+}
+
+package "Valores, políticas y servicios de dominio" {
+  class Dinero <<valor>> {
+    - importe: Decimal
+    - moneda: Texto
+    + validarNoNegativo(): void
+  }
+  class Intervalo <<valor>> {
+    - inicio: InstanteUTC
+    - fin: InstanteUTC
+    + solapa(otro: Intervalo): Booleano
+    + validarOrden(): void
+  }
+  interface Reloj {
+    + ahora(): InstanteUTC
+  }
+  interface RepositorioCandidatos {
+    + obtenerInstantanea(solicitud: Solicitud): DatosCandidatos
+  }
+  class ServicioMatching <<servicio>> {
+    + evaluar(solicitud: Solicitud, reglas: VersionReglas): EvaluacionMatching
+    + ordenar(candidatos: ListaCandidatos): ListaCandidatos
+  }
+  class PoliticaElegibilidad <<servicio>> {
+    + esElegible(tecnico: PerfilTecnico, solicitud: Solicitud): Booleano
+  }
+  class PoliticaAsignacion <<servicio>> {
+    + validarEleccion(solicitud: Solicitud, oferta: Oferta): void
+    + validarPuestoDisponible(solicitud: Solicitud): void
+  }
+  class PoliticaCalificacion <<servicio>> {
+    + validarEnvio(participacion: Participacion, autor: Usuario): void
+    + validarEdicion(calificacion: Calificacion): void
+  }
+  class MaquinaEstadosSolicitud <<servicio>> {
+    + permite(origen: EstadoSolicitud, destino: EstadoSolicitud, contexto: Contexto): Booleano
+  }
+}
+
+package "Estados del núcleo" {
+  enum EstadoSolicitud {
+    Registrada
+    Enviada
+    Pendiente
+    Asignada
+    EnAtencion
+    Finalizada
+    Cerrada
+    Cancelada
+    SinCalificar
+    Expirada
+  }
+  enum EstadoOferta {
+    Pendiente
+    Aceptada
+    Rechazada
+    Expirada
+    Retirada
+  }
+  enum EstadoParticipacion {
+    Asignada
+    EnAtencion
+    Finalizada
+    Cancelada
+    Reemplazada
+  }
+  enum EstadoTecnico {
+    PendienteVerificacion
+    Activo
+    Inactivo
+    Suspendido
+  }
+  enum EstadoVerificacion {
+    Pendiente
+    Aprobada
+    Rechazada
+  }
+}
+
+' Asociaciones de identidad: perfiles por rol, no herencia de privilegios.
+Usuario "0..*" -- "1" Rol : rol vigente
+Rol "0..*" -- "0..*" Permiso : permisos del rol
+Usuario "0..*" -- "0..*" Permiso : concesiones administrativas
+Usuario "1" -- "0..1" PerfilCliente : perfil según rol
+Usuario "1" -- "0..1" PerfilTecnico : perfil según rol
+PerfilCliente "1" -- "0..*" BloqueoCliente : historial de acceso
+Usuario "1" -- "0..*" BloqueoCliente : registra bloqueo
+PerfilTecnico "1" -- "0..*" RevisionTecnico : revisiones
+Usuario "1" -- "0..*" RevisionTecnico : revisa con permiso
+PerfilTecnico "1" -- "0..*" DocumentoVerificacion : presenta
+RevisionTecnico "0..*" -- "0..*" DocumentoVerificacion : evidencia examinada
+DocumentoVerificacion "0..1" -- "1" Archivo : archivo privado
+Usuario "1" -- "0..*" Archivo : propietario
+PerfilTecnico "1" -- "0..*" TrabajoPortafolio : publica
+TrabajoPortafolio "0..*" -- "0..*" Archivo : galería autorizada
+
+' Catálogo y oferta profesional.
+Especialidad "1" -- "0..*" Subcategoria : agrupa
+Subcategoria "0..*" -- "0..1" Archivo : foto de carrusel
+PerfilTecnico "1" -- "0..*" ServicioOfrecido : ofrece
+Subcategoria "1" -- "0..*" ServicioOfrecido : servicio
+ServicioOfrecido "1" *-- "1..*" VersionTarifa : historial de tarifas
+PerfilTecnico "0..*" -- "0..*" Distrito : cobertura
+PerfilTecnico "1" -- "0..*" Disponibilidad : declara
+PerfilTecnico "1" -- "0..*" PausaTemporal : pausas
+
+' Solicitudes y atención: la multiplicidad histórica no es el límite simultáneo.
+PerfilCliente "1" -- "0..*" Solicitud : registra
+Subcategoria "1" -- "0..*" Solicitud : clasifica
+Distrito "1" -- "0..*" Solicitud : zona de atención
+Solicitud "0..*" -- "0..*" Archivo : evidencias privadas
+Solicitud "1" *-- "0..*" EventoSolicitud : línea de tiempo
+Solicitud "1" -- "0..*" RondaOferta : rondas históricas
+RondaOferta "1" *-- "0..*" Oferta : destinatarios de ronda
+PerfilTecnico "1" -- "0..*" Oferta : destinatario
+Oferta "0..*" -- "0..1" VersionTarifa : origen de tarifa notificada
+Solicitud "1" -- "0..*" Participacion : participaciones históricas
+PerfilTecnico "1" -- "0..*" Participacion : atiende
+Oferta "1" -- "0..1" Participacion : elegida por cliente
+Usuario "1" -- "0..*" Participacion : autoriza elección
+Participacion "1" -- "0..1" Cita : reserva
+Cita "1" -- "0..*" Reprogramacion : propuestas
+Participacion "1" -- "0..1" ReporteAtencion : cierre individual
+ReporteAtencion "0..*" -- "0..*" Archivo : evidencias de atención
+Solicitud "1" -- "0..*" Incidencia : incidencias
+Participacion "0..1" -- "0..*" Incidencia : atención afectada
+Solicitud "1" -- "0..*" Reasignacion : historial de sustituciones
+Reasignacion "0..*" -- "0..1" Participacion : participación anterior
+Reasignacion "0..*" -- "0..1" Participacion : participación nueva
+Usuario "0..1" -- "0..*" Reasignacion : actor manual o sistema
+
+' Evaluación histórica y reglas versionadas.
+Solicitud "1" -- "0..*" EvaluacionMatching : evaluaciones
+VersionReglas "1" -- "0..*" EvaluacionMatching : reglas aplicadas
+VersionReglas "0..1" -- "0..*" Solicitud : reglas al enviar
+EvaluacionMatching "1" *-- "0..*" CandidatoMatching : ranking
+CandidatoMatching "0..*" -- "1" PerfilTecnico : candidato
+CandidatoMatching "0..*" -- "1" ServicioOfrecido : subcategoría y tarifa evaluadas
+CandidatoMatching "1" *-- "0..1" FactoresMatching : completos si elegible
+RondaOferta "0..*" -- "0..1" EvaluacionMatching : origen del ranking
+Oferta "0..*" -- "0..1" CandidatoMatching : candidato notificado
+VersionReglas "1" *-- "0..1" PesosMatching : borrador o configuración completa
+VersionReglas "1" *-- "0..*" ValorParametro : valores de la versión
+ParametroRegla "1" -- "0..*" ValorParametro : define tipo y unidad
+Usuario "1" -- "0..*" VersionReglas : autor del cambio
+
+' Reputación por participación, nunca una única reseña global de solicitud.
+Participacion "1" -- "0..1" Calificacion : evaluación individual
+Usuario "1" -- "0..*" Calificacion : cliente autor
+Calificacion "1" *-- "1..*" VersionCalificacion : versiones inmutables
+Calificacion "1" -- "0..1" RespuestaResena : respuesta del técnico
+Calificacion "1" -- "0..*" Apelacion : apelaciones históricas
+Apelacion "0..*" -- "1" VersionCalificacion : versión presentada
+Apelacion "1" -- "0..1" ResolucionApelacion : resolución
+ResolucionApelacion "0..*" -- "1" VersionCalificacion : versión revisada
+ResolucionApelacion "0..*" -- "0..1" VersionCalificacion : versión resultante
+Usuario "1" -- "0..*" ResolucionApelacion : administrador resolutor
+
+' Comunicación, soporte, simulación económica y auditoría.
+Usuario "1" -- "0..*" Notificacion : destinatario
+Usuario "1" -- "0..*" PreferenciaNotificacion : preferencias
+Notificacion "1" *-- "0..*" IntentoNotificacion : intentos por canal
+Comunicado "0..*" -- "0..*" Rol : audiencia
+Usuario "1" -- "0..*" Comunicado : autor autorizado
+Usuario "1" -- "0..*" TicketSoporte : solicitante
+Solicitud "0..1" -- "0..*" TicketSoporte : contexto opcional
+Usuario "0..1" -- "0..*" RegistroAuditoria : actor o sistema
+Solicitud "0..*" -- "0..1" MetodoPago : método elegido
+Participacion "1" -- "0..*" PagoSimulado : registros ficticios
+MetodoPago "1" -- "0..*" PagoSimulado : método declarado
+
+' Dependencias de políticas: no son asociaciones persistentes ni FK.
+ServicioMatching ..> RepositorioCandidatos : obtiene fotografía consistente
+ServicioMatching ..> PoliticaElegibilidad : filtra antes de puntuar
+ServicioMatching ..> FactoresMatching : calcula con fórmula acordada
+ServicioMatching ..> PesosMatching : pondera
+ServicioMatching ..> EvaluacionMatching : produce y explica
+PoliticaElegibilidad ..> PerfilTecnico
+PoliticaElegibilidad ..> ServicioOfrecido
+PoliticaElegibilidad ..> Disponibilidad
+PoliticaElegibilidad ..> PausaTemporal
+PoliticaAsignacion ..> Solicitud
+PoliticaAsignacion ..> Oferta
+PoliticaAsignacion ..> Cita
+PoliticaAsignacion ..> Reloj
+PoliticaCalificacion ..> Participacion
+PoliticaCalificacion ..> Calificacion
+PoliticaCalificacion ..> Reloj
+Solicitud ..> MaquinaEstadosSolicitud : transiciones permitidas
+Solicitud ..> EstadoSolicitud
+Oferta ..> EstadoOferta
+Participacion ..> EstadoParticipacion
+PerfilTecnico ..> EstadoTecnico
+PerfilTecnico ..> EstadoVerificacion
+ServicioOfrecido ..> Dinero
+Cita ..> Intervalo
+
+note right of Participacion
+  Máximo vigente: un principal y un adicional.
+  Las sustituciones conservan el historial.
+  La ventana de calificación es individual.
+end note
+
+note right of Oferta
+  Aceptación no equivale a asignación.
+  Elección del cliente y revalidación obligatorias.
+  Hasta 3 ofertas simultáneas; SLA de 10 min.
+end note
+
+note right of VersionReglas
+  Una versión publicada tiene pesos completos:
+  cercanía 35, tarifa 20, historial 30, experiencia 15.
+  Son editables por nueva versión; suma = 100.
+  Las evaluaciones conservan la versión utilizada.
+end note
+
+legend bottom
+  |= Símbolo |= Significado |
+  | - / + | Atributo privado / operación pública de dominio |
+  | -- con multiplicidades | Asociación de negocio; no implica tabla o FK adicional |
+  | *-- | Composición de contenido propio; no autoriza borrado físico en cascada |
+  | ..> | Dependencia de uso; sin cardinalidad persistente |
+  | entidad / valor / servicio | Identidad / dato inmutable por valor / política de negocio |
+  Invariantes y correspondencia con el diccionario: CANVAS-Clases-Dominio-TecnicoYa.md.
+endlegend
+@enduml

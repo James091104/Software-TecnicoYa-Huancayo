@@ -1,0 +1,465 @@
+erDiagram
+    direction TB
+    %% TecnicoYa Huancayo - D2: Solicitudes, asignaciones, atención y pagos
+    %% FK fisicas: etiqueta FK. LOGICA/POLI/DERIVA: no crean FK.
+    %% UK puede formar parte de una UQ compuesta; ver comentario del atributo.
+
+    %% service_requests: Dependiente; modulo A/D
+    service_requests["service_requests"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned client_id FK "NOT NULL; client_profiles.id"
+        bigint_unsigned subcategory_id FK "NOT NULL; subcategories.id"
+        bigint_unsigned district_id FK "NOT NULL; districts.id"
+        text description "NOT NULL"
+        text address "NOT NULL"
+        varchar(32) mode "NOT NULL"
+        datetime(6) preferred_start_at "NULL"
+        datetime(6) preferred_end_at "NULL"
+        varchar(32) source "NOT NULL"
+        bigint_unsigned target_technician_id FK "NULL; technician_profiles.id"
+        varchar(32) status "NOT NULL"
+        decimal reference_fee_snapshot "DECIMAL(12,2); NULL"
+        char(3) currency "NOT NULL"
+        bigint_unsigned rule_version_id FK "NULL; rule_versions.id"
+        datetime(6) submitted_at "NULL"
+        datetime(6) pending_since "NULL"
+        datetime(6) pending_expires_at "NULL"
+        int_unsigned search_generation "NOT NULL"
+        datetime(6) cancelled_at "NULL"
+        text cancellation_reason "NULL"
+        datetime(6) closed_at "NULL"
+        int_unsigned version "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% request_attachments: Pivot; modulo A
+    request_attachments["request_attachments"] {
+        bigint_unsigned request_id PK, FK, UK "NOT NULL; PK compuesta; UQ(request_id,position); service_requests.id"
+        bigint_unsigned media_id PK, FK "NOT NULL; PK compuesta; media_files.id"
+        bigint_unsigned uploaded_by FK "NOT NULL; users.id"
+        int_unsigned position UK "NOT NULL; UQ(request_id,position)"
+        varchar(180) caption "NULL"
+        datetime(6) created_at "NOT NULL"
+    }
+
+    %% request_events: Dependiente; modulo D
+    request_events["request_events"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned request_id FK "NOT NULL; service_requests.id"
+        bigint_unsigned actor_id FK "NULL; users.id"
+        varchar(80) event_type "NOT NULL"
+        varchar(32) from_status "NULL"
+        varchar(32) to_status "NULL"
+        text summary "NOT NULL"
+        json metadata "NULL"
+        datetime(6) occurred_at "NOT NULL"
+        varchar(64) correlation_id "NOT NULL"
+        int_unsigned request_version "NOT NULL"
+    }
+
+    %% matching_runs: Dependiente; modulo B
+    matching_runs["matching_runs"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned request_id FK, UK "NOT NULL; UQ(request_id,generation); service_requests.id"
+        bigint_unsigned rule_version_id FK "NOT NULL; rule_versions.id"
+        int_unsigned generation UK "NOT NULL; UQ(request_id,generation)"
+        datetime(6) started_at "NOT NULL"
+        datetime(6) finished_at "NULL"
+        varchar(32) status "NOT NULL"
+        json rules_snapshot "NOT NULL"
+        varchar(60) algorithm_version "NOT NULL"
+        int_unsigned duration_ms "NULL"
+        varchar(80) failure_code "NULL"
+        datetime(6) created_at "NOT NULL"
+    }
+
+    %% matching_candidates: Pivot; modulo B
+    matching_candidates["matching_candidates"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned matching_run_id FK, UK "NOT NULL; UQ(matching_run_id,technician_id); UQ(matching_run_id,rank_position); matching_runs.id"
+        bigint_unsigned technician_id FK, UK "NOT NULL; UQ(matching_run_id,technician_id); technician_profiles.id"
+        bigint_unsigned technician_service_id FK "NOT NULL; technician_services.id"
+        tinyint_unsigned eligible "NOT NULL"
+        varchar(80) exclusion_code "NULL"
+        decimal proximity_factor "DECIMAL(9,6); NULL"
+        decimal price_factor "DECIMAL(9,6); NULL"
+        decimal rating_factor "DECIMAL(9,6); NULL"
+        decimal experience_factor "DECIMAL(9,6); NULL"
+        decimal score "DECIMAL(9,6); NULL"
+        int_unsigned rank_position UK "NULL; UQ(matching_run_id,rank_position)"
+        json input_snapshot "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+    }
+
+    %% offer_rounds: Dependiente; modulo C
+    offer_rounds["offer_rounds"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned request_id FK, UK "NOT NULL; UQ(request_id,round_no); service_requests.id"
+        bigint_unsigned matching_run_id FK "NULL; matching_runs.id"
+        int_unsigned round_no UK "NOT NULL; UQ(request_id,round_no)"
+        int_unsigned generation "NOT NULL"
+        varchar(32) kind "NOT NULL"
+        varchar(32) status "NOT NULL"
+        datetime(6) opened_at "NOT NULL"
+        datetime(6) expires_at "NOT NULL"
+        datetime(6) closed_at "NULL"
+        bigint_unsigned active_request_id UK "NULL; GENERADA"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% offers: Dependiente; modulo C
+    offers["offers"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned round_id FK, UK "NOT NULL; UQ(round_id,technician_id); offer_rounds.id"
+        bigint_unsigned technician_id FK, UK "NOT NULL; UQ(round_id,technician_id); technician_profiles.id"
+        bigint_unsigned matching_candidate_id FK "NULL; matching_candidates.id"
+        bigint_unsigned service_rate_version_id FK "NULL; service_rate_versions.id"
+        decimal reference_fee_snapshot "DECIMAL(12,2); NOT NULL"
+        char(3) currency "NOT NULL"
+        varchar(32) status "NOT NULL"
+        datetime(6) available_at "NOT NULL"
+        datetime(6) expires_at "NOT NULL"
+        datetime(6) responded_at "NULL"
+        text response_reason "NULL"
+        int_unsigned version "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% additional_technician_proposals: Dependiente; modulo D
+    additional_technician_proposals["additional_technician_proposals"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned request_id FK "NOT NULL; service_requests.id"
+        bigint_unsigned proposed_by_participation_id FK "NOT NULL; participations.id"
+        bigint_unsigned proposed_technician_id FK "NOT NULL; technician_profiles.id"
+        text reason "NOT NULL"
+        varchar(32) status "NOT NULL"
+        bigint_unsigned client_decided_by FK "NULL; users.id"
+        datetime(6) client_decided_at "NULL"
+        bigint_unsigned offer_id FK "NULL; offers.id"
+        bigint_unsigned open_request_id UK "NULL; GENERADA"
+        int_unsigned version "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% participations: Dependiente; modulo D
+    participations["participations"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned request_id FK, UK "NOT NULL; UQ(request_id,occupied_slot); UQ(request_id,current_technician_id); service_requests.id"
+        bigint_unsigned technician_id FK "NOT NULL; technician_profiles.id"
+        bigint_unsigned offer_id FK, UK "NOT NULL; offers.id"
+        varchar(32) slot "NOT NULL"
+        varchar(32) status "NOT NULL"
+        bigint_unsigned authorized_by FK "NOT NULL; users.id"
+        datetime(6) assigned_at "NOT NULL"
+        datetime(6) started_at "NULL"
+        datetime(6) completed_at "NULL"
+        datetime(6) ended_at "NULL"
+        decimal reference_fee_snapshot "DECIMAL(12,2); NOT NULL"
+        char(3) currency "NOT NULL"
+        varchar(32) rating_status "NOT NULL"
+        datetime(6) rating_due_at "NULL"
+        bigint_unsigned replaces_id FK "NULL; participations.id"
+        varchar(32) occupied_slot UK "NULL; GENERADA; UQ(request_id,occupied_slot)"
+        bigint_unsigned current_technician_id UK "NULL; GENERADA; UQ(request_id,current_technician_id)"
+        int_unsigned version "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% appointments: Dependiente; modulo D
+    appointments["appointments"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned participation_id FK, UK "NOT NULL; participations.id"
+        bigint_unsigned technician_id FK "NOT NULL; technician_profiles.id"
+        datetime(6) starts_at "NOT NULL"
+        datetime(6) ends_at "NOT NULL"
+        varchar(32) status "NOT NULL"
+        int_unsigned version "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% reschedule_requests: Dependiente; modulo D
+    reschedule_requests["reschedule_requests"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned appointment_id FK "NOT NULL; appointments.id"
+        bigint_unsigned proposed_by FK "NOT NULL; users.id"
+        datetime(6) original_start_at "NOT NULL"
+        datetime(6) original_end_at "NOT NULL"
+        datetime(6) proposed_start_at "NOT NULL"
+        datetime(6) proposed_end_at "NOT NULL"
+        text reason "NOT NULL"
+        varchar(32) status "NOT NULL"
+        datetime(6) expires_at "NOT NULL"
+        datetime(6) resolved_at "NULL"
+        bigint_unsigned open_appointment_id UK "NULL; GENERADA"
+        int_unsigned version "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% reschedule_responses: Pivot; modulo D
+    reschedule_responses["reschedule_responses"] {
+        bigint_unsigned reschedule_id PK, FK "NOT NULL; PK compuesta; reschedule_requests.id"
+        bigint_unsigned user_id PK, FK "NOT NULL; PK compuesta; users.id"
+        varchar(32) decision "NOT NULL"
+        datetime(6) responded_at "NOT NULL"
+    }
+
+    %% service_reports: Dependiente; modulo D
+    service_reports["service_reports"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned participation_id FK, UK "NOT NULL; participations.id"
+        bigint_unsigned author_id FK "NOT NULL; users.id"
+        text work_description "NOT NULL"
+        text result_description "NOT NULL"
+        datetime(6) submitted_at "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+    }
+
+    %% service_report_evidence: Pivot; modulo D
+    service_report_evidence["service_report_evidence"] {
+        bigint_unsigned report_id PK, FK, UK "NOT NULL; PK compuesta; UQ(report_id,position); service_reports.id"
+        bigint_unsigned media_id PK, FK "NOT NULL; PK compuesta; media_files.id"
+        int_unsigned position UK "NOT NULL; UQ(report_id,position)"
+        varchar(180) caption "NULL"
+        datetime(6) created_at "NOT NULL"
+    }
+
+    %% incidents: Dependiente; modulo D/F
+    incidents["incidents"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned request_id FK "NOT NULL; service_requests.id"
+        bigint_unsigned participation_id FK "NULL; participations.id"
+        bigint_unsigned reported_by FK "NOT NULL; users.id"
+        varchar(60) type "NOT NULL"
+        text description "NOT NULL"
+        varchar(32) status "NOT NULL"
+        bigint_unsigned reviewed_by FK "NULL; users.id"
+        text resolution "NULL"
+        datetime(6) resolved_at "NULL"
+        int_unsigned version "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% incident_evidence: Pivot; modulo D/F
+    incident_evidence["incident_evidence"] {
+        bigint_unsigned incident_id PK, FK "NOT NULL; PK compuesta; incidents.id"
+        bigint_unsigned media_id PK, FK "NOT NULL; PK compuesta; media_files.id"
+        datetime(6) created_at "NOT NULL"
+    }
+
+    %% reassignment_records: Dependiente; modulo C/F
+    reassignment_records["reassignment_records"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned request_id FK "NOT NULL; service_requests.id"
+        bigint_unsigned previous_participation_id FK "NULL; participations.id"
+        bigint_unsigned new_participation_id FK "NULL; participations.id"
+        bigint_unsigned target_technician_id FK "NULL; technician_profiles.id"
+        bigint_unsigned actor_id FK "NULL; users.id"
+        varchar(32) origin "NOT NULL"
+        text reason "NOT NULL"
+        bigint_unsigned incident_id FK "NULL; incidents.id"
+        bigint_unsigned new_round_id FK "NULL; offer_rounds.id"
+        varchar(32) status "NOT NULL"
+        datetime(6) resolved_at "NULL"
+        int_unsigned version "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% payment_methods: Independiente; modulo F
+    payment_methods["payment_methods"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        varchar(40) code UK "NOT NULL"
+        varchar(100) name "NOT NULL"
+        tinyint_unsigned active "NOT NULL"
+        int_unsigned display_order "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% user_payment_methods: Pivot; modulo F
+    user_payment_methods["user_payment_methods"] {
+        bigint_unsigned user_id PK, FK "NOT NULL; PK compuesta; users.id"
+        bigint_unsigned payment_method_id PK, FK "NOT NULL; PK compuesta; payment_methods.id"
+        varchar(80) label "NULL"
+        tinyint_unsigned is_default "NOT NULL"
+        bigint_unsigned default_user_id UK "NULL; GENERADA"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% request_payment_methods: Dependiente; modulo F
+    request_payment_methods["request_payment_methods"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned request_id FK, UK "NOT NULL; service_requests.id"
+        bigint_unsigned payment_method_id FK "NOT NULL; payment_methods.id"
+        bigint_unsigned selected_by FK "NOT NULL; users.id"
+        datetime(6) selected_at "NOT NULL"
+        int_unsigned version "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% simulated_payments: Dependiente; modulo F
+    simulated_payments["simulated_payments"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned participation_id FK "NOT NULL; participations.id"
+        bigint_unsigned payment_method_id FK "NOT NULL; payment_methods.id"
+        bigint_unsigned created_by FK "NOT NULL; users.id"
+        decimal amount "DECIMAL(12,2); NOT NULL"
+        char(3) currency "NOT NULL"
+        varchar(32) status "NOT NULL"
+        tinyint_unsigned is_simulated "NOT NULL"
+        varchar(80) simulation_reference UK "NOT NULL"
+        bigint_unsigned confirmed_by FK "NULL; users.id"
+        datetime(6) confirmed_at "NULL"
+        datetime(6) confirmation_due_at "NULL"
+        int_unsigned version "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% simulated_payment_events: Dependiente; modulo F
+    simulated_payment_events["simulated_payment_events"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned simulated_payment_id FK "NOT NULL; simulated_payments.id"
+        bigint_unsigned actor_id FK "NOT NULL; users.id"
+        varchar(32) from_status "NULL"
+        varchar(32) to_status "NOT NULL"
+        text reason "NOT NULL"
+        datetime(6) occurred_at "NOT NULL"
+    }
+
+    %% simulated_receipts: Dependiente; modulo F
+    simulated_receipts["simulated_receipts"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned simulated_payment_id FK "NOT NULL; simulated_payments.id"
+        bigint_unsigned media_id FK, UK "NOT NULL; media_files.id"
+        varchar(80) reference UK "NOT NULL"
+        datetime(6) issued_at "NOT NULL"
+        tinyint_unsigned is_simulated "NOT NULL"
+        json snapshot "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+    }
+
+    %% Entidades compartidas: solo identificador; definicion completa en su diagrama propietario.
+    %% client_profiles: Dependiente; modulo F
+    client_profiles["client_profiles (ref. D1)"] {
+        bigint_unsigned id PK "NOT NULL; AI; referencia D1"
+    }
+
+    %% districts: Independiente; modulo F/A
+    districts["districts (ref. D1)"] {
+        bigint_unsigned id PK "NOT NULL; AI; referencia D1"
+    }
+
+    %% media_files: Dependiente; modulo F
+    media_files["media_files (ref. D1)"] {
+        bigint_unsigned id PK "NOT NULL; AI; referencia D1"
+    }
+
+    %% rule_versions: Dependiente; modulo F
+    rule_versions["rule_versions (ref. D3)"] {
+        bigint_unsigned id PK "NOT NULL; AI; referencia D3"
+    }
+
+    %% service_rate_versions: Dependiente; modulo A/F
+    service_rate_versions["service_rate_versions (ref. D1)"] {
+        bigint_unsigned id PK "NOT NULL; AI; referencia D1"
+    }
+
+    %% subcategories: Dependiente; modulo F/A
+    subcategories["subcategories (ref. D1)"] {
+        bigint_unsigned id PK "NOT NULL; AI; referencia D1"
+    }
+
+    %% technician_profiles: Dependiente; modulo F/A
+    technician_profiles["technician_profiles (ref. D1)"] {
+        bigint_unsigned id PK "NOT NULL; AI; referencia D1"
+    }
+
+    %% technician_services: Pivot; modulo A/B
+    technician_services["technician_services (ref. D1)"] {
+        bigint_unsigned id PK "NOT NULL; AI; referencia D1"
+    }
+
+    %% users: Dependiente; modulo F
+    users["users (ref. D1)"] {
+        bigint_unsigned id PK "NOT NULL; AI; referencia D1"
+    }
+
+    %% Relaciones fisicas: cada linea corresponde a una FK del diccionario.
+    client_profiles ||..o{ service_requests : "FK client_id"
+    subcategories ||..o{ service_requests : "FK subcategory_id"
+    districts ||..o{ service_requests : "FK district_id"
+    technician_profiles |o..o{ service_requests : "FK target_technician_id"
+    rule_versions |o..o{ service_requests : "FK rule_version_id"
+    service_requests ||--o{ request_attachments : "FK request_id"
+    media_files ||--o{ request_attachments : "FK media_id"
+    users ||..o{ request_attachments : "FK uploaded_by"
+    service_requests ||..o{ request_events : "FK request_id"
+    users |o..o{ request_events : "FK actor_id"
+    service_requests ||..o{ matching_runs : "FK request_id"
+    rule_versions ||..o{ matching_runs : "FK rule_version_id"
+    matching_runs ||..o{ matching_candidates : "FK matching_run_id"
+    technician_profiles ||..o{ matching_candidates : "FK technician_id"
+    technician_services ||..o{ matching_candidates : "FK technician_service_id"
+    service_requests ||..o{ offer_rounds : "FK request_id"
+    matching_runs |o..o{ offer_rounds : "FK matching_run_id"
+    offer_rounds ||..o{ offers : "FK round_id"
+    technician_profiles ||..o{ offers : "FK technician_id"
+    matching_candidates |o..o{ offers : "FK matching_candidate_id"
+    service_rate_versions |o..o{ offers : "FK service_rate_version_id"
+    service_requests ||..o{ additional_technician_proposals : "FK request_id"
+    participations ||..o{ additional_technician_proposals : "FK proposed_by_participation_id"
+    technician_profiles ||..o{ additional_technician_proposals : "FK proposed_technician_id"
+    users |o..o{ additional_technician_proposals : "FK client_decided_by"
+    offers |o..o{ additional_technician_proposals : "FK offer_id"
+    service_requests ||..o{ participations : "FK request_id"
+    technician_profiles ||..o{ participations : "FK technician_id"
+    offers ||..o| participations : "FK offer_id"
+    users ||..o{ participations : "FK authorized_by"
+    participations |o..o{ participations : "FK replaces_id"
+    participations ||..o| appointments : "FK participation_id"
+    technician_profiles ||..o{ appointments : "FK technician_id"
+    appointments ||..o{ reschedule_requests : "FK appointment_id"
+    users ||..o{ reschedule_requests : "FK proposed_by"
+    reschedule_requests ||--o{ reschedule_responses : "FK reschedule_id"
+    users ||--o{ reschedule_responses : "FK user_id"
+    participations ||..o| service_reports : "FK participation_id"
+    users ||..o{ service_reports : "FK author_id"
+    service_reports ||--o{ service_report_evidence : "FK report_id"
+    media_files ||--o{ service_report_evidence : "FK media_id"
+    service_requests ||..o{ incidents : "FK request_id"
+    participations |o..o{ incidents : "FK participation_id"
+    users ||..o{ incidents : "FK reported_by"
+    users |o..o{ incidents : "FK reviewed_by"
+    incidents ||--o{ incident_evidence : "FK incident_id"
+    media_files ||--o{ incident_evidence : "FK media_id"
+    service_requests ||..o{ reassignment_records : "FK request_id"
+    participations |o..o{ reassignment_records : "FK previous_participation_id"
+    participations |o..o{ reassignment_records : "FK new_participation_id"
+    technician_profiles |o..o{ reassignment_records : "FK target_technician_id"
+    users |o..o{ reassignment_records : "FK actor_id"
+    incidents |o..o{ reassignment_records : "FK incident_id"
+    offer_rounds |o..o{ reassignment_records : "FK new_round_id"
+    users ||--o{ user_payment_methods : "FK user_id"
+    payment_methods ||--o{ user_payment_methods : "FK payment_method_id"
+    service_requests ||..o| request_payment_methods : "FK request_id"
+    payment_methods ||..o{ request_payment_methods : "FK payment_method_id"
+    users ||..o{ request_payment_methods : "FK selected_by"
+    participations ||..o{ simulated_payments : "FK participation_id"
+    payment_methods ||..o{ simulated_payments : "FK payment_method_id"
+    users ||..o{ simulated_payments : "FK created_by"
+    users |o..o{ simulated_payments : "FK confirmed_by"
+    simulated_payments ||..o{ simulated_payment_events : "FK simulated_payment_id"
+    users ||..o{ simulated_payment_events : "FK actor_id"
+    simulated_payments ||..o{ simulated_receipts : "FK simulated_payment_id"
+    media_files ||..o| simulated_receipts : "FK media_id"

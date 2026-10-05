@@ -1,0 +1,2419 @@
+[
+  {
+    "name": "01-Plan-maestro-de-pruebas.pdf",
+    "title": "Plan maestro de pruebas",
+    "pages": [
+      {
+        "title": "Control y alcance",
+        "sections": [
+          {
+            "title": "Propósito",
+            "text": "Verificar que TécnicoYa conecta a clientes con técnicos verificados, protege sus datos y conserva la trazabilidad de cada servicio. Este plan organiza las pruebas del MVP y mantiene los 33 RF y 14 RNF del plan original sin declarar aprobaciones globales."
+          },
+          {
+            "title": "Control documental",
+            "text": "Versión 1.0 del expediente organizado. Propuesta para revisión académica; no acredita certificación ISO, aceptación firmada ni despliegue productivo. Se distingue código observado, prueba ejecutada, propuesta y pendiente. Este documento es la entrada de la colección. El plan original y el consolidado v1.1 previo permanecen en fuentes y plan-de-pruebas como antecedentes; una discrepancia se registra y resuelve antes de ejecutar el caso afectado."
+          },
+          {
+            "title": "Alcance y exclusiones",
+            "heads": [
+              "Incluye",
+              "No demuestra por sí solo"
+            ],
+            "rows": [
+              [
+                "React, Laravel, FastAPI y persistencia PostgreSQL",
+                "Las pruebas de SQLite no validan concurrencia PostgreSQL."
+              ],
+              [
+                "Cliente, técnico y administrador; acciones autorizadas y negativas",
+                "La demo no representa cuentas ni servicios reales."
+              ],
+              [
+                "Reglas de matching, plazos y estados del servicio",
+                "El frontend no reemplaza los controles de API."
+              ],
+              [
+                "Accesibilidad, seguridad, rendimiento y despliegue QA",
+                "La compilación no prueba carga, disponibilidad mensual o producción."
+              ]
+            ]
+          },
+          {
+            "title": "Responsables",
+            "text": "Se conserva la RACI propuesta del ejemplo: Delgado, Mayhuasca y Pimentel integran el equipo; el docente revisa la entrega. La aprobación nominal, el Product Owner y Scrum Master se formalizan antes del ciclo. No se incorporan firmas ficticias."
+          }
+        ]
+      },
+      {
+        "title": "Estrategia y diseño de casos",
+        "sections": [
+          {
+            "title": "Niveles y entornos",
+            "heads": [
+              "Nivel",
+              "Qué comprobar",
+              "Evidencia"
+            ],
+            "rows": [
+              [
+                "Unidad",
+                "Ranking, desempate, estados y límites temporales",
+                "Log, datos, resultado esperado y build"
+              ],
+              [
+                "Integración",
+                "Laravel con PostgreSQL y FastAPI reales; fallback",
+                "Respuestas HTTP y persistencia; logs sin secretos"
+              ],
+              [
+                "Sistema",
+                "Solicitud a calificación por roles en navegador",
+                "Pasos, capturas y estado final"
+              ],
+              [
+                "Aceptación",
+                "Tareas de usuarios y criterios de negocio",
+                "Resultado por criterio y revisión responsable"
+              ]
+            ]
+          },
+          {
+            "title": "Técnicas",
+            "text": "Usar particiones para datos válidos e inválidos; valores límite a 10 min, 24 h y 48 h; tablas de decisión para elegibilidad; transiciones para el ciclo del servicio; y pruebas negativas por rol y propiedad. La aprobación parcial no cierra un RF con variantes pendientes."
+          },
+          {
+            "title": "Datos y oráculos",
+            "text": "Crear cuentas sintéticas en dominios de prueba; técnicos no verificados, no disponibles y de otra zona; cuatro candidatos elegibles; empate de puntaje; ausencia de oferta; y servicios finalizados junto al límite de calificación. Usar reloj controlable. Comparar el ranking de JS, PHP y Python contra domain/matching-fixture.json."
+          },
+          {
+            "title": "Registro mínimo de un caso",
+            "text": "ID CT/CNF, RF/RNF, riesgo, precondiciones, datos, pasos, esperado, observado, build, entorno, ejecutor, estado y enlace a evidencia. Si falla, registrar INC, severidad, corrección, retest y regresión. Nunca reemplazar el log fallido por el exitoso."
+          }
+        ]
+      },
+      {
+        "title": "Casos prioritarios y ejecución",
+        "sections": [
+          {
+            "title": "Especificaciones iniciales",
+            "heads": [
+              "Caso",
+              "Procedimiento",
+              "Esperado"
+            ],
+            "rows": [
+              [
+                "CT-13-LIM",
+                "Crear solicitud con cuatro candidatos elegibles.",
+                "Como máximo tres ofertas pendientes simultáneas."
+              ],
+              [
+                "CT-16-LIM",
+                "Intentar aceptar antes, en y después del vencimiento de 10 min.",
+                "Antes es admisible; en el límite o después se rechaza."
+              ],
+              [
+                "CT-17-INT",
+                "Dejar vencer ofertas y ejecutar procesador de plazos.",
+                "Reasignación sin repetir candidato ni reiniciar la ventana global."
+              ],
+              [
+                "CT-23-LIM",
+                "Calificar a las 48 h exactas y repetir una calificación.",
+                "Rechazo al vencer y ante duplicado; promedio consistente."
+              ],
+              [
+                "CT-33-NEG",
+                "Cliente B intenta leer o cancelar una solicitud de A.",
+                "Acceso denegado; no divulgar dirección ni cambiar estado."
+              ],
+              [
+                "CNF-13-QA",
+                "Instalar el build y ejecutar smoke con PostgreSQL y Python.",
+                "Servicios saludables y flujo sintético persistido."
+              ]
+            ]
+          },
+          {
+            "title": "Pruebas existentes",
+            "text": "Frontend: src/domain/marketplace.test.js, src/forms.test.jsx, src/VideoExperience.test.jsx y src/scroll/scroll.test.jsx bajo frontend/web. Laravel: backend/api/tests/Feature/MarketplaceTest.php. Python: python/api/test_matching.py. Ejecutar respectivamente npm test, php artisan test y python -m pytest -q desde cada módulo."
+          },
+          {
+            "title": "Resultados documentados",
+            "text": "La revisión del 22/09/2026 registra 14 pruebas frontend aprobadas y una suite fallida por auth.css ausente; restauración de estilos; retest de 15 pruebas aprobadas y build correcto. Evidencias en evidencias/revision-2026-09-22. No hay nueva ejecución adjunta de Laravel, Python, carga o despliegue. No se calcula cobertura a partir del número de pruebas."
+          }
+        ]
+      },
+      {
+        "title": "Criterios de calidad y cierre",
+        "sections": [
+          {
+            "title": "Entrada",
+            "text": "Build identificado, requisitos y datos aprobados, entorno disponible, cuentas por rol y smoke inicial. Los casos con reglas ambiguas se bloquean con su DP correspondiente; los demás pueden continuar."
+          },
+          {
+            "title": "Salida y suspensión",
+            "text": "Propuesta: todos los casos críticos del alcance ejecutados y aprobados, cero defectos críticos o altos abiertos, riesgos residuales aceptados y trazabilidad completa. Suspender ante pérdida de datos, exposición de secretos o entorno inestable; reanudar con causa corregida y smoke repetido. Estos criterios requieren aprobación académica."
+          },
+          {
+            "title": "No funcionales",
+            "text": "Conservar los umbrales documentados: matching de 3 s, 200 usuarios concurrentes, SUS de 70, disponibilidad mensual de 99% y 70% de automatización en módulos críticos con denominador pendiente. Resolver 3 s frente a 5 s y especificar percentil, carga y dataset. Complementar con WCAG 2.2 AA y controles ASVS seleccionados; no declarar conformidad sin evaluación."
+          },
+          {
+            "title": "Normas",
+            "text": "ISO 9001 orienta control, responsabilidad y mejora; ISO/IEC 25010 orienta calidad del producto; ISO/IEC/IEEE 29119 orienta procesos, documentos y técnicas. Mantener la discrepancia de ediciones 25010:2011/2023 visible. Referencias oficiales: iso.org/standard/78176.html, iso.org/standard/79428.html, iso.org/standard/79429.html, w3.org/TR/WCAG22/ y owasp.org/projects/asvs."
+          },
+          {
+            "title": "Entregables y mantenimiento",
+            "text": "Actualizar este plan al cambiar un requisito, contrato, riesgo, regla o entorno. Adjuntar resultados al informe del Sprint y conservar los originales. El catálogo completo está en el PDF 03 y CSV de trazabilidad; el procedimiento de liberación está en el PDF 12."
+          },
+          {
+            "title": "Fuentes",
+            "text": "Base documental: fuentes/proyecto-final.pdf; fuentes/plan-de-pruebas-original.pdf; fuentes/ejemplos-practica.docx; fuentes/estado-del-arte-original.pdf. Código: rutas relativas a la raíz del repositorio. Fuentes conservadas con SHA-256 en fuentes/manifest.json."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "02-Producto-y-alcance-MVP.pdf",
+    "title": "Definición del producto y alcance del MVP",
+    "pages": [
+      {
+        "title": "Propósito y principio rector",
+        "sections": [
+          {
+            "title": "Contexto",
+            "text": "TécnicoYa Huancayo es un marketplace de dos lados para hogares y MYPES, con técnicos independientes de cómputo, refrigeración comercial y electricidad. Sustituye la búsqueda informal por solicitudes, selección, respuesta y trazabilidad. No es un taller que presta directamente todos los servicios."
+          },
+          {
+            "title": "Principio rector",
+            "text": "Una necesidad del cliente debe avanzar por estados comprensibles, con un técnico elegible, decisiones verificables y protección de datos. Toda función debe vincularse con un objetivo, requisito y prueba; una animación o un dashboard no sustituyen el flujo de negocio."
+          },
+          {
+            "title": "Usuarios y administradores",
+            "text": "Cliente: solicita, confirma y califica. Técnico: administra disponibilidad y atiende ofertas según perfil y zona. Administrador del marketplace: verifica perfiles, supervisa solicitudes y cobertura. Operador de plataforma: despliegue, backups y observabilidad; es responsabilidad operativa propuesta, no un cuarto rol funcional ya implementado."
+          },
+          {
+            "title": "Límites del MVP",
+            "text": "Incluye el ciclo básico conectado a Laravel, ranking FastAPI con fallback, tres roles y administración básica. Diferir explícitamente fotografías, agenda compleja, varios técnicos por servicio, apelaciones, pagos y canales externos hasta priorizarlos. No eliminar sus RF del plan. Excluye inicialmente aplicación móvil nativa, pasarela de pagos, nómina y múltiples organizaciones aisladas."
+          },
+          {
+            "title": "Uso como contexto para IA",
+            "text": "Leer este documento antes del backlog. No inventar reglas, terceros, permisos o metas. Consultar domain/rules.json y los contratos. Si hay conflicto con una fuente, abrir una decisión DP; no alterar el alcance por inferencia. Todos los objetivos son compromisos propuestos a implementar y validar, no resultados logrados."
+          }
+        ]
+      },
+      {
+        "title": "Objetivos específicos verificables",
+        "sections": [
+          {
+            "title": "Objetivos y criterios",
+            "heads": [
+              "ID",
+              "Objetivo",
+              "Criterio verificable",
+              "Relación"
+            ],
+            "rows": [
+              [
+                "OBJ-01",
+                "Registrar una necesidad comprensible",
+                "Solicitud con rubro, zona, dirección y descripción válida; revisar antes de enviar.",
+                "RF-01/02; RNF-05"
+              ],
+              [
+                "OBJ-02",
+                "Proponer técnicos adecuados",
+                "Excluir no elegibles y producir ranking reproducible con pesos y desempate.",
+                "RF-06 a 14"
+              ],
+              [
+                "OBJ-03",
+                "Controlar aceptación y continuidad",
+                "Hasta tres ofertas, expiración de 10 min y búsqueda hasta 24 h.",
+                "RF-13 a 19"
+              ],
+              [
+                "OBJ-04",
+                "Trazar ejecución y reputación",
+                "Confirmación, inicio, cierre y calificación válida dentro de 48 h.",
+                "RF-18/19/22 a 25"
+              ],
+              [
+                "OBJ-05",
+                "Proteger acceso y supervisar",
+                "Denegar acciones ajenas y habilitar técnicos solo por administrador.",
+                "RF-07/28/30/31/33"
+              ],
+              [
+                "OBJ-06",
+                "Ofrecer experiencia verificable",
+                "Evaluar accesibilidad, usabilidad y tiempos con las métricas acordadas.",
+                "RNF-01 a 05"
+              ],
+              [
+                "OBJ-07",
+                "Entregar incrementos reproducibles",
+                "Migraciones, pruebas, documentación y despliegue QA evidenciados.",
+                "RNF-11 a 14"
+              ]
+            ]
+          },
+          {
+            "title": "Objetivo general",
+            "text": "Facilitar la conexión trazable de hogares y MYPES con técnicos independientes adecuados, mediante una plataforma web que permita solicitar, coordinar, supervisar y evaluar servicios en Huancayo."
+          },
+          {
+            "title": "Cómo cerrar un objetivo",
+            "text": "El Product Owner confirma el criterio y alcance; Developers implementan; QA adjunta evidencia; el equipo revisa el resultado. Para OBJ-06, ejecutar los ensayos RNF; para OBJ-07, disponer de evidencia real de QA. Una implementación parcial conserva el objetivo abierto."
+          }
+        ]
+      },
+      {
+        "title": "Reglas y finalización",
+        "sections": [
+          {
+            "title": "Reglas clave",
+            "text": "Respuesta: 10 min. Ofertas: máximo 3. Búsqueda pendiente: 24 h desde creación. Calificación: 48 h desde finalización. Pesos 35/20/30/15 para cercanía, tarifa, historial y experiencia. Desempate por mejor calificación; identificador establece orden final estable. Las cifras deben ser idénticas en los tres lenguajes."
+          },
+          {
+            "title": "Modelo conceptual resumido",
+            "text": "Usuario tiene un rol y puede tener perfil técnico; cliente registra solicitudes; solicitud genera ofertas a técnicos; una aceptación conduce a propuesta y posterior confirmación. La solicitud conserva eventos, finalización y puntuación. El técnico acumula reputación. Sesiones pertenecen al usuario. Véase PDF 05."
+          },
+          {
+            "title": "Flujo principal",
+            "text": "Registrar cuenta, autenticar, describir falla, ordenar candidatos, notificar internamente, aceptar oferta, confirmar servicio, iniciar, finalizar y calificar. Las alternativas incluyen rechazo, vencimiento, ausencia de disponibilidad y cancelación autorizada."
+          },
+          {
+            "title": "Riesgos",
+            "text": "Reglas ambiguas, concurrencia, exposición de direcciones, resultados de demo confundidos con producción, dependencia de servicios, datos insuficientes y sobrecarga académica. Mitigar con DP, transacciones y pruebas PostgreSQL, matriz de permisos, rótulos de entorno y backlog priorizado."
+          },
+          {
+            "title": "TDD y Definition of Done",
+            "text": "Para nueva lógica, escribir prueba que falla, implementar mínimo y refactorizar. Finalizar una historia solo con criterios cubiertos, revisión, regresión, contratos y datos coherentes, documentación y evidencia. El código previo no se declara desarrollado con TDD sin historial que lo demuestre."
+          },
+          {
+            "title": "Fuentes",
+            "text": "Base documental: fuentes/proyecto-final.pdf; fuentes/plan-de-pruebas-original.pdf; fuentes/ejemplos-practica.docx; fuentes/estado-del-arte-original.pdf. Código: rutas relativas a la raíz del repositorio. Fuentes conservadas con SHA-256 en fuentes/manifest.json."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "03-Requisitos-e-historias-de-usuario.pdf",
+    "title": "Requisitos e historias de usuario",
+    "pages": [
+      {
+        "title": "Requisitos e historias",
+        "sections": [
+          {
+            "title": "Clasificación",
+            "text": "RF describe una conducta: registrar o confirmar. RNF expresa una calidad medible: tiempo, seguridad o accesibilidad. Regla de negocio impone una condición del dominio: 10 minutos. Restricción fija una elección: monorepo React/Laravel/FastAPI. No mezclar estos cuatro conceptos."
+          },
+          {
+            "title": "Línea base",
+            "text": "Se preservan los 33 RF y 14 RNF del documento de ejemplos. Sus condiciones se reproducen en las páginas siguientes para revisión; no se afirma ejecución completa. La propuesta MVP del PDF 02 debe ratificarse sin borrar requisitos diferidos."
+          },
+          {
+            "title": "Casos de uso principales",
+            "text": "CU-01 Registro y acceso. CU-02 Solicitud y matching. CU-03 Respuesta de técnico y confirmación de cliente. CU-04 Ejecución y cierre. CU-05 Calificación. CU-06 Verificación y supervisión. En cada CU documentar actor, disparador, precondiciones, curso normal, alternativas, permisos y postcondiciones."
+          },
+          {
+            "title": "Especificación ejemplo CU-03",
+            "text": "Precondición: oferta pendiente no vencida para técnico habilitado. Técnico acepta; el servidor valida y reserva; solicitud pasa a propuesta; cliente confirma. Alternativas: 10 min vencidos, oferta ajena, otro técnico ya aceptó, cancelación o indisponibilidad. Postcondición: un único técnico confirmado o rechazo explícito, sin cambio parcial."
+          },
+          {
+            "title": "Estándar de requisitos",
+            "text": "Usar ISO/IEC/IEEE 29148 como guía de claridad y verificabilidad. Catálogo oficial: https://www.iso.org/standard/72089.html. No asignar aprobación a un requisito cuyo criterio aún dependa de una decisión."
+          }
+        ]
+      },
+      {
+        "title": "Historias de usuario",
+        "sections": [
+          {
+            "title": "Historias propuestas",
+            "heads": [
+              "ID y actor",
+              "Necesidad",
+              "Criterio de aceptación",
+              "Trazabilidad"
+            ],
+            "rows": [
+              [
+                "HU-01 / Cliente",
+                "Registrar y confirmar una falla",
+                "Datos válidos crean una solicitud; faltantes bloquean y conservan campos.",
+                "OBJ-01 / RF-01/02"
+              ],
+              [
+                "HU-02 / Cliente",
+                "Conocer al técnico propuesto",
+                "Comparar perfil y tarifa de visita; confirmar antes del inicio.",
+                "OBJ-02/04 / RF-18"
+              ],
+              [
+                "HU-03 / Técnico",
+                "Responder ofertas",
+                "Aceptar o rechazar antes del vencimiento; no aceptar oferta ajena.",
+                "OBJ-03 / RF-16/17"
+              ],
+              [
+                "HU-04 / Técnico",
+                "Gestionar disponibilidad",
+                "Solo perfil verificado puede quedar disponible; reserva evita doble atención.",
+                "OBJ-02 / RF-07/10"
+              ]
+            ]
+          },
+          {
+            "title": "Formato de aceptación",
+            "text": "Especificar Dado un estado y usuario, Cuando se realiza una acción, Entonces se obtiene resultado observable y no cambia información ajena. Añadir variante negativa y de frontera. Estimaciones y prioridad final se acuerdan en refinamiento."
+          }
+        ]
+      },
+      {
+        "title": "Historias de usuario",
+        "sections": [
+          {
+            "title": "Historias propuestas",
+            "heads": [
+              "ID y actor",
+              "Necesidad",
+              "Criterio de aceptación",
+              "Trazabilidad"
+            ],
+            "rows": [
+              [
+                "HU-05 / Cliente",
+                "Calificar un servicio finalizado",
+                "Una nota válida dentro de 48 h; rechazar duplicación o nota ajena.",
+                "OBJ-04 / RF-23/25"
+              ],
+              [
+                "HU-06 / Administrador",
+                "Verificar y supervisar",
+                "Cliente no habilita técnicos; listar solicitudes y cobertura por rol.",
+                "OBJ-05 / RF-07/30/31"
+              ],
+              [
+                "HU-07 / Usuario",
+                "Acceder a mi cuenta",
+                "Credenciales válidas permiten sesión; logout revoca token.",
+                "OBJ-05 / RF-28/33"
+              ],
+              [
+                "HU-08 / Operador",
+                "Instalar y recuperar una versión",
+                "Build identificado, migración verificada, smoke y rollback documentados.",
+                "OBJ-07 / RNF-13/14"
+              ]
+            ]
+          },
+          {
+            "title": "Formato de aceptación",
+            "text": "Especificar Dado un estado y usuario, Cuando se realiza una acción, Entonces se obtiene resultado observable y no cambia información ajena. Añadir variante negativa y de frontera. Estimaciones y prioridad final se acuerdan en refinamiento."
+          }
+        ]
+      },
+      {
+        "title": "Catálogo de requisitos funcionales",
+        "sections": [
+          {
+            "title": "Condiciones conservadas del ejemplo",
+            "heads": [
+              "Requisito y prioridad",
+              "Condición de prueba",
+              "Caso"
+            ],
+            "rows": [
+              [
+                "RF-01 P1\nRegistro de solicitud",
+                "COND-01\nVálidos guardan borrador; incompletos bloquean envío.",
+                "CT-01"
+              ],
+              [
+                "RF-02 P1\nRevisión y confirmación",
+                "COND-02\nEditar y confirmar activa matching una sola vez.",
+                "CT-02"
+              ],
+              [
+                "RF-03 P2\nEvidencia fotográfica",
+                "COND-03\nAceptar imágenes válidas y rechazar límites no permitidos; DP-03.",
+                "CT-03"
+              ],
+              [
+                "RF-04 P1\nTarifa referencial",
+                "COND-04\nRango según especialidad e historial; datos insuficientes; DP-04.",
+                "CT-04"
+              ],
+              [
+                "RF-05 P2\nDisponibilidad horaria",
+                "COND-05\nGuardar horarios y excluir incompatibles; DP-11.",
+                "CT-05"
+              ],
+              [
+                "RF-06 P1\nMatching automático",
+                "COND-06\nAplicar criterios y derivar sin candidatos a RF-14; DP-01/05.",
+                "CT-06"
+              ],
+              [
+                "RF-07 P1\nFiltrado de habilitados",
+                "COND-07\nSolo verificados, disponibles y habilitados; DP-02.",
+                "CT-07"
+              ]
+            ]
+          },
+          {
+            "title": "Estado",
+            "text": "Especificaciones de la fuente; ejecución integral pendiente. El código existente aporta evidencia parcial, indicada en el PDF 01. Cada caso debe detallar datos, pasos, esperado, observado, entorno y build."
+          }
+        ]
+      },
+      {
+        "title": "Catálogo de requisitos funcionales",
+        "sections": [
+          {
+            "title": "Condiciones conservadas del ejemplo",
+            "heads": [
+              "Requisito y prioridad",
+              "Condición de prueba",
+              "Caso"
+            ],
+            "rows": [
+              [
+                "RF-08 P1\nOrdenamiento",
+                "COND-08\nOrden descendente del puntaje aprobado; DP-01.",
+                "CT-08"
+              ],
+              [
+                "RF-09 P2\nDesempate",
+                "COND-09\nEmpate por promedio; luego mayor antigüedad.",
+                "CT-09"
+              ],
+              [
+                "RF-10 P2\nSubespecialidad",
+                "COND-10\nCoincidencia exacta; alternativa general informada.",
+                "CT-10"
+              ],
+              [
+                "RF-11 P3\nTiempo según experiencia",
+                "COND-11\nHistorial similar o promedio general; cálculo por acordar.",
+                "CT-11"
+              ],
+              [
+                "RF-12 P2\nDistancia técnico cliente",
+                "COND-12\nDistancia aproximada o no disponible; DP-05.",
+                "CT-12"
+              ],
+              [
+                "RF-13 P2\nTécnicos por ronda",
+                "COND-13\nLímite por ronda y avance tras rechazo/vencimiento; DP-06.",
+                "CT-13"
+              ],
+              [
+                "RF-14 P1\nEspera y ampliación de zona",
+                "COND-14\nEspera 24 h, búsqueda y alternativas; DP-05/07.",
+                "CT-14"
+              ]
+            ]
+          },
+          {
+            "title": "Estado",
+            "text": "Especificaciones de la fuente; ejecución integral pendiente. El código existente aporta evidencia parcial, indicada en el PDF 01. Cada caso debe detallar datos, pasos, esperado, observado, entorno y build."
+          }
+        ]
+      },
+      {
+        "title": "Catálogo de requisitos funcionales",
+        "sections": [
+          {
+            "title": "Condiciones conservadas del ejemplo",
+            "heads": [
+              "Requisito y prioridad",
+              "Condición de prueba",
+              "Caso"
+            ],
+            "rows": [
+              [
+                "RF-15 P1\nNotificación al técnico",
+                "COND-15\nDetalles de solicitud y hora exacta de envío; DP-14.",
+                "CT-15"
+              ],
+              [
+                "RF-16 P1\nSLA de 10 minutos",
+                "COND-16\nAntes, en y después de 10 min; no respuesta al vencer.",
+                "CT-16"
+              ],
+              [
+                "RF-17 P1\nReasignación automática",
+                "COND-17\nSiguiente técnico y nuevo SLA; sin candidatos RF-14.",
+                "CT-17"
+              ],
+              [
+                "RF-18 P1\nAceptación del cliente",
+                "COND-18\nCliente confirma al aceptante y recibe recordatorio; DP-08/10.",
+                "CT-18"
+              ],
+              [
+                "RF-19 P1\nEstado en ejecución",
+                "COND-19\nConfirmación registra hora y notifica; catálogo DP-09.",
+                "CT-19"
+              ],
+              [
+                "RF-20 P2\nReprogramación",
+                "COND-20\nNueva fecha propuesta y confirmación; DP-11.",
+                "CT-20"
+              ],
+              [
+                "RF-21 P3\nMúltiples técnicos",
+                "COND-21\nPerfiles y horario común; DP-11/12.",
+                "CT-21"
+              ]
+            ]
+          },
+          {
+            "title": "Estado",
+            "text": "Especificaciones de la fuente; ejecución integral pendiente. El código existente aporta evidencia parcial, indicada en el PDF 01. Cada caso debe detallar datos, pasos, esperado, observado, entorno y build."
+          }
+        ]
+      },
+      {
+        "title": "Catálogo de requisitos funcionales",
+        "sections": [
+          {
+            "title": "Condiciones conservadas del ejemplo",
+            "heads": [
+              "Requisito y prioridad",
+              "Condición de prueba",
+              "Caso"
+            ],
+            "rows": [
+              [
+                "RF-22 P1\nReporte y cierre",
+                "COND-22\nReporte y finalización; motivo si incompleto; DP-09.",
+                "CT-22"
+              ],
+              [
+                "RF-23 P1\nCalificación en 48 horas",
+                "COND-23\nCalificación dentro de 48 h; límites y propietario.",
+                "CT-23"
+              ],
+              [
+                "RF-24 P2\nCierre sin calificación",
+                "COND-24\nCierre al vencer sin puntuación ficticia.",
+                "CT-24"
+              ],
+              [
+                "RF-25 P1\nHistorial del técnico",
+                "COND-25\nServicio único y promedio consistente con valores registrados.",
+                "CT-25"
+              ],
+              [
+                "RF-26 P2\nApelación",
+                "COND-26\nSolo decisión autorizada aceptada cambia historial; DP-13.",
+                "CT-26"
+              ],
+              [
+                "RF-27 P3\nTransparencia del matching",
+                "COND-27\nTécnico consulta criterios generales o resultado.",
+                "CT-27"
+              ],
+              [
+                "RF-28 P1\nAutenticación",
+                "COND-28\nCredenciales válidas e inválidas para tres roles; DP-16.",
+                "CT-28"
+              ]
+            ]
+          },
+          {
+            "title": "Estado",
+            "text": "Especificaciones de la fuente; ejecución integral pendiente. El código existente aporta evidencia parcial, indicada en el PDF 01. Cada caso debe detallar datos, pasos, esperado, observado, entorno y build."
+          }
+        ]
+      },
+      {
+        "title": "Catálogo de requisitos funcionales",
+        "sections": [
+          {
+            "title": "Condiciones conservadas del ejemplo",
+            "heads": [
+              "Requisito y prioridad",
+              "Condición de prueba",
+              "Caso"
+            ],
+            "rows": [
+              [
+                "RF-29 P1\nNotificación por cambio",
+                "COND-29\nEvento, reintentos y estado pendiente; RNF-07/DP-14.",
+                "CT-29"
+              ],
+              [
+                "RF-30 P2\nPanel administrativo",
+                "COND-30\nFiltro por estado y SLA reiterado; acceso administrador.",
+                "CT-30"
+              ],
+              [
+                "RF-31 P3\nReporte de cobertura",
+                "COND-31\nZona/especialidad y aviso de datos insuficientes.",
+                "CT-31"
+              ],
+              [
+                "RF-32 P2\nMétodo de pago",
+                "COND-32\nRegistrar método; alternativa ante fallo; DP-15.",
+                "CT-32"
+              ],
+              [
+                "RF-33 P1\nProtección de datos",
+                "COND-33\nDenegar acceso ajeno y registrar evento; DP-16.",
+                "CT-33"
+              ]
+            ]
+          },
+          {
+            "title": "Estado",
+            "text": "Especificaciones de la fuente; ejecución integral pendiente. El código existente aporta evidencia parcial, indicada en el PDF 01. Cada caso debe detallar datos, pasos, esperado, observado, entorno y build."
+          }
+        ]
+      },
+      {
+        "title": "Catálogo de requisitos no funcionales",
+        "sections": [
+          {
+            "title": "Metas y decisiones pendientes",
+            "heads": [
+              "RNF",
+              "Criterio de fuente",
+              "Verificación y decisión"
+            ],
+            "rows": [
+              [
+                "RNF-01",
+                "Matching ≤ 3 s en carga normal",
+                "Definir inicio/fin, estadístico, carga y dataset; conservar 3 s como requisito documentado y resolver conflicto. Cronometrar CNF-01."
+              ],
+              [
+                "RNF-02",
+                "Al menos 200 usuarios concurrentes",
+                "Definir mezcla, duración, rampa y degradación admisible; ejecutar CNF-02 con recursos y errores registrados."
+              ],
+              [
+                "RNF-03",
+                "Chrome, Edge, Firefox y diseño móvil",
+                "Fijar versiones y resolución; P1 en cada entorno, evidencia CNF-03."
+              ],
+              [
+                "RNF-04",
+                "SUS ≥ 70",
+                "Son métricas complementarias; aprobar muestra y medir ambas en CNF-04, sin sustituir una por otra."
+              ],
+              [
+                "RNF-05",
+                "Solicitud en ≤ 5 pasos o ≤ 3 min",
+                "Aclarar si basta uno de los dos límites; medir pasos y tiempo por participante en CNF-05."
+              ]
+            ]
+          },
+          {
+            "title": "Control",
+            "text": "No reducir umbrales para ajustarlos al resultado. Acordar método de medición y registrar desviaciones. Base documental: fuentes/proyecto-final.pdf; fuentes/plan-de-pruebas-original.pdf; fuentes/ejemplos-practica.docx; fuentes/estado-del-arte-original.pdf. Código: rutas relativas a la raíz del repositorio. Fuentes conservadas con SHA-256 en fuentes/manifest.json."
+          }
+        ]
+      },
+      {
+        "title": "Catálogo de requisitos no funcionales",
+        "sections": [
+          {
+            "title": "Metas y decisiones pendientes",
+            "heads": [
+              "RNF",
+              "Criterio de fuente",
+              "Verificación y decisión"
+            ],
+            "rows": [
+              [
+                "RNF-06",
+                "Disponibilidad mensual ≥ 99%",
+                "Mantener RNF para operación; ensayo académico informa solo su ventana. CNF-06 requiere mes observado para validar el umbral mensual."
+              ],
+              [
+                "RNF-07",
+                "Hasta 3 reintentos de notificación",
+                "Conservar tres como requisito documentado; aprobar intervalos, intento inicial y caducidad; probar fallos en CNF-07."
+              ],
+              [
+                "RNF-08",
+                "Hash robusto y ninguna contraseña en texto plano",
+                "Inspeccionar almacenamiento y logs con cuentas sintéticas; bcrypt es ejemplo, no implementación constatada. CNF-08."
+              ],
+              [
+                "RNF-09",
+                "Control de acceso por rol",
+                "Aprobar matriz de permisos y propiedad; probar UI/API/datos con roles y usuarios ajenos. CNF-09."
+              ],
+              [
+                "RNF-10",
+                "HTTPS/TLS en todos los módulos",
+                "Inventariar endpoints, verificar conexión protegida y ausencia de contenido sensible en claro en QA. CNF-10."
+              ]
+            ]
+          },
+          {
+            "title": "Control",
+            "text": "No reducir umbrales para ajustarlos al resultado. Acordar método de medición y registrar desviaciones. Base documental: fuentes/proyecto-final.pdf; fuentes/plan-de-pruebas-original.pdf; fuentes/ejemplos-practica.docx; fuentes/estado-del-arte-original.pdf. Código: rutas relativas a la raíz del repositorio. Fuentes conservadas con SHA-256 en fuentes/manifest.json."
+          }
+        ]
+      },
+      {
+        "title": "Catálogo de requisitos no funcionales",
+        "sections": [
+          {
+            "title": "Metas y decisiones pendientes",
+            "heads": [
+              "RNF",
+              "Criterio de fuente",
+              "Verificación y decisión"
+            ],
+            "rows": [
+              [
+                "RNF-11",
+                "Capas con bajo acoplamiento",
+                "Revisar dependencias y separación UI/lógica/datos; registrar hallazgos y regresión del cambio. CNF-11."
+              ],
+              [
+                "RNF-12",
+                "≥ 70% de pruebas automatizadas en módulos críticos",
+                "Definir si cobertura corresponde a líneas, ramas o casos y verificar por matching, notificación y calificación. CNF-12."
+              ],
+              [
+                "RNF-13",
+                "Docker en desarrollo, QA y producción",
+                "Comprobar despliegue reproducible con build real y variables por entorno; producción no se valida solo con QA. CNF-13."
+              ],
+              [
+                "RNF-14",
+                "Migraciones versionadas sin pérdida de integridad",
+                "Ejecutar migración sobre copia, comparar conteos/relaciones y ensayar restauración. CNF-14."
+              ]
+            ]
+          },
+          {
+            "title": "Control",
+            "text": "No reducir umbrales para ajustarlos al resultado. Acordar método de medición y registrar desviaciones. Base documental: fuentes/proyecto-final.pdf; fuentes/plan-de-pruebas-original.pdf; fuentes/ejemplos-practica.docx; fuentes/estado-del-arte-original.pdf. Código: rutas relativas a la raíz del repositorio. Fuentes conservadas con SHA-256 en fuentes/manifest.json."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "04-Procesos-y-procedimientos-BPMN.pdf",
+    "title": "Procesos de negocio y procedimientos",
+    "pages": [
+      {
+        "title": "Proceso actual y propuesto",
+        "sections": [
+          {
+            "title": "AS IS",
+            "text": "Cliente busca recomendaciones o avisos; contacta técnicos por canales dispersos; explica la falla; acuerda informalmente visita y precio; recibe atención y emite opinión fuera de un registro común. Los problemas documentados son comparación limitada, disponibilidad incierta y falta de trazabilidad."
+          },
+          {
+            "title": "TO BE",
+            "text": "Cliente registra necesidad; sistema valida y busca candidatos; técnicos reciben ofertas; uno acepta; cliente confirma; técnico ejecuta y finaliza; cliente califica. El administrador interviene en habilitación y supervisión. El operador mantiene la disponibilidad del servicio tecnológico."
+          },
+          {
+            "title": "Alcance del proceso",
+            "text": "Inicio: necesidad de servicio del cliente. Fin: servicio calificado o finalizado sin nota, cancelado o sin asignación. Cómputo, refrigeración y electricidad usan el mismo ciclo; diagnóstico y reparación física son responsabilidad del técnico, fuera de la automatización de la plataforma."
+          },
+          {
+            "title": "Procedimiento y Bizagi",
+            "text": "El archivo editables/proceso-principal.bpmn representa el camino principal para revisión e importación. Es BPMN 2.0 XML, no archivo nativo .bpm validado en Bizagi. Completar y validar en el modelador los eventos temporales, mensajes, excepciones y subprocesos antes de aprobar el TO BE completo. El procedimiento textual de las páginas siguientes es la referencia de esos recorridos."
+          },
+          {
+            "title": "Flujo principal",
+            "flow": true
+          }
+        ]
+      },
+      {
+        "title": "Procedimiento operativo",
+        "sections": [
+          {
+            "title": "Pasos y responsabilidades",
+            "heads": [
+              "Paso",
+              "Responsable",
+              "Entrada y acción",
+              "Salida"
+            ],
+            "rows": [
+              [
+                "1",
+                "Cliente",
+                "Acceder y completar rubro, zona, dirección y falla",
+                "Solicitud válida o errores corregibles"
+              ],
+              [
+                "2",
+                "Sistema",
+                "Aplicar elegibilidad y ranking",
+                "Candidatos ordenados"
+              ],
+              [
+                "3",
+                "Sistema",
+                "Generar hasta tres ofertas pendientes",
+                "Vencimiento individual de 10 min"
+              ],
+              [
+                "4",
+                "Técnico",
+                "Aceptar o rechazar dentro del plazo",
+                "Propuesta o búsqueda siguiente"
+              ],
+              [
+                "5",
+                "Cliente",
+                "Revisar técnico y confirmar",
+                "Servicio confirmado"
+              ],
+              [
+                "6",
+                "Técnico",
+                "Iniciar y finalizar atención",
+                "Estado y eventos persistidos"
+              ],
+              [
+                "7",
+                "Cliente",
+                "Calificar dentro de 48 h",
+                "Puntuación e historial actualizado"
+              ],
+              [
+                "8",
+                "Administrador",
+                "Revisar habilitación y cobertura",
+                "Decisión autorizada y supervisión"
+              ]
+            ]
+          },
+          {
+            "title": "Registros",
+            "text": "Solicitud, ofertas, técnico seleccionado, tarifa acordada, eventos y calificación. Registrar tiempos del servidor. Un evento de interfaz o clic no es evidencia suficiente de persistencia: comprobar API y base de datos."
+          }
+        ]
+      },
+      {
+        "title": "Excepciones y control del proceso",
+        "sections": [
+          {
+            "title": "Sin respuesta o sin candidatos",
+            "text": "A los 10 min vence la oferta. Reasignar a candidatos elegibles no notificados previamente. Sin candidatos, conservar pendiente hasta 24 h desde la creación. No reiniciar esa ventana en cada ronda. La búsqueda ampliada por distancia GPS no debe dibujarse como implementada."
+          },
+          {
+            "title": "Aceptaciones concurrentes",
+            "text": "Validar oferta y disponibilidad dentro de transacción. Solo un técnico queda asociado; las otras ofertas se cancelan. Ensayar carrera de dos aceptaciones en PostgreSQL; los tests SQLite no cierran ese riesgo."
+          },
+          {
+            "title": "Sin calificación",
+            "text": "Pasadas 48 h impedir nueva nota y no inventar puntuación cero. El comportamiento de cierre y estado final debe conciliarse con RF-24; actualmente se conserva finalización y se rechaza calificación tardía."
+          },
+          {
+            "title": "Gestión documental del proceso",
+            "text": "Cada procedimiento aprobado tiene código, versión, responsable, entradas, actividades, decisiones, salida, riesgos y evidencia. ISO 9001 orienta ese control; BPMN expresa visualmente el flujo. Registrar cambios del proceso y su impacto en RF, pruebas y formación de usuarios."
+          },
+          {
+            "title": "Fuentes",
+            "text": "Base documental: fuentes/proyecto-final.pdf; fuentes/plan-de-pruebas-original.pdf; fuentes/ejemplos-practica.docx; fuentes/estado-del-arte-original.pdf. Código: rutas relativas a la raíz del repositorio. Fuentes conservadas con SHA-256 en fuentes/manifest.json."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "05-Modelo-de-datos-y-reglas.pdf",
+    "title": "Modelo de datos y reglas de negocio",
+    "pages": [
+      {
+        "title": "Modelo conceptual y relaciones",
+        "sections": [
+          {
+            "title": "Entidades y cardinalidades",
+            "heads": [
+              "Entidad",
+              "Relación conceptual",
+              "Observación"
+            ],
+            "rows": [
+              [
+                "Usuario",
+                "1 usuario tiene 0..1 perfil técnico y 0..N sesiones",
+                "Roles: cliente, técnico y administrador"
+              ],
+              [
+                "Cliente",
+                "1 cliente registra 0..N solicitudes",
+                "Cada solicitud pertenece a un cliente"
+              ],
+              [
+                "Técnico",
+                "1 técnico recibe 0..N ofertas",
+                "Perfil con especialidades y cobertura"
+              ],
+              [
+                "Solicitud",
+                "1 solicitud genera 0..N ofertas",
+                "0..1 técnico asignado en el modelo actual"
+              ],
+              [
+                "Oferta",
+                "Relaciona una solicitud con un técnico",
+                "Pareja única; plazo y estado propios"
+              ],
+              [
+                "Evento",
+                "0..N eventos por solicitud",
+                "Actualmente JSON dentro de requests"
+              ],
+              [
+                "Calificación",
+                "0..1 puntuación por solicitud finalizada",
+                "Actualmente atributo de requests, no tabla aparte"
+              ]
+            ]
+          },
+          {
+            "title": "Conceptual frente a físico",
+            "text": "El modelo conceptual explica el negocio. El físico observado usa users, api_tokens, technicians, requests y offers. Especialidades, zonas y eventos usan JSON. Normalizarlos en tablas auxiliares sería una evolución, no un hecho de esta versión."
+          },
+          {
+            "title": "Fuente de instalación",
+            "text": "Usar migraciones de backend/api/database/migrations. database/init.sql es esquema de referencia: no ejecutarlo y después volver a crear las mismas tablas con migraciones sobre la misma base."
+          }
+        ]
+      },
+      {
+        "title": "Diccionario resumido y reglas",
+        "sections": [
+          {
+            "title": "Datos principales",
+            "heads": [
+              "Tabla",
+              "Campos relevantes",
+              "Control"
+            ],
+            "rows": [
+              [
+                "users",
+                "id, name, email, password, role",
+                "Correo único; contraseña hash; rol permitido"
+              ],
+              [
+                "api_tokens",
+                "user_id, token_hash, expires_at",
+                "Token hash único, vencimiento y revocación"
+              ],
+              [
+                "technicians",
+                "user_id, zone, zones, specialties, fee, rating, reviews, years",
+                "Usuario único; verificado y disponible"
+              ],
+              [
+                "requests",
+                "client_id, specialty, zone, address, description, status, technician_id",
+                "Propiedad, transiciones y asignación"
+              ],
+              [
+                "requests",
+                "created_ms, pending_until, completed_at, rating_until, rating, events",
+                "Plazos y nota única"
+              ],
+              [
+                "offers",
+                "request_id, technician_id, status, sent_at, expires_at, score",
+                "Unicidad request_id + technician_id"
+              ]
+            ]
+          },
+          {
+            "title": "Ranking",
+            "text": "Filtrar verificados, disponibles, especialidad y cobertura. Cercanía: 1 en zona principal, 0,5 en adicional; tarifa inversa normalizada entre elegibles; calificación / 5; experiencia limitada a 10 años / 10. Pesos 0,35/0,20/0,30/0,15. Redondeo documentado a seis decimales; desempate por calificación y luego identificador."
+          },
+          {
+            "title": "Reglas temporales",
+            "text": "No aceptar oferta vencida; no volver a notificar al mismo técnico para esa solicitud; reservar al aceptar y liberar al cancelar antes de ejecución o finalizar; rechazar calificación tardía y duplicada. Fuente común: domain/rules.json y servicios del backend."
+          }
+        ]
+      },
+      {
+        "title": "Integridad y evolución",
+        "sections": [
+          {
+            "title": "Pruebas de base de datos",
+            "text": "Verificar claves y referencias, unicidad de correo y oferta, rechazo de datos inválidos en API, persistencia de estados, atomicidad y concurrencia real. Probar migración en base vacía y sobre copia de la versión anterior, comparando conteos, relaciones y datos significativos."
+          },
+          {
+            "title": "Seguridad y privacidad",
+            "text": "El cliente accede a sus solicitudes; el técnico a ofertas y atenciones autorizadas; administración supervisa según permisos. Evitar direcciones ajenas, contraseñas, tokens y datos reales en logs o capturas. Retención y eliminación requieren política aprobada, no se presume plazo legal."
+          },
+          {
+            "title": "Respaldo y recuperación",
+            "text": "Antes de un cambio de esquema: identificar build, crear respaldo controlado y comprobar restauración en entorno aislado. Registrar RPO y RTO objetivo antes del ensayo. No ejecutar migraciones destructivas o rollback sobre datos reales como experimento."
+          },
+          {
+            "title": "Cambios propuestos",
+            "text": "Evaluar índices según consultas y carga; separar eventos y especialidades cuando exista necesidad justificada; definir auditoría persistente de acciones administrativas. Cada cambio requiere decisión arquitectónica, migración versionada, caso de integridad y actualización del diccionario."
+          },
+          {
+            "title": "Fuentes",
+            "text": "Base documental: fuentes/proyecto-final.pdf; fuentes/plan-de-pruebas-original.pdf; fuentes/ejemplos-practica.docx; fuentes/estado-del-arte-original.pdf. Código: rutas relativas a la raíz del repositorio. Fuentes conservadas con SHA-256 en fuentes/manifest.json. Esquema inspeccionado: database/init.sql."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "06-Arquitectura-y-diseno-tecnico.pdf",
+    "title": "Arquitectura y diseño técnico",
+    "pages": [
+      {
+        "title": "Componentes y responsabilidades",
+        "sections": [
+          {
+            "title": "Monorepo",
+            "heads": [
+              "Módulo",
+              "Responsabilidad",
+              "No le corresponde"
+            ],
+            "rows": [
+              [
+                "frontend/web",
+                "React y Vite; presentación, formularios, sesión y navegación",
+                "Autorizar operaciones o ser fuente de verdad"
+              ],
+              [
+                "backend/api",
+                "Laravel; autenticación, reglas, transacciones y persistencia",
+                "Delegar permisos al navegador"
+              ],
+              [
+                "python/api",
+                "FastAPI; ranking de candidatos por HTTP",
+                "Gestionar sesiones o almacenar solicitudes"
+              ],
+              [
+                "PostgreSQL",
+                "Persistencia de cuentas, solicitudes, ofertas y estados",
+                "Sustituir validaciones y permisos de API"
+              ]
+            ]
+          },
+          {
+            "title": "Flujo de colaboración",
+            "text": "React llama /api; Laravel valida token y actor, aplica acción y persiste. Para matching consulta Python con timeout de dos segundos; si falla o devuelve resultado inválido usa PHP. JS mantiene lógica de demo, separada de cuentas reales. El fallback debe conservar el mismo contrato de ranking."
+          },
+          {
+            "title": "Dependencias y decisiones",
+            "text": "Mantener manifiesto, Dockerfile y .env.example por módulo. Compartir reglas mediante scripts/sync-rules.py, no editar copias manualmente. Documentar versión de regla, cambio, motivo, alternativas y consecuencias. No publicar secretos en archivos de ejemplo."
+          }
+        ]
+      },
+      {
+        "title": "Contratos e interacciones",
+        "sections": [
+          {
+            "title": "Rutas observadas",
+            "heads": [
+              "Ruta",
+              "Acceso",
+              "Uso"
+            ],
+            "rows": [
+              [
+                "GET /api/health",
+                "Público",
+                "Estado del servicio Laravel"
+              ],
+              [
+                "POST /api/register",
+                "Público limitado",
+                "Alta cliente o técnico; nunca administrador"
+              ],
+              [
+                "POST /api/login",
+                "Público limitado",
+                "Validar credenciales y emitir sesión"
+              ],
+              [
+                "POST /api/logout",
+                "Token",
+                "Revocar sesión"
+              ],
+              [
+                "GET /api/state",
+                "Token",
+                "Estado filtrado por actor"
+              ],
+              [
+                "POST /api/actions/{action}",
+                "Token y autorización",
+                "Crear, aceptar, confirmar, iniciar, finalizar y otras acciones"
+              ],
+              [
+                "POST /match y GET /health",
+                "Microservicio interno",
+                "Ranking y salud FastAPI"
+              ]
+            ]
+          },
+          {
+            "title": "Contrato de solicitud",
+            "text": "create recibe specialty, zone, address y description. El servidor valida y atribuye propiedad al actor autenticado. No confiar en un clientId arbitrario del navegador. Para cada acción registrar esquema, campos obligatorios, errores y estados admisibles."
+          },
+          {
+            "title": "Seguridad y errores",
+            "text": "Las rutas de acceso tienen límite 10 por minuto; rutas autenticadas 120 por minuto según routes/api.php. El frontend envía Bearer token desde sessionStorage y timeout de 12 s. Deben evaluarse XSS, expiración y tratamiento de 401. 403 indica prohibición, 409 conflicto de estado y 422 validación según los casos del backend."
+          }
+        ]
+      },
+      {
+        "title": "Decisiones y verificación",
+        "sections": [
+          {
+            "title": "ADR 01 Arquitectura políglota",
+            "text": "Se conserva React/Laravel/FastAPI por contexto académico y separación del ranking. Ventaja: módulos independientes; costo: contratos y reglas duplicadas que requieren fixture común, integración y sincronización."
+          },
+          {
+            "title": "ADR 02 Persistencia",
+            "text": "PostgreSQL es la fuente de verdad conectada. SQLite en memoria acelera pruebas locales pero no valida bloqueos PostgreSQL. Decisión: mantener ambos niveles y no intercambiar sus conclusiones."
+          },
+          {
+            "title": "ADR 03 Disponibilidad del matching",
+            "text": "PHP permite continuar ante caída de Python. Deben probarse timeout, respuesta inválida, divergencia de regla y recuperación. Registrar fallo técnico sin filtrar información sensible al usuario."
+          },
+          {
+            "title": "Diagramas necesarios",
+            "text": "El presente documento describe componentes y secuencias en texto. Para próximas revisiones, añadir diagramas de componentes, secuencia de aceptación concurrente y despliegue, conservando fuente editable y vinculación al contrato real. No atribuir al código colas, WebSockets o servicios externos no implementados."
+          },
+          {
+            "title": "Fuentes",
+            "text": "Base documental: fuentes/proyecto-final.pdf; fuentes/plan-de-pruebas-original.pdf; fuentes/ejemplos-practica.docx; fuentes/estado-del-arte-original.pdf. Código: rutas relativas a la raíz del repositorio. Fuentes conservadas con SHA-256 en fuentes/manifest.json. Contratos: backend/api/routes/api.php, frontend/web/src/marketplace-api.js y python/api/app.py."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "07-Experiencia-y-accesibilidad.pdf",
+    "title": "Experiencia de usuario y accesibilidad",
+    "pages": [
+      {
+        "title": "Recorridos y diseño",
+        "sections": [
+          {
+            "title": "Principio de experiencia",
+            "text": "El usuario debe comprender qué servicio solicita, quién lo atenderá, cuánto representa la tarifa de visita y qué paso sigue. Mantener la paleta petróleo, crema y dorado, sin depender del color o las animaciones para comunicar estados."
+          },
+          {
+            "title": "Recorridos",
+            "heads": [
+              "Rol",
+              "Tarea principal",
+              "Señal de éxito"
+            ],
+            "rows": [
+              [
+                "Cliente",
+                "Acceder, solicitar, revisar, confirmar y calificar",
+                "Estado claro y solicitud propia persistida"
+              ],
+              [
+                "Técnico",
+                "Completar perfil, quedar habilitado y responder",
+                "Oferta aceptada antes de vencer y atención trazable"
+              ],
+              [
+                "Administrador",
+                "Verificar perfil y supervisar cobertura",
+                "Acción autorizada y resultado verificable"
+              ]
+            ]
+          },
+          {
+            "title": "Landing y cuenta",
+            "text": "La landing presenta especialidades y proceso. El panel de operaciones se abre en la vista de cuenta; iniciar sesión y registro comparten una tarjeta con transición. Evitar mostrar datos operativos de demo como si fueran servicios reales. Las animaciones se desactivan con movimiento reducido."
+          },
+          {
+            "title": "Contenido de interfaz",
+            "text": "Etiquetas visibles, mensajes específicos y lenguaje claro. Indicar tarifa de visita y que otros costos se acuerdan. El plazo de 10 minutos es para responder, no una promesa de llegada. Mostrar pendientes, carga, vacío, error, éxito y sesión vencida."
+          }
+        ]
+      },
+      {
+        "title": "Accesibilidad y evaluación",
+        "sections": [
+          {
+            "title": "Objetivo WCAG",
+            "text": "Se propone WCAG 2.2 nivel AA como objetivo, pendiente de auditoría completa. Verificar teclado, orden de foco, foco visible, nombres accesibles, errores asociados a campos, contraste, zoom y reflujo. Fuente: https://www.w3.org/TR/WCAG22/ . Una herramienta automática solo detecta parte de los problemas."
+          },
+          {
+            "title": "Movimiento y video",
+            "text": "No hacer obligatoria la introducción animada para acceder. Pausar contenido fuera de pantalla o con preferencia de movimiento reducido. Comprobar que el formulario no pierda foco al alternar acceso/registro y que la escena de scroll no impida alcanzar contenido con teclado."
+          },
+          {
+            "title": "Prueba de usabilidad propuesta",
+            "text": "Convocar usuarios representativos de hogares, MYPES y técnicos. Tareas: crear cuenta, registrar falla, comprender tarifa, confirmar técnico y consultar estado. Medir éxito, tiempo, pasos, errores y ayuda. Aplicar SUS sin inventar respuestas. La muestra y consentimiento se acuerdan antes del estudio."
+          },
+          {
+            "title": "Criterios y evidencias",
+            "text": "Conservar SUS de 70 y solicitud en hasta cinco pasos o tres minutos de la fuente; aclarar la condición alternativa antes de evaluar. Guardar resultados anonimizados, navegador, resolución, build y hallazgos. Repetir las tareas fallidas tras corregir."
+          },
+          {
+            "title": "Mejoras propuestas",
+            "text": "Priorizar preservación de campos ante error, mensajes de red y sesión vencida, retorno al punto previo y comprensión de disponibilidad. No incorporar chat, recordatorios o notificaciones externas sin requisitos y casos nuevos."
+          },
+          {
+            "title": "Fuentes",
+            "text": "Base documental: fuentes/proyecto-final.pdf; fuentes/plan-de-pruebas-original.pdf; fuentes/ejemplos-practica.docx; fuentes/estado-del-arte-original.pdf. Código: rutas relativas a la raíz del repositorio. Fuentes conservadas con SHA-256 en fuentes/manifest.json."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "08-Estado-del-arte-y-tecnologia.pdf",
+    "title": "Estado del arte y justificación tecnológica",
+    "pages": [
+      {
+        "title": "Investigación y método de comparación",
+        "sections": [
+          {
+            "title": "Propósito",
+            "text": "Relacionar antecedentes académicos con decisiones de matching, reputación, experiencia e infraestructura. Se conserva el trabajo de investigación entregado; esta síntesis usa las relaciones del documento de ejemplos y no presenta una búsqueda bibliográfica nueva."
+          },
+          {
+            "title": "Método",
+            "text": "Por antecedente registrar referencia original, problema, método, aporte, limitación, relación con RF/RNF y decisión local. Verificar DOI, año y publicación en la bibliografía original antes de reutilizar citas. No inferir que el algoritmo del artículo ya está implementado."
+          },
+          {
+            "title": "Estado del arte e infraestructura",
+            "text": "Los estudios orientan patrones de asignación y servicio. La selección de servidor exige además presupuesto, carga medida, disponibilidad, ubicación, respaldo y capacidad operativa. No elegir proveedor solo porque aparece en un artículo o porque se usó en un prototipo."
+          },
+          {
+            "title": "Fuentes",
+            "text": "Investigación completa: fuentes/estado-del-arte-original.pdf. Matriz derivada: trazabilidad/estado-del-arte.csv. Comparación tecnológica del sistema actual: PDF 06. Decisiones de infraestructura: PDF 09."
+          }
+        ]
+      },
+      {
+        "title": "Antecedentes y aplicación",
+        "sections": [
+          {
+            "title": "Relación conservada del ejemplo",
+            "heads": [
+              "Antecedente en S3",
+              "Aporte al diseño",
+              "Aplicación en TécnicoYa"
+            ],
+            "rows": [
+              [
+                "Biswas, Alfandari y Archetti",
+                "Asignación multicriterio, ubicación y calidad.",
+                "RF-06/08/12: comparar candidatos y consistencia del orden. No asumir algoritmo matemático implementado."
+              ],
+              [
+                "Nowak y Szufel",
+                "Especialidad y técnicos independientes.",
+                "RF-05/07/10/17: disponibilidad, habilidades, exclusión y reasignación."
+              ],
+              [
+                "Lin, Ma y Ying",
+                "Oferta, demanda y restricciones de servicio.",
+                "RF-06/14: escenarios con y sin oferta; continuidad y alternativas."
+              ],
+              [
+                "Jonker-Hoffren",
+                "Distancia y competencia entre propuestas.",
+                "RF-12/13: distancia y cantidad de notificados, con parámetros aprobados."
+              ]
+            ]
+          },
+          {
+            "title": "Límite de interpretación",
+            "text": "Los aportes son orientaciones de diseño y prueba. La validez bibliográfica y la aplicabilidad al contexto local deben revisarse con el artículo original. No se han medido sus resultados en TécnicoYa."
+          }
+        ]
+      },
+      {
+        "title": "Antecedentes y aplicación",
+        "sections": [
+          {
+            "title": "Relación conservada del ejemplo",
+            "heads": [
+              "Antecedente en S3",
+              "Aporte al diseño",
+              "Aplicación en TécnicoYa"
+            ],
+            "rows": [
+              [
+                "Chen, Thomas y Hewitt",
+                "Experiencia y tiempo de atención.",
+                "RF-11/25: historial suficiente/insuficiente y estimación coherente."
+              ],
+              [
+                "Christiaens",
+                "Riesgos de reputación y calificaciones.",
+                "RF-23–27: cierre sin nota ficticia, apelación autorizada y transparencia."
+              ],
+              [
+                "Arriagada y colaboradores",
+                "Condiciones de trabajo y gestión algorítmica.",
+                "RF-26/27/32: comprensión de criterios, apelación y claridad del método de pago."
+              ],
+              [
+                "Weichbroth",
+                "Eficacia, eficiencia, satisfacción y aprendizaje.",
+                "RNF-04/05: SUS, tareas, tiempo, errores y ayudas."
+              ]
+            ]
+          },
+          {
+            "title": "Límite de interpretación",
+            "text": "Los aportes son orientaciones de diseño y prueba. La validez bibliográfica y la aplicabilidad al contexto local deben revisarse con el artículo original. No se han medido sus resultados en TécnicoYa."
+          }
+        ]
+      },
+      {
+        "title": "Antecedentes y aplicación",
+        "sections": [
+          {
+            "title": "Relación conservada del ejemplo",
+            "heads": [
+              "Antecedente en S3",
+              "Aporte al diseño",
+              "Aplicación en TécnicoYa"
+            ],
+            "rows": [
+              [
+                "CareAtHome",
+                "Autenticación y sincronización de reservas.",
+                "RF-15/28/29: integración, reintentos y consistencia. Firebase no se asume como stack de TécnicoYa."
+              ],
+              [
+                "Deva y Prasad",
+                "Economía, tecnología y preferencias del consumidor.",
+                "RF-04/32 y RNF-04/05: claridad de tarifa y método, rapidez y comprensión."
+              ],
+              [
+                "Demiray, Tolga y Yücel",
+                "Habilidades múltiples y sincronización.",
+                "RF-20/21: conflicto horario y coordinación; no imponer ALNS como implementación."
+              ],
+              [
+                "Gamst y Pisinger",
+                "Recursos y cobertura de servicios.",
+                "RF-31: agrupación por zona/especialidad y tratamiento de datos insuficientes."
+              ]
+            ]
+          },
+          {
+            "title": "Límite de interpretación",
+            "text": "Los aportes son orientaciones de diseño y prueba. La validez bibliográfica y la aplicabilidad al contexto local deben revisarse con el artículo original. No se han medido sus resultados en TécnicoYa."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "09-Infraestructura-y-servidor.pdf",
+    "title": "Infraestructura y operación del servidor",
+    "pages": [
+      {
+        "title": "Criterios y alternativas",
+        "sections": [
+          {
+            "title": "Propósito",
+            "text": "Definir un entorno reproducible de QA y una futura operación productiva. El laboratorio académico mantiene su propia convención de módulos. No se ha seleccionado ni contratado un proveedor mediante este documento."
+          },
+          {
+            "title": "Alternativas a evaluar",
+            "heads": [
+              "Alternativa",
+              "Ventaja",
+              "Costo o riesgo"
+            ],
+            "rows": [
+              [
+                "Servidor del laboratorio",
+                "Alineación con evaluación y pipeline institucional",
+                "Disponibilidad y permisos sujetos al laboratorio"
+              ],
+              [
+                "VPS con contenedores",
+                "Control de red y configuración",
+                "Equipo mantiene parches, backups y monitoreo"
+              ],
+              [
+                "Servicios administrados",
+                "Menor carga de operación de datos y plataforma",
+                "Costo recurrente y dependencia de proveedor"
+              ]
+            ]
+          },
+          {
+            "title": "Dimensionamiento",
+            "text": "No fijar CPU o RAM como capacidad garantizada sin ensayo. Estimar candidatos por solicitud, usuarios concurrentes, tamaño de datos, tráfico del video y frecuencia de consultas. Probar la meta de 200 usuarios con mezcla realista y medir latencia, errores, CPU, memoria y conexiones de base de datos."
+          },
+          {
+            "title": "Relación con el estado del arte",
+            "text": "El PDF 08 ayuda a justificar patrones y riesgos. El PDF 01 define pruebas; los resultados deciden capacidad. Registrar alternativas, fecha, costo cotizado y límites de cada servicio antes de aprobar. No se incluyen precios inventados."
+          }
+        ]
+      },
+      {
+        "title": "Ambientes y operación",
+        "sections": [
+          {
+            "title": "Separación",
+            "heads": [
+              "Ambiente",
+              "Datos",
+              "Propósito"
+            ],
+            "rows": [
+              [
+                "Desarrollo",
+                "Sintéticos",
+                "Trabajo local y pruebas rápidas"
+              ],
+              [
+                "QA",
+                "Sintéticos representativos y reiniciables",
+                "Integración, carga, seguridad y aceptación"
+              ],
+              [
+                "Producción",
+                "Datos autorizados",
+                "Servicios reales; acceso controlado"
+              ]
+            ]
+          },
+          {
+            "title": "Red y secretos",
+            "text": "Exponer solo la entrada web necesaria con HTTPS. PostgreSQL y matching deben quedar internos. Variables, APP_KEY y contraseñas fuera del repositorio y evidencias. Mantener privilegio mínimo, actualización de dependencias y acceso administrativo identificable."
+          },
+          {
+            "title": "Observabilidad",
+            "text": "Registrar request ID, endpoint, estado HTTP, latencia, error y servicio. Evitar direcciones, contraseñas y tokens. Vigilar salud de API/matching/base, fallos de autenticación, vencimientos y fallback. Definir retención y responsable de alertas antes de producción."
+          },
+          {
+            "title": "Respaldo",
+            "text": "Proponer respaldo automatizado y ensayo de restauración; acordar RPO, RTO, frecuencia y retención antes de cerrar operación. Verificar integridad en base aislada y registrar duración real. Tener archivo de backup sin restaurarlo no valida recuperación."
+          },
+          {
+            "title": "Configuración existente",
+            "text": "infrastructure/docker-compose.yml define PostgreSQL 16, matching, API y web. .gitlab-ci.yml incluye pipeline del laboratorio. Debe verificarse el pipeline remoto y ejecución; su archivo local no demuestra despliegue ni health."
+          }
+        ]
+      },
+      {
+        "title": "Ensayos y aceptación del entorno",
+        "sections": [
+          {
+            "title": "Prueba de carga",
+            "text": "Acordar rampa, duración y porcentaje de solicitudes, consultas de estado y acceso. No ejecutar carga contra usuarios reales. Reportar percentiles, tasa de errores, recursos y dataset. Si no cumple, identificar cuello de botella antes de aumentar recursos."
+          },
+          {
+            "title": "Prueba de fallos",
+            "text": "Interrumpir matching en QA y comprobar fallback coherente; ensayar reinicio de API y recuperación de base; comprobar procesador de plazos. Identificar qué operaciones admiten reintento y cómo se evita duplicar solicitudes."
+          },
+          {
+            "title": "Criterio de aceptación",
+            "text": "Servicios y red verificados, secretos protegidos, migraciones y smoke aprobados, carga según meta acordada, restauración demostrada y responsable operativo asignado. La disponibilidad mensual del 99% requiere observación mensual; un smoke no la demuestra."
+          },
+          {
+            "title": "Registro de servidor",
+            "text": "Proveedor o laboratorio, región, recursos, sistema, imágenes y versiones, costo, fecha, DNS/TLS, puertos públicos, ubicación de secretos, backup, alertas, métricas y resultado. Campos no conocidos quedan pendientes."
+          },
+          {
+            "title": "Fuentes",
+            "text": "Base documental: fuentes/proyecto-final.pdf; fuentes/plan-de-pruebas-original.pdf; fuentes/ejemplos-practica.docx; fuentes/estado-del-arte-original.pdf. Código: rutas relativas a la raíz del repositorio. Fuentes conservadas con SHA-256 en fuentes/manifest.json. Referencia técnica: infrastructure/docker-compose.yml."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "10-Backlog-y-planificacion-Scrum.pdf",
+    "title": "Backlog y planificación Scrum",
+    "pages": [
+      {
+        "title": "Organización del trabajo",
+        "sections": [
+          {
+            "title": "Propuesta Scrum",
+            "text": "Sprints de una semana sujetos al calendario académico. Definir Product Owner, Scrum Master y Developers; no asignar nombres sin acuerdo. El objetivo es entregar una porción funcional integrada en cada sprint, con datos, API, UI y pruebas, no separar un sprint completo solo para frontend y otro para backend."
+          },
+          {
+            "title": "Plan de iteraciones",
+            "heads": [
+              "Sprint",
+              "Objetivo",
+              "Historias",
+              "Entrega prevista"
+            ],
+            "rows": [
+              [
+                "S01",
+                "Acceso y perfiles",
+                "HU-07, HU-04, HU-06",
+                "OBJ-05; incremento QA"
+              ],
+              [
+                "S02",
+                "Solicitud y matching",
+                "HU-01, HU-02",
+                "OBJ-01/02; incremento QA"
+              ],
+              [
+                "S03",
+                "Ofertas y ejecución",
+                "HU-03, HU-02",
+                "OBJ-03/04; incremento QA"
+              ],
+              [
+                "S04",
+                "Calificación y entrega",
+                "HU-05, HU-06, HU-08",
+                "OBJ-04/06/07; incremento QA"
+              ]
+            ]
+          },
+          {
+            "title": "Refinamiento",
+            "text": "Seleccionar RF y criterios del PDF 03; aclarar decisiones; dividir historias grandes; estimar con el equipo; priorizar riesgo y valor. Las fechas, puntos y capacidad no se inventan. El código previo puede reducir tareas, pero no acredita que esos sprints hayan sucedido."
+          },
+          {
+            "title": "Preparado para desarrollar",
+            "text": "Historia comprensible, criterio observable, datos y permisos definidos, contrato acordado y dependencias identificadas. Si una decisión bloquea un caso, registrar DP y trabajar otra historia lista."
+          }
+        ]
+      },
+      {
+        "title": "Desglose para desarrolladores junior",
+        "sections": [
+          {
+            "title": "Ejemplo HU-01",
+            "heads": [
+              "Tarea",
+              "Pasos concretos",
+              "Comprobación"
+            ],
+            "rows": [
+              [
+                "FE-01 Formulario",
+                "Leer contrato; crear etiquetas; validar; conservar datos; mostrar carga y error.",
+                "Datos inválidos no envían; red fallida no borra campos."
+              ],
+              [
+                "BE-01 Crear solicitud",
+                "Validar token y rol; validar payload; generar ID; persistir en transacción.",
+                "Cliente no crea solicitud a nombre ajeno."
+              ],
+              [
+                "DB-01 Datos",
+                "Revisar migración; relaciones e índices; preparar semillas sintéticas.",
+                "Persistencia y relaciones comprobadas en QA."
+              ],
+              [
+                "PY-01 Ranking",
+                "Validar entrada; filtrar candidatos; ordenar con reglas compartidas.",
+                "Fixture y desempate idénticos a PHP."
+              ],
+              [
+                "QA-01 Pruebas",
+                "Escribir caso positivo, negativo y límite; ejecutar y adjuntar log.",
+                "Esperado y observado por build."
+              ],
+              [
+                "DOC-01 Evidencia",
+                "Actualizar historia, contrato, caso y registro de despliegue.",
+                "Trazabilidad completa y sin secretos."
+              ]
+            ]
+          },
+          {
+            "title": "Cómo tomar una tarea",
+            "text": "Leer objetivo y criterio; reproducir entorno; escribir o revisar prueba; cambiar una responsabilidad; ejecutar pruebas relevantes; revisar diff; pedir revisión; adjuntar evidencia. No copiar rutas o campos de ejemplo sin verificar el contrato actual."
+          }
+        ]
+      },
+      {
+        "title": "Seguimiento y cierre",
+        "sections": [
+          {
+            "title": "Tablero",
+            "text": "Propuesto, listo, en desarrollo, revisión, pruebas, bloqueado y terminado. Registrar bloqueos concretos; no marcar terminado porque la interfaz se vea bien. Al cambiar alcance, actualizar objetivo e impacto en pruebas."
+          },
+          {
+            "title": "Eventos",
+            "text": "Planning: objetivo y selección. Daily: avance hacia objetivo e impedimentos. Review: incremento y feedback. Retrospectiva: mejora con responsable y fecha. Las fichas S01-S04 son plantillas planificadas; no contienen reuniones ficticias."
+          },
+          {
+            "title": "Dependencias",
+            "text": "S02 requiere acceso y perfiles; S03 requiere solicitud/matching; S04 requiere ejecución y estados. Accesibilidad, seguridad y documentación atraviesan todos los sprints. QA debe prepararse desde S01, no solo al final."
+          },
+          {
+            "title": "Definition of Done",
+            "text": "Criterios cumplidos, código revisado, tests y regresión relevantes, datos coherentes, documentación actualizada, defectos críticos resueltos y evidencia de incremento. El despliegue QA se registra por separado con éxito o bloqueo. Producción requiere liberación del PDF 12."
+          },
+          {
+            "title": "Fuente Scrum",
+            "text": "https://scrumguides.org/scrum-guide.html. Se adopta Scrum como marco propuesto; la entrega utilizable no implica que una liberación deba esperar a la Review."
+          },
+          {
+            "title": "Fuentes",
+            "text": "Base documental: fuentes/proyecto-final.pdf; fuentes/plan-de-pruebas-original.pdf; fuentes/ejemplos-practica.docx; fuentes/estado-del-arte-original.pdf. Código: rutas relativas a la raíz del repositorio. Fuentes conservadas con SHA-256 en fuentes/manifest.json."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "11-Desarrollo-y-estrategia-TDD.pdf",
+    "title": "Guía de desarrollo y estrategia TDD",
+    "pages": [
+      {
+        "title": "Preparación y ciclo",
+        "sections": [
+          {
+            "title": "Entorno",
+            "text": "Abrir TecnicoYa.code-workspace. Instalar dependencias de cada módulo según manifiestos y documentación técnica; copiar .env.example a configuración local y nunca versionar secretos. Verificar que las reglas coincidan mediante scripts/sync-rules.py --check."
+          },
+          {
+            "title": "Rojo",
+            "text": "Partir de una historia y criterio. Escribir una prueba pequeña con entrada, acción y esperado. Ejecutarla y comprobar que falla por la conducta faltante, no por importación rota o entorno incorrecto. Guardar la identificación del caso."
+          },
+          {
+            "title": "Verde",
+            "text": "Implementar el mínimo que cumple el criterio y ejecutar de nuevo. No endurecer datos solo para satisfacer el test ni cambiar el esperado para ocultar un defecto. Mantener permisos en el servidor."
+          },
+          {
+            "title": "Refactorizar",
+            "text": "Mejorar nombres, duplicación y responsabilidades sin cambiar conducta. Repetir tests. Revisar contratos, migraciones y reglas compartidas. Un refactor no agrega alcance sin historia."
+          },
+          {
+            "title": "Límite histórico",
+            "text": "Las pruebas existentes son base de regresión. No se afirma que todo el código anterior fue creado con TDD. Para nuevas tareas conservar evidencia del ciclo y revisión."
+          }
+        ]
+      },
+      {
+        "title": "Ejemplos de TDD del dominio",
+        "sections": [
+          {
+            "title": "Criterios y pruebas",
+            "heads": [
+              "Historia",
+              "Prueba inicial",
+              "Implementación esperada"
+            ],
+            "rows": [
+              [
+                "Respuesta de oferta",
+                "A los 10 min exactos aceptar devuelve conflicto y no asigna.",
+                "Comparar tiempo servidor con expires_at antes de transacción final."
+              ],
+              [
+                "Matching",
+                "Dos candidatos con score igual se ordenan por mejor rating.",
+                "Orden secundario determinista; fixture común."
+              ],
+              [
+                "Privacidad",
+                "Cliente B cancela ID de A y obtiene prohibición.",
+                "Autorizar propiedad antes de modificar estado."
+              ],
+              [
+                "Calificación",
+                "Segunda nota no cambia promedio ni reviews.",
+                "Rechazar duplicado de forma atómica."
+              ],
+              [
+                "Frontend",
+                "Error HTTP conserva dirección y descripción.",
+                "Estado de campos separado del estado de envío."
+              ]
+            ]
+          },
+          {
+            "title": "Niveles de dobles",
+            "text": "Mock de red sirve para error de interfaz; fake HTTP valida fallback de Laravel; no demuestra conexión Python real. Usar integración aparte con PostgreSQL y FastAPI. Controlar reloj para límites; no esperar 24 horas reales en pruebas unitarias."
+          },
+          {
+            "title": "Casos concurrentes",
+            "text": "Crear test de dos aceptaciones sobre una solicitud en PostgreSQL aislado. Esperado: una propuesta ganadora y ninguna reserva duplicada. Verificar resultado persistido, no solo código HTTP."
+          }
+        ]
+      },
+      {
+        "title": "Comandos y revisión",
+        "sections": [
+          {
+            "title": "Ejecución desde cada módulo",
+            "heads": [
+              "Carpeta",
+              "Comando",
+              "Resultado a guardar"
+            ],
+            "rows": [
+              [
+                "frontend/web",
+                "npm test",
+                "Suite y casos"
+              ],
+              [
+                "frontend/web",
+                "npm run build",
+                "Build o error"
+              ],
+              [
+                "backend/api",
+                "php artisan test",
+                "Casos y entorno de base"
+              ],
+              [
+                "python/api",
+                "python -m pytest -q",
+                "Casos de ranking y validación"
+              ],
+              [
+                "Raíz",
+                "python scripts/sync-rules.py --check",
+                "Consistencia de reglas"
+              ]
+            ]
+          },
+          {
+            "title": "Revisión de código",
+            "text": "Verificar alcance, legibilidad, autorización, datos, errores, pruebas significativas y ausencia de secretos. Revisar que los tests fallarían ante un defecto real. Evitar pruebas que solo repiten la implementación sin evaluar comportamiento."
+          },
+          {
+            "title": "Evidencia",
+            "text": "Guardar comando, fecha, build/commit, entorno y salida íntegra. Vincular CT o CNF; registrar defectos y retest por separado. No afirmar cobertura de líneas o ramas sin reporte de herramienta y denominador definido."
+          },
+          {
+            "title": "Fuentes",
+            "text": "Base documental: fuentes/proyecto-final.pdf; fuentes/plan-de-pruebas-original.pdf; fuentes/ejemplos-practica.docx; fuentes/estado-del-arte-original.pdf. Código: rutas relativas a la raíz del repositorio. Fuentes conservadas con SHA-256 en fuentes/manifest.json. Guía técnica del repositorio: docs/TECNICOYA.md."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "12-Despliegue-y-aceptacion.pdf",
+    "title": "Despliegue y aceptación de versiones",
+    "pages": [
+      {
+        "title": "Preparación de una entrega",
+        "sections": [
+          {
+            "title": "Propósito",
+            "text": "Instalar un incremento reproducible y comprobarlo antes de declararlo disponible. QA y producción tienen decisiones separadas. Este procedimiento no es evidencia de que el despliegue ya ocurrió."
+          },
+          {
+            "title": "Entradas",
+            "text": "Build/commit identificado; pruebas aprobadas; imágenes y dependencias registradas; variables preparadas en almacén seguro; migraciones revisadas; backup y recuperación ensayados; responsable y ventana acordados."
+          },
+          {
+            "title": "Pipeline",
+            "text": "La configuración .gitlab-ci.yml incluye root/laboratorio-devops y gitlab/student-pipeline.yml. Verificar acceso, jobs, reportes y políticas en GitLab. No afirmar Quality Gate o despliegue exitoso sin URL e ID de pipeline. Preservar logs como evidencia."
+          },
+          {
+            "title": "Checklist previo",
+            "text": "Confirmar destino QA; comprobar variables obligatorias; revisar puertos y TLS; preparar dataset sintético; comprobar que el cambio no exige una migración incompatible. No usar credenciales predeterminadas para administrador."
+          },
+          {
+            "title": "Control de versiones",
+            "text": "Asignar versión del producto y relacionar versión de reglas y esquema. Registrar artefactos exactos para rollback; no usar solo etiquetas mutables sin digest o referencia estable."
+          }
+        ]
+      },
+      {
+        "title": "Procedimiento QA",
+        "sections": [
+          {
+            "title": "Secuencia",
+            "heads": [
+              "Paso",
+              "Acción",
+              "Evidencia"
+            ],
+            "rows": [
+              [
+                "1",
+                "Validar configuración Compose y variables sin publicar secretos.",
+                "Resultado de validación y entorno"
+              ],
+              [
+                "2",
+                "Construir imágenes desde build identificado.",
+                "Logs y referencias de imágenes"
+              ],
+              [
+                "3",
+                "Levantar PostgreSQL y servicios internos.",
+                "Estado de contenedores y health"
+              ],
+              [
+                "4",
+                "Aplicar migraciones una sola vez sobre la base prevista.",
+                "Migraciones y comprobación de integridad"
+              ],
+              [
+                "5",
+                "Crear cuentas sintéticas autorizadas y verificar técnico.",
+                "IDs de prueba sin contraseñas"
+              ],
+              [
+                "6",
+                "Ejecutar solicitud, oferta, confirmación, ejecución y nota.",
+                "API, UI y persistencia del flujo"
+              ],
+              [
+                "7",
+                "Comprobar scheduler de plazos, logs y fallos.",
+                "Resultados de vencimiento y fallback"
+              ],
+              [
+                "8",
+                "Registrar URL, versión, fecha y decisión.",
+                "Informe de despliegue y riesgos"
+              ]
+            ]
+          },
+          {
+            "title": "Comandos orientativos",
+            "text": "Desde infrastructure, revisar docker compose config y realizar build/up según el entorno aprobado. Las migraciones se ejecutan dentro del servicio API con php artisan migrate, usando la configuración correcta. Verificar cómo se inicia el scheduler; no asumir que existe por levantar la API. Adaptar comandos a la infraestructura institucional."
+          },
+          {
+            "title": "Smoke",
+            "text": "Health de API y matching; autenticación válida e inválida; vista por rol; solicitud persistida; recursos web; conexión PostgreSQL. Smoke aprobado habilita pruebas amplias, no aceptación definitiva."
+          }
+        ]
+      },
+      {
+        "title": "Rollback y aceptación",
+        "sections": [
+          {
+            "title": "Rollback",
+            "text": "Detener entrega si hay exposición de datos, corrupción, error de migración o fallo crítico. Conservar logs. Volver a artefacto compatible; restaurar base solo con procedimiento autorizado y considerando pérdida de datos. Registrar el resultado y repetir smoke."
+          },
+          {
+            "title": "Aceptación",
+            "text": "Confirmar alcance entregado, casos críticos aprobados, defectos abiertos y riesgos aceptados, accesibilidad y seguridad evaluadas, documentación y operación listas. El docente o responsable formal registra su decisión y fecha; no rellenar firmas automáticamente."
+          },
+          {
+            "title": "Formato de liberación",
+            "text": "Versión; commit; pipeline; entorno; URL; imágenes; esquema; reglas; casos; fallos; riesgos; backup; rollback; resultado; responsable; aceptación. Campos sin evidencia permanecen pendientes."
+          },
+          {
+            "title": "Después de entregar",
+            "text": "Vigilar errores, latencia y disponibilidad; revisar incidentes; actualizar backlog. El informe del Sprint referencia el despliegue y sus límites. No confundir un localhost funcional con operación pública."
+          },
+          {
+            "title": "Fuentes",
+            "text": "Base documental: fuentes/proyecto-final.pdf; fuentes/plan-de-pruebas-original.pdf; fuentes/ejemplos-practica.docx; fuentes/estado-del-arte-original.pdf. Código: rutas relativas a la raíz del repositorio. Fuentes conservadas con SHA-256 en fuentes/manifest.json. Configuración inspeccionada: infrastructure/docker-compose.yml y .gitlab-ci.yml."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "S01-Informe-de-sprint.pdf",
+    "title": "Informe de sprint S01",
+    "pages": [
+      {
+        "title": "Plan de la iteración",
+        "sections": [
+          {
+            "title": "Estado",
+            "text": "Plantilla planificada, no acta de un Sprint ejecutado. Fechas, responsables, estimación, commit y despliegue pendientes de registro. La existencia de código no acredita ejecución del Sprint."
+          },
+          {
+            "title": "Objetivo",
+            "text": "Acceso y perfiles. Trazabilidad: OBJ-05. Historias: HU-07, HU-04, HU-06. Seleccionar los RF y criterios concretos del PDF 03 antes del Planning."
+          },
+          {
+            "title": "Trabajo previsto",
+            "heads": [
+              "Área",
+              "Tarea",
+              "Salida"
+            ],
+            "rows": [
+              [
+                "Diseño",
+                "Revisar flujo, contrato y permisos de historias",
+                "Decisiones y criterios listos"
+              ],
+              [
+                "Datos",
+                "Revisar migración y dataset sintético",
+                "Datos de prueba e integridad"
+              ],
+              [
+                "Backend y Python",
+                "Implementar acciones y ranking que correspondan",
+                "Contrato y pruebas de dominio"
+              ],
+              [
+                "Frontend",
+                "Integrar recorrido, validación y estados",
+                "UI accesible y errores claros"
+              ],
+              [
+                "QA",
+                "Casos positivos, negativos y límites",
+                "Logs por build y defectos"
+              ],
+              [
+                "Operación",
+                "Preparar y verificar entrega QA",
+                "Despliegue o bloqueo documentado"
+              ]
+            ]
+          },
+          {
+            "title": "Dependencias",
+            "text": "Consultar el orden del PDF 10. No asumir que todas las tareas aplican por igual; el equipo concreta el alcance y capacidad. Las funciones diferidas permanecen en el backlog."
+          }
+        ]
+      },
+      {
+        "title": "Evidencias y cierre",
+        "sections": [
+          {
+            "title": "Registro a completar",
+            "heads": [
+              "Campo",
+              "Estado actual"
+            ],
+            "rows": [
+              [
+                "Periodo y participantes",
+                "Pendientes de formalización"
+              ],
+              [
+                "Historias terminadas y diferidas",
+                "Sin ejecución atribuida a este Sprint"
+              ],
+              [
+                "Build, commit y pipeline",
+                "No registrados"
+              ],
+              [
+                "Casos y resultados",
+                "Pendientes; no trasladar tests históricos sin contexto"
+              ],
+              [
+                "Defectos y retest",
+                "Pendientes de ejecución"
+              ],
+              [
+                "Despliegue QA y URL",
+                "Pendiente"
+              ],
+              [
+                "Review y aceptación",
+                "No realizadas/documentadas"
+              ],
+              [
+                "Retrospectiva y acción de mejora",
+                "Pendientes"
+              ]
+            ]
+          },
+          {
+            "title": "Procedimiento de cierre",
+            "text": "Adjuntar evidencias reales bajo sprints/S01/evidencias; indicar qué criterio cubre cada archivo. Registrar comandos, entorno, resultado y limitaciones. Conservar fallo y retest. Actualizar Plan de Pruebas, matriz y backlog. Completar review y retrospectiva con participantes reales."
+          },
+          {
+            "title": "Definition of Done",
+            "text": "Criterios verificados, revisión y regresión aprobadas, datos íntegros, documentación actualizada, defectos críticos resueltos y entrega identificable. Si el despliegue falla, registrar bloqueado aunque parte del código esté terminada."
+          },
+          {
+            "title": "Relación con revisión existente",
+            "text": "evidencias/revision-2026-09-22 corresponde a una revisión local; no demuestra por sí misma la ejecución de S01."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "S02-Informe-de-sprint.pdf",
+    "title": "Informe de sprint S02",
+    "pages": [
+      {
+        "title": "Plan de la iteración",
+        "sections": [
+          {
+            "title": "Estado",
+            "text": "Plantilla planificada, no acta de un Sprint ejecutado. Fechas, responsables, estimación, commit y despliegue pendientes de registro. La existencia de código no acredita ejecución del Sprint."
+          },
+          {
+            "title": "Objetivo",
+            "text": "Solicitud y matching. Trazabilidad: OBJ-01/02. Historias: HU-01, HU-02. Seleccionar los RF y criterios concretos del PDF 03 antes del Planning."
+          },
+          {
+            "title": "Trabajo previsto",
+            "heads": [
+              "Área",
+              "Tarea",
+              "Salida"
+            ],
+            "rows": [
+              [
+                "Diseño",
+                "Revisar flujo, contrato y permisos de historias",
+                "Decisiones y criterios listos"
+              ],
+              [
+                "Datos",
+                "Revisar migración y dataset sintético",
+                "Datos de prueba e integridad"
+              ],
+              [
+                "Backend y Python",
+                "Implementar acciones y ranking que correspondan",
+                "Contrato y pruebas de dominio"
+              ],
+              [
+                "Frontend",
+                "Integrar recorrido, validación y estados",
+                "UI accesible y errores claros"
+              ],
+              [
+                "QA",
+                "Casos positivos, negativos y límites",
+                "Logs por build y defectos"
+              ],
+              [
+                "Operación",
+                "Preparar y verificar entrega QA",
+                "Despliegue o bloqueo documentado"
+              ]
+            ]
+          },
+          {
+            "title": "Dependencias",
+            "text": "Consultar el orden del PDF 10. No asumir que todas las tareas aplican por igual; el equipo concreta el alcance y capacidad. Las funciones diferidas permanecen en el backlog."
+          }
+        ]
+      },
+      {
+        "title": "Evidencias y cierre",
+        "sections": [
+          {
+            "title": "Registro a completar",
+            "heads": [
+              "Campo",
+              "Estado actual"
+            ],
+            "rows": [
+              [
+                "Periodo y participantes",
+                "Pendientes de formalización"
+              ],
+              [
+                "Historias terminadas y diferidas",
+                "Sin ejecución atribuida a este Sprint"
+              ],
+              [
+                "Build, commit y pipeline",
+                "No registrados"
+              ],
+              [
+                "Casos y resultados",
+                "Pendientes; no trasladar tests históricos sin contexto"
+              ],
+              [
+                "Defectos y retest",
+                "Pendientes de ejecución"
+              ],
+              [
+                "Despliegue QA y URL",
+                "Pendiente"
+              ],
+              [
+                "Review y aceptación",
+                "No realizadas/documentadas"
+              ],
+              [
+                "Retrospectiva y acción de mejora",
+                "Pendientes"
+              ]
+            ]
+          },
+          {
+            "title": "Procedimiento de cierre",
+            "text": "Adjuntar evidencias reales bajo sprints/S02/evidencias; indicar qué criterio cubre cada archivo. Registrar comandos, entorno, resultado y limitaciones. Conservar fallo y retest. Actualizar Plan de Pruebas, matriz y backlog. Completar review y retrospectiva con participantes reales."
+          },
+          {
+            "title": "Definition of Done",
+            "text": "Criterios verificados, revisión y regresión aprobadas, datos íntegros, documentación actualizada, defectos críticos resueltos y entrega identificable. Si el despliegue falla, registrar bloqueado aunque parte del código esté terminada."
+          },
+          {
+            "title": "Relación con revisión existente",
+            "text": "evidencias/revision-2026-09-22 corresponde a una revisión local; no demuestra por sí misma la ejecución de S02."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "S03-Informe-de-sprint.pdf",
+    "title": "Informe de sprint S03",
+    "pages": [
+      {
+        "title": "Plan de la iteración",
+        "sections": [
+          {
+            "title": "Estado",
+            "text": "Plantilla planificada, no acta de un Sprint ejecutado. Fechas, responsables, estimación, commit y despliegue pendientes de registro. La existencia de código no acredita ejecución del Sprint."
+          },
+          {
+            "title": "Objetivo",
+            "text": "Ofertas y ejecución. Trazabilidad: OBJ-03/04. Historias: HU-03, HU-02. Seleccionar los RF y criterios concretos del PDF 03 antes del Planning."
+          },
+          {
+            "title": "Trabajo previsto",
+            "heads": [
+              "Área",
+              "Tarea",
+              "Salida"
+            ],
+            "rows": [
+              [
+                "Diseño",
+                "Revisar flujo, contrato y permisos de historias",
+                "Decisiones y criterios listos"
+              ],
+              [
+                "Datos",
+                "Revisar migración y dataset sintético",
+                "Datos de prueba e integridad"
+              ],
+              [
+                "Backend y Python",
+                "Implementar acciones y ranking que correspondan",
+                "Contrato y pruebas de dominio"
+              ],
+              [
+                "Frontend",
+                "Integrar recorrido, validación y estados",
+                "UI accesible y errores claros"
+              ],
+              [
+                "QA",
+                "Casos positivos, negativos y límites",
+                "Logs por build y defectos"
+              ],
+              [
+                "Operación",
+                "Preparar y verificar entrega QA",
+                "Despliegue o bloqueo documentado"
+              ]
+            ]
+          },
+          {
+            "title": "Dependencias",
+            "text": "Consultar el orden del PDF 10. No asumir que todas las tareas aplican por igual; el equipo concreta el alcance y capacidad. Las funciones diferidas permanecen en el backlog."
+          }
+        ]
+      },
+      {
+        "title": "Evidencias y cierre",
+        "sections": [
+          {
+            "title": "Registro a completar",
+            "heads": [
+              "Campo",
+              "Estado actual"
+            ],
+            "rows": [
+              [
+                "Periodo y participantes",
+                "Pendientes de formalización"
+              ],
+              [
+                "Historias terminadas y diferidas",
+                "Sin ejecución atribuida a este Sprint"
+              ],
+              [
+                "Build, commit y pipeline",
+                "No registrados"
+              ],
+              [
+                "Casos y resultados",
+                "Pendientes; no trasladar tests históricos sin contexto"
+              ],
+              [
+                "Defectos y retest",
+                "Pendientes de ejecución"
+              ],
+              [
+                "Despliegue QA y URL",
+                "Pendiente"
+              ],
+              [
+                "Review y aceptación",
+                "No realizadas/documentadas"
+              ],
+              [
+                "Retrospectiva y acción de mejora",
+                "Pendientes"
+              ]
+            ]
+          },
+          {
+            "title": "Procedimiento de cierre",
+            "text": "Adjuntar evidencias reales bajo sprints/S03/evidencias; indicar qué criterio cubre cada archivo. Registrar comandos, entorno, resultado y limitaciones. Conservar fallo y retest. Actualizar Plan de Pruebas, matriz y backlog. Completar review y retrospectiva con participantes reales."
+          },
+          {
+            "title": "Definition of Done",
+            "text": "Criterios verificados, revisión y regresión aprobadas, datos íntegros, documentación actualizada, defectos críticos resueltos y entrega identificable. Si el despliegue falla, registrar bloqueado aunque parte del código esté terminada."
+          },
+          {
+            "title": "Relación con revisión existente",
+            "text": "evidencias/revision-2026-09-22 corresponde a una revisión local; no demuestra por sí misma la ejecución de S03."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "S04-Informe-de-sprint.pdf",
+    "title": "Informe de sprint S04",
+    "pages": [
+      {
+        "title": "Plan de la iteración",
+        "sections": [
+          {
+            "title": "Estado",
+            "text": "Plantilla planificada, no acta de un Sprint ejecutado. Fechas, responsables, estimación, commit y despliegue pendientes de registro. La existencia de código no acredita ejecución del Sprint."
+          },
+          {
+            "title": "Objetivo",
+            "text": "Calificación y entrega. Trazabilidad: OBJ-04/06/07. Historias: HU-05, HU-06, HU-08. Seleccionar los RF y criterios concretos del PDF 03 antes del Planning."
+          },
+          {
+            "title": "Trabajo previsto",
+            "heads": [
+              "Área",
+              "Tarea",
+              "Salida"
+            ],
+            "rows": [
+              [
+                "Diseño",
+                "Revisar flujo, contrato y permisos de historias",
+                "Decisiones y criterios listos"
+              ],
+              [
+                "Datos",
+                "Revisar migración y dataset sintético",
+                "Datos de prueba e integridad"
+              ],
+              [
+                "Backend y Python",
+                "Implementar acciones y ranking que correspondan",
+                "Contrato y pruebas de dominio"
+              ],
+              [
+                "Frontend",
+                "Integrar recorrido, validación y estados",
+                "UI accesible y errores claros"
+              ],
+              [
+                "QA",
+                "Casos positivos, negativos y límites",
+                "Logs por build y defectos"
+              ],
+              [
+                "Operación",
+                "Preparar y verificar entrega QA",
+                "Despliegue o bloqueo documentado"
+              ]
+            ]
+          },
+          {
+            "title": "Dependencias",
+            "text": "Consultar el orden del PDF 10. No asumir que todas las tareas aplican por igual; el equipo concreta el alcance y capacidad. Las funciones diferidas permanecen en el backlog."
+          }
+        ]
+      },
+      {
+        "title": "Evidencias y cierre",
+        "sections": [
+          {
+            "title": "Registro a completar",
+            "heads": [
+              "Campo",
+              "Estado actual"
+            ],
+            "rows": [
+              [
+                "Periodo y participantes",
+                "Pendientes de formalización"
+              ],
+              [
+                "Historias terminadas y diferidas",
+                "Sin ejecución atribuida a este Sprint"
+              ],
+              [
+                "Build, commit y pipeline",
+                "No registrados"
+              ],
+              [
+                "Casos y resultados",
+                "Pendientes; no trasladar tests históricos sin contexto"
+              ],
+              [
+                "Defectos y retest",
+                "Pendientes de ejecución"
+              ],
+              [
+                "Despliegue QA y URL",
+                "Pendiente"
+              ],
+              [
+                "Review y aceptación",
+                "No realizadas/documentadas"
+              ],
+              [
+                "Retrospectiva y acción de mejora",
+                "Pendientes"
+              ]
+            ]
+          },
+          {
+            "title": "Procedimiento de cierre",
+            "text": "Adjuntar evidencias reales bajo sprints/S04/evidencias; indicar qué criterio cubre cada archivo. Registrar comandos, entorno, resultado y limitaciones. Conservar fallo y retest. Actualizar Plan de Pruebas, matriz y backlog. Completar review y retrospectiva con participantes reales."
+          },
+          {
+            "title": "Definition of Done",
+            "text": "Criterios verificados, revisión y regresión aprobadas, datos íntegros, documentación actualizada, defectos críticos resueltos y entrega identificable. Si el despliegue falla, registrar bloqueado aunque parte del código esté terminada."
+          },
+          {
+            "title": "Relación con revisión existente",
+            "text": "evidencias/revision-2026-09-22 corresponde a una revisión local; no demuestra por sí misma la ejecución de S04."
+          }
+        ]
+      }
+    ]
+  }
+]

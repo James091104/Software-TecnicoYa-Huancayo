@@ -1,0 +1,397 @@
+erDiagram
+    direction TB
+    %% TecnicoYa Huancayo - D1: Usuarios, perfiles y catálogo
+    %% FK fisicas: etiqueta FK. LOGICA/POLI/DERIVA: no crean FK.
+    %% UK puede formar parte de una UQ compuesta; ver comentario del atributo.
+
+    %% roles: Independiente; modulo F
+    roles["roles"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        varchar(40) code UK "NOT NULL"
+        varchar(80) name "NOT NULL"
+        tinyint_unsigned active "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% permissions: Independiente; modulo F
+    permissions["permissions"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        varchar(100) code UK "NOT NULL"
+        varchar(255) description "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% users: Dependiente; modulo F
+    users["users"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned role_id FK "NOT NULL; roles.id"
+        varchar(255) name "NOT NULL"
+        varchar(254) email UK "NOT NULL"
+        varchar(255) password "NOT NULL"
+        varchar(20) phone "NULL"
+        datetime(6) email_verified_at "NULL"
+        tinyint_unsigned is_active "NOT NULL"
+        int_unsigned auth_version "NOT NULL"
+        datetime(6) anonymized_at "NULL"
+        varchar(100) remember_token "NULL"
+        int_unsigned version "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% role_permissions: Pivot; modulo F
+    role_permissions["role_permissions"] {
+        bigint_unsigned role_id PK, FK "NOT NULL; PK compuesta; roles.id"
+        bigint_unsigned permission_id PK, FK "NOT NULL; PK compuesta; permissions.id"
+        datetime(6) created_at "NOT NULL"
+    }
+
+    %% user_permissions: Pivot; modulo F
+    user_permissions["user_permissions"] {
+        bigint_unsigned user_id PK, FK "NOT NULL; PK compuesta; users.id"
+        bigint_unsigned permission_id PK, FK "NOT NULL; PK compuesta; permissions.id"
+        bigint_unsigned granted_by FK "NOT NULL; users.id"
+        datetime(6) granted_at "NOT NULL"
+    }
+
+    %% client_profiles: Dependiente; modulo F
+    client_profiles["client_profiles"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned user_id FK, UK "NOT NULL; users.id"
+        varchar(32) client_type "NOT NULL"
+        varchar(180) business_name "NULL"
+        bigint_unsigned default_district_id FK "NULL; districts.id"
+        text default_address "NULL"
+        int_unsigned version "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% client_blocks: Dependiente; modulo F
+    client_blocks["client_blocks"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned client_id FK "NOT NULL; client_profiles.id"
+        bigint_unsigned blocked_by FK "NOT NULL; users.id"
+        text reason "NOT NULL"
+        datetime(6) blocked_at "NOT NULL"
+        datetime(6) expires_at "NULL"
+        bigint_unsigned lifted_by FK "NULL; users.id"
+        datetime(6) lifted_at "NULL"
+        text lift_reason "NULL"
+        varchar(32) status "NOT NULL"
+        bigint_unsigned active_client_id UK "NULL; GENERADA"
+        int_unsigned version "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% technician_profiles: Dependiente; modulo F/A
+    technician_profiles["technician_profiles"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned user_id FK, UK "NOT NULL; users.id"
+        varchar(32) provider_type "NOT NULL"
+        varchar(180) display_name "NOT NULL"
+        text bio "NULL"
+        varchar(32) status "NOT NULL"
+        varchar(32) verification_status "NOT NULL"
+        int_unsigned experience_years "NOT NULL"
+        bigint_unsigned primary_district_id FK "NULL; districts.id"
+        tinyint_unsigned available_now "NOT NULL"
+        varchar(20) whatsapp "NULL"
+        datetime(6) verified_at "NULL"
+        bigint_unsigned verified_by FK "NULL; users.id"
+        int_unsigned version "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% technician_reviews: Dependiente; modulo F
+    technician_reviews["technician_reviews"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned technician_id FK "NOT NULL; technician_profiles.id"
+        bigint_unsigned reviewer_id FK "NOT NULL; users.id"
+        varchar(32) decision "NOT NULL"
+        text reason "NOT NULL"
+        json checklist "NOT NULL"
+        datetime(6) reviewed_at "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+    }
+
+    %% technician_status_events: Dependiente; modulo F
+    technician_status_events["technician_status_events"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned technician_id FK "NOT NULL; technician_profiles.id"
+        bigint_unsigned actor_id FK "NOT NULL; users.id"
+        varchar(32) from_status "NOT NULL"
+        varchar(32) to_status "NOT NULL"
+        text reason "NOT NULL"
+        datetime(6) occurred_at "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+    }
+
+    %% media_files: Dependiente; modulo F
+    media_files["media_files"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned owner_id FK "NOT NULL; users.id"
+        varchar(40) disk UK "NOT NULL; UQ(disk,storage_key)"
+        varchar(255) storage_key UK "NOT NULL; UQ(disk,storage_key)"
+        varchar(255) original_name "NOT NULL"
+        varchar(120) mime_type "NOT NULL"
+        bigint_unsigned byte_size "NOT NULL"
+        char(64) sha256 "NOT NULL"
+        varchar(32) visibility "NOT NULL"
+        varchar(32) scan_status "NOT NULL"
+        datetime(6) retired_at "NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% technician_documents: Dependiente; modulo F
+    technician_documents["technician_documents"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned technician_id FK "NOT NULL; technician_profiles.id"
+        bigint_unsigned media_id FK, UK "NOT NULL; media_files.id"
+        varchar(60) document_type "NOT NULL"
+        varchar(32) review_status "NOT NULL"
+        bigint_unsigned reviewed_by FK "NULL; users.id"
+        datetime(6) reviewed_at "NULL"
+        text review_note "NULL"
+        datetime(6) valid_until "NULL"
+        int_unsigned version "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% review_documents: Pivot; modulo F
+    review_documents["review_documents"] {
+        bigint_unsigned review_id PK, FK "NOT NULL; PK compuesta; technician_reviews.id"
+        bigint_unsigned document_id PK, FK "NOT NULL; PK compuesta; technician_documents.id"
+        datetime(6) created_at "NOT NULL"
+    }
+
+    %% portfolio_items: Dependiente; modulo F
+    portfolio_items["portfolio_items"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned technician_id FK "NOT NULL; technician_profiles.id"
+        bigint_unsigned subcategory_id FK "NULL; subcategories.id"
+        varchar(160) title "NOT NULL"
+        text description "NULL"
+        date performed_on "NULL"
+        varchar(32) status "NOT NULL"
+        int_unsigned version "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% portfolio_images: Pivot; modulo F
+    portfolio_images["portfolio_images"] {
+        bigint_unsigned portfolio_id PK, FK, UK "NOT NULL; PK compuesta; UQ(portfolio_id,position); portfolio_items.id"
+        bigint_unsigned media_id PK, FK "NOT NULL; PK compuesta; media_files.id"
+        int_unsigned position UK "NOT NULL; UQ(portfolio_id,position)"
+        varchar(180) caption "NULL"
+        datetime(6) created_at "NOT NULL"
+    }
+
+    %% specialties: Independiente; modulo F
+    specialties["specialties"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        varchar(40) code UK "NOT NULL"
+        varchar(120) name "NOT NULL"
+        text description "NULL"
+        bigint_unsigned hero_media_id FK "NULL; media_files.id"
+        tinyint_unsigned active "NOT NULL"
+        int_unsigned display_order "NOT NULL"
+        int_unsigned version "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% subcategories: Dependiente; modulo F/A
+    subcategories["subcategories"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned specialty_id FK, UK "NOT NULL; UQ(specialty_id,name); specialties.id"
+        varchar(80) code UK "NOT NULL"
+        varchar(180) name UK "NOT NULL; UQ(specialty_id,name)"
+        text description "NULL"
+        bigint_unsigned carousel_media_id FK "NULL; media_files.id"
+        decimal reference_fee "DECIMAL(12,2); NULL"
+        char(3) currency "NOT NULL"
+        int_unsigned estimated_minutes "NULL"
+        tinyint_unsigned active "NOT NULL"
+        int_unsigned display_order "NOT NULL"
+        int_unsigned version "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% districts: Independiente; modulo F/A
+    districts["districts"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        varchar(12) code UK "NOT NULL"
+        varchar(120) name UK "NOT NULL"
+        tinyint_unsigned active "NOT NULL"
+        int_unsigned version "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% district_distances: Pivot; modulo B
+    district_distances["district_distances"] {
+        bigint_unsigned from_district_id PK, FK "NOT NULL; PK compuesta; districts.id"
+        bigint_unsigned to_district_id PK, FK "NOT NULL; PK compuesta; districts.id"
+        decimal distance_km "DECIMAL(8,3); NOT NULL"
+        varchar(255) source "NOT NULL"
+        datetime(6) measured_at "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% technician_specialties: Pivot; modulo A/F
+    technician_specialties["technician_specialties"] {
+        bigint_unsigned technician_id PK, FK "NOT NULL; PK compuesta; technician_profiles.id"
+        bigint_unsigned specialty_id PK, FK "NOT NULL; PK compuesta; specialties.id"
+        varchar(32) verification_status "NOT NULL"
+        bigint_unsigned reviewed_by FK "NULL; users.id"
+        datetime(6) reviewed_at "NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% technician_services: Pivot; modulo A/B
+    technician_services["technician_services"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned technician_id FK, UK "NOT NULL; UQ(technician_id,subcategory_id); technician_profiles.id"
+        bigint_unsigned subcategory_id FK, UK "NOT NULL; UQ(technician_id,subcategory_id); subcategories.id"
+        decimal reference_fee "DECIMAL(12,2); NOT NULL"
+        char(3) currency "NOT NULL"
+        int_unsigned experience_years "NOT NULL"
+        tinyint_unsigned active "NOT NULL"
+        int_unsigned current_rate_version "NOT NULL"
+        int_unsigned version "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% service_rate_versions: Dependiente; modulo A/F
+    service_rate_versions["service_rate_versions"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned technician_service_id FK, UK "NOT NULL; UQ(technician_service_id,version_no); technician_services.id"
+        int_unsigned version_no UK "NOT NULL; UQ(technician_service_id,version_no)"
+        decimal reference_fee "DECIMAL(12,2); NOT NULL"
+        char(3) currency "NOT NULL"
+        bigint_unsigned changed_by FK "NOT NULL; users.id"
+        text reason "NULL"
+        datetime(6) effective_from "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+    }
+
+    %% technician_districts: Pivot; modulo A/B
+    technician_districts["technician_districts"] {
+        bigint_unsigned technician_id PK, FK "NOT NULL; PK compuesta; technician_profiles.id"
+        bigint_unsigned district_id PK, FK "NOT NULL; PK compuesta; districts.id"
+        tinyint_unsigned active "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% availability_slots: Dependiente; modulo A/D
+    availability_slots["availability_slots"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned technician_id FK "NOT NULL; technician_profiles.id"
+        varchar(32) kind "NOT NULL"
+        tinyint_unsigned weekday "NULL"
+        time local_start "NULL"
+        time local_end "NULL"
+        date valid_from "NULL"
+        date valid_until "NULL"
+        datetime(6) starts_at "NULL"
+        datetime(6) ends_at "NULL"
+        varchar(60) timezone "NOT NULL"
+        tinyint_unsigned active "NOT NULL"
+        int_unsigned version "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% technician_pauses: Dependiente; modulo A/B
+    technician_pauses["technician_pauses"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned technician_id FK "NOT NULL; technician_profiles.id"
+        datetime(6) starts_at "NOT NULL"
+        datetime(6) ends_at "NULL"
+        datetime(6) cancelled_at "NULL"
+        varchar(255) reason "NULL"
+        int_unsigned version "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% sessions: Dependiente; modulo Infraestructura
+    sessions["sessions"] {
+        varchar(255) id PK "NOT NULL"
+        bigint_unsigned user_id FK "NULL; users.id"
+        varchar(45) ip_address "NULL"
+        text user_agent "NULL"
+        longtext payload "NOT NULL"
+        int last_activity "NOT NULL"
+    }
+
+    %% password_reset_tokens: Dependiente; modulo Infraestructura
+    password_reset_tokens["password_reset_tokens"] {
+        varchar(254) email PK "NOT NULL"
+        varchar(255) token "NOT NULL"
+        datetime(6) created_at "NULL"
+    }
+
+    %% Entidades compartidas: solo identificador; definicion completa en su diagrama propietario.
+    %% Relaciones fisicas: cada linea corresponde a una FK del diccionario.
+    roles ||..o{ users : "FK role_id"
+    roles ||--o{ role_permissions : "FK role_id"
+    permissions ||--o{ role_permissions : "FK permission_id"
+    users ||--o{ user_permissions : "FK user_id"
+    permissions ||--o{ user_permissions : "FK permission_id"
+    users ||..o{ user_permissions : "FK granted_by"
+    users ||..o| client_profiles : "FK user_id"
+    districts |o..o{ client_profiles : "FK default_district_id"
+    client_profiles ||..o{ client_blocks : "FK client_id"
+    users ||..o{ client_blocks : "FK blocked_by"
+    users |o..o{ client_blocks : "FK lifted_by"
+    users ||..o| technician_profiles : "FK user_id"
+    districts |o..o{ technician_profiles : "FK primary_district_id"
+    users |o..o{ technician_profiles : "FK verified_by"
+    technician_profiles ||..o{ technician_reviews : "FK technician_id"
+    users ||..o{ technician_reviews : "FK reviewer_id"
+    technician_profiles ||..o{ technician_status_events : "FK technician_id"
+    users ||..o{ technician_status_events : "FK actor_id"
+    users ||..o{ media_files : "FK owner_id"
+    technician_profiles ||..o{ technician_documents : "FK technician_id"
+    media_files ||..o| technician_documents : "FK media_id"
+    users |o..o{ technician_documents : "FK reviewed_by"
+    technician_reviews ||--o{ review_documents : "FK review_id"
+    technician_documents ||--o{ review_documents : "FK document_id"
+    technician_profiles ||..o{ portfolio_items : "FK technician_id"
+    subcategories |o..o{ portfolio_items : "FK subcategory_id"
+    portfolio_items ||--o{ portfolio_images : "FK portfolio_id"
+    media_files ||--o{ portfolio_images : "FK media_id"
+    media_files |o..o{ specialties : "FK hero_media_id"
+    specialties ||..o{ subcategories : "FK specialty_id"
+    media_files |o..o{ subcategories : "FK carousel_media_id"
+    districts ||--o{ district_distances : "FK from_district_id"
+    districts ||--o{ district_distances : "FK to_district_id"
+    technician_profiles ||--o{ technician_specialties : "FK technician_id"
+    specialties ||--o{ technician_specialties : "FK specialty_id"
+    users |o..o{ technician_specialties : "FK reviewed_by"
+    technician_profiles ||..o{ technician_services : "FK technician_id"
+    subcategories ||..o{ technician_services : "FK subcategory_id"
+    technician_services ||..o{ service_rate_versions : "FK technician_service_id"
+    users ||..o{ service_rate_versions : "FK changed_by"
+    technician_profiles ||--o{ technician_districts : "FK technician_id"
+    districts ||--o{ technician_districts : "FK district_id"
+    technician_profiles ||..o{ availability_slots : "FK technician_id"
+    technician_profiles ||..o{ technician_pauses : "FK technician_id"
+    users |o..o{ sessions : "FK user_id"
+
+    %% Dependencia logica por correo; no hay FK nativa en el driver.
+    users ||..o| password_reset_tokens : "LOGICA email sin FK"

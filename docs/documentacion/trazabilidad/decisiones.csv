@@ -1,0 +1,19 @@
+﻿ID,Decisión,Afecta,Responsable propuesto,Estado de auditoría del código
+DP-01,"Fórmula, pesos, puntaje mínimo y relevancia",RF-06/08,Producto/equipo,Pendiente de verificación integral; consultar inventario de pruebas.
+DP-02,Mínimos y documentos de habilitación,RF-07,Administrador/producto,Pendiente de verificación integral; consultar inventario de pruebas.
+DP-03,"Formato, tamaño y cantidad de fotografías",RF-03,Producto/desarrollo,Pendiente de verificación integral; consultar inventario de pruebas.
+DP-04,"Tarifa, fuente, moneda y valores atípicos",RF-04,Producto,Pendiente de verificación integral; consultar inventario de pruebas.
+DP-05,"Distancia, ubicación, radio y expansión",RF-06/12/14,Producto/desarrollo,Pendiente de verificación integral; consultar inventario de pruebas.
+DP-06,Cantidad por ronda y secuencia o lote,RF-13,Producto,Pendiente de verificación integral; consultar inventario de pruebas.
+DP-07,Cadencia de búsqueda y acción al vencer 24 h,RF-14,Producto,Pendiente de verificación integral; consultar inventario de pruebas.
+DP-08,Plazo del cliente y recordatorios,RF-18,Producto,Pendiente de verificación integral; consultar inventario de pruebas.
+DP-09,Catálogo de estados y actor por transición,RF-01/19/22/24,Producto/equipo,Pendiente de verificación integral; consultar inventario de pruebas.
+DP-10,Selección inicial y confirmación posterior,TO-BE/RF-18,Producto,Pendiente de verificación integral; consultar inventario de pruebas.
+DP-11,Conflictos de horario y reprogramación,RF-05/20/21,Producto,Pendiente de verificación integral; consultar inventario de pruebas.
+DP-12,Complejidad y cantidad de técnicos,RF-21,Producto,Pendiente de verificación integral; consultar inventario de pruebas.
+DP-13,"Plazo, estados y facultades de apelación",RF-26,Producto/administrador,Pendiente de verificación integral; consultar inventario de pruebas.
+DP-14,"Canales, entrega, reintentos y caducidad",RF-15/29; RNF-07,Desarrollo/producto,Pendiente de verificación integral; consultar inventario de pruebas.
+DP-15,Métodos de pago y límite de procesamiento,RF-32,Producto,Pendiente de verificación integral; consultar inventario de pruebas.
+DP-16,"Sesión, bloqueo, auditoría, protección y retención",RF-28/33; RNF-08–10,Seguridad/producto,Pendiente de verificación integral; consultar inventario de pruebas.
+DP-17,"Dispositivos, carga, tiempos y recuperación",RNF y anexo B,Producto/desarrollo,Pendiente de verificación integral; consultar inventario de pruebas.
+DP-18,Patrocinador y responsables de aprobación,Gobierno del plan,Equipo/docente,Pendiente de verificación integral; consultar inventario de pruebas.

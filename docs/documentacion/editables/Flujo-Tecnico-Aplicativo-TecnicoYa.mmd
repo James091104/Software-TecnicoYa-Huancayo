@@ -1,0 +1,167 @@
+flowchart LR
+    %% Arquitectura objetivo: React + Laravel + MySQL + Reverb/Echo.
+    %% Flechas continuas: peticiones, llamadas o acceso a datos.
+    %% Discontinuas: entrega asincrona, recuperacion o disparadores.
+    %% Las ramas A-F son alternativas segun el caso de uso, no seis pasos obligatorios.
+
+    U["Usuario<br/>Cliente · Técnico · Administrador"]
+
+    subgraph FRONT["PRESENTACIÓN · REACT"]
+        direction TB
+        UI["Pantallas y componentes por rol<br/>Formularios, catálogo y paneles"]
+        HTTP["Cliente HTTP centralizado<br/>Cookies de sesión + cabecera CSRF<br/>Sin tokens de sesión en localStorage"]
+        ECHO["Laravel Echo<br/>Canal privado del usuario;<br/>deduplicar eventos y conciliar versiones"]
+        CLOCK["Cronómetro visual del SLA<br/>expires_at y server_time;<br/>no decide vencimientos"]
+    end
+
+    subgraph API["CAPA HTTP · API LARAVEL"]
+        direction TB
+        GATEWAY["Gateway HTTPS<br/>Rutas API, autenticación y WebSocket"]
+        AUTH_ROUTES["Rutas de acceso<br/>CSRF, registro y login<br/>Validación y limitación de intentos"]
+        AUTH_SERVICE["Servicio de identidad<br/>Verificar credenciales; crear o rotar sesión<br/>Registro público solo cliente o técnico"]
+        SESSION["Middleware de sesión Sanctum<br/>CSRF cuando corresponda, rate limit<br/>Cuenta activa y sesión vigente"]
+        AUTH_OK{"¿Autenticado y habilitado?"}
+        INPUT["Form Requests<br/>Validar formato y campos permitidos"]
+        POLICY["Policies / Gates / RBAC<br/>Rol + permiso + pertenencia al recurso<br/>+ estado permitido; denegar por defecto"]
+        ALLOWED{"¿Operación autorizada?"}
+        CONTROLLER["Controlador del endpoint<br/>Delegar en el caso de uso correspondiente"]
+        CHANNEL["POST /broadcasting/auth<br/>Validar usuario y authVersion del canal;<br/>firmar autorización de suscripción privada"]
+        RESOURCE["API Resources / respuesta JSON<br/>Campos permitidos, versión y server_time<br/>200/201 tras resultado;<br/>202 si trabajo aceptado de forma duradera"]
+        ERROR["Respuesta de error controlada<br/>401 / 403 / 409 / 419 / 422 / 429<br/>5xx saneado; sin secretos ni trazas internas"]
+    end
+
+    subgraph MODULES["MÓDULOS FUNCIONALES · SELECCIÓN POR ENDPOINT"]
+        direction TB
+        A["A · Solicitudes<br/>Cinco pasos, adjuntos y disponibilidad"]
+        B["B · Matching<br/>Elegibilidad, pesos y ranking"]
+        C["C · Ofertas y notificaciones<br/>Rondas, SLA, respuesta y elección"]
+        D["D · Atención<br/>Asignación, agenda, reprogramación y reporte"]
+        E["E · Calificación e historial<br/>Ventana de 48 h, versiones y apelaciones"]
+        F["F · Seguridad y administración<br/>Catálogo, reglas, comunicados, soporte,<br/>permisos, auditoría y pagos simulados"]
+    end
+
+    subgraph SERVICES["CAPAS DE APLICACIÓN Y DOMINIO · LARAVEL"]
+        direction TB
+        USECASE["Servicio de aplicación / caso de uso<br/>Coordinar operación e idempotencia<br/>Mismos casos de uso para HTTP y jobs"]
+        DOMAIN["Servicios de dominio<br/>MatchingScorer, estados e invariantes<br/>Reloj servidor, reglas versionadas y elegibilidad"]
+        KIND{"Tipo de operación"}
+        READ["Consulta autorizada<br/>Filtros y proyección según rol y relación"]
+        TX["Unidad de trabajo transaccional<br/>Bloqueos, revalidación de estado/plazo/versión<br/>Negocio + auditoría sensible + outbox<br/>en la MISMA transacción"]
+        COMMIT{"¿Commit confirmado?"}
+        ROLLBACK["Rollback<br/>Sin publicar eventos del cambio fallido"]
+    end
+
+    subgraph DATA["INFRAESTRUCTURA Y PERSISTENCIA"]
+        direction TB
+        REPO["Acceso a datos · Eloquent / Query Builder<br/>Consultas parametrizadas y conexión transaccional"]
+        AUDIT["AuditWriter<br/>Actor, acción, motivo y cambios mínimos<br/>Sin contraseñas, tokens ni documentos completos"]
+        OUTBOX["Escritura de eventos duraderos<br/>IDs, versión y plazo; payload mínimo<br/>Outbox y notificaciones persistidas"]
+        MYSQL[("MySQL<br/>Datos de negocio y reglas<br/>sessions · jobs · failed_jobs<br/>audit_entries · outbox_events")]
+    end
+
+    subgraph BACKGROUND["EJECUCIÓN ASÍNCRONA · PROCESOS LARAVEL"]
+        direction TB
+        SCHED["Programador de tareas / Scheduler<br/>Revisiones periódicas, sin solapamiento<br/>No depende del navegador"]
+        SCAN["Detectar trabajo pendiente<br/>SLA 10 min · disponibilidad 24 h<br/>calificación 48 h · reprogramación 24 h<br/>Recuperar outbox no publicado"]
+        ENQUEUE["Despachar trabajos diferidos o inmediatos<br/>IDs, generación y deadline observados<br/>Solo después del commit cuando depende de él"]
+        QUEUE["Colas persistidas en MySQL<br/>domain / delivery<br/>Lista de trabajos, no ejecutor"]
+        WORKER_D["Worker de dominio<br/>Matching, rondas, vencimientos<br/>y cierre sin calificar"]
+        JOB_CHECK["Releer estado, generación y reloj<br/>Validar permisos aplicables e idempotencia<br/>Actor sistema o usuario solicitante"]
+        JOB_DONE["Finalizar trabajo y confirmar procesamiento<br/>Sin respuesta HTTP si lo inició un worker"]
+        WORKER_N["Worker de entrega<br/>Leer outbox confirmado, resolver destinatarios<br/>y comprobar permiso / authVersion vigentes"]
+        PUBLISH["Publicar evento mínimo<br/>Registrar intento y resultado de entrega<br/>Publicación no equivale a lectura"]
+        RETRY["Reintentos acotados ante fallo<br/>failed_jobs al agotar; diagnóstico supervisado<br/>No duplicar efectos del negocio"]
+    end
+
+    subgraph REALTIME["TIEMPO REAL · TRANSPORTE"]
+        direction TB
+        REVERB["Laravel Reverb<br/>Recibir publicación autorizada del servidor<br/>Difundir a canales privados"]
+    end
+
+    U --> UI --> HTTP -->|HTTPS| GATEWAY
+    GATEWAY -->|CSRF, registro o login| AUTH_ROUTES --> AUTH_SERVICE
+    AUTH_SERVICE <-->|Identidad y sesión| REPO
+    AUTH_SERVICE -->|Acceso concedido; Set-Cookie| RESOURCE
+    AUTH_SERVICE -->|Credenciales o registro inválidos| ERROR
+    GATEWAY -->|API protegida o autorización de canal| SESSION --> AUTH_OK
+    SESSION <-->|Consultar sesión y cuenta| REPO
+    SESSION -->|CSRF inválido o exceso de intentos| ERROR
+    AUTH_OK -->|No| ERROR
+    AUTH_OK -->|Sí| INPUT --> POLICY --> ALLOWED
+    INPUT -->|Datos inválidos| ERROR
+    POLICY <-->|Consultar rol, permisos y relación| REPO
+    ALLOWED -->|No| ERROR
+    ALLOWED -->|Sí: operación de negocio| CONTROLLER
+    ALLOWED -->|Sí: canal privado| CHANNEL -->|Autorización firmada por HTTP| ECHO
+
+    CONTROLLER -->|Según endpoint| A
+    CONTROLLER -->|Según endpoint| B
+    CONTROLLER -->|Según endpoint| C
+    CONTROLLER -->|Según endpoint| D
+    CONTROLLER -->|Según endpoint| E
+    CONTROLLER -->|Según endpoint| F
+    A --> USECASE
+    B --> USECASE
+    C --> USECASE
+    D --> USECASE
+    E --> USECASE
+    F --> USECASE
+    USECASE --> DOMAIN --> KIND
+    DOMAIN -->|Regla incumplida o conflicto en petición HTTP| ERROR
+    DOMAIN -.->|Job ya no aplicable: terminar sin cambios| JOB_DONE
+    KIND -->|Lectura| READ
+    READ <-->|Consulta| REPO
+    READ -->|Datos consultados en petición HTTP| RESOURCE
+    READ -.->|Lectura completada en un job| JOB_DONE
+    KIND -->|Mutación| TX
+    TX <-->|Leer y escribir en transacción| REPO
+    TX -->|Acción sensible; misma transacción| AUDIT --> REPO
+    TX -->|Cambio notificable; misma transacción| OUTBOX --> REPO
+    TX -->|Tras persistir todos los cambios| COMMIT
+    COMMIT -->|No| ROLLBACK
+    ROLLBACK -->|Petición HTTP| ERROR
+    ROLLBACK -.->|Job con fallo técnico| RETRY
+    COMMIT -->|Sí: petición HTTP| RESOURCE
+    COMMIT -.->|Sí: job ejecutado| JOB_DONE
+    COMMIT -.->|Sí: trabajo posterior requerido| ENQUEUE
+    REPO <-->|SQL privado| MYSQL
+    RESOURCE -->|JSON y cookies cuando corresponda| HTTP
+    ERROR -->|Código y mensaje seguro| HTTP
+    HTTP -->|Actualizar datos o mostrar error| UI
+
+    SCHED --> SCAN
+    SCAN <-->|Consultar deadlines y outbox| REPO
+    SCAN -->|Trabajo aún vigente| ENQUEUE --> QUEUE
+    QUEUE <-->|Persistencia del driver de cola| MYSQL
+    QUEUE -.->|Cola domain| WORKER_D --> JOB_CHECK
+    JOB_CHECK -->|Vigente y permitido| USECASE
+    JOB_CHECK -->|Obsoleto o ya procesado| JOB_DONE
+    QUEUE -.->|Cola delivery| WORKER_N
+    WORKER_N <-->|Outbox, destinatarios e intentos| REPO
+    WORKER_N --> PUBLISH
+    PUBLISH <-->|Guardar resultado de intento| REPO
+    PUBLISH -.->|Después de commit; publicación del backend| REVERB
+    PUBLISH -.->|Entrega procesada y resultado persistido| JOB_DONE
+    WORKER_D -.->|Fallo recuperable o final| RETRY
+    WORKER_N -.->|Fallo recuperable o final| RETRY
+    RETRY -.->|Si quedan intentos, volver a programar| QUEUE
+    RETRY -->|Agotados: registrar fallo, sin nuevo reintento| MYSQL
+
+    ECHO -->|Solicitar autorización de canal por HTTP| HTTP
+    ECHO -->|Suscribirse con autorización válida; WSS vía gateway| REVERB
+    REVERB -.->|WSS vía gateway; evento mínimo| ECHO
+    ECHO -->|Evento nuevo o reconexión: consultar API| HTTP
+    ECHO -.->|Si falla WSS: aviso y polling de pantallas activas| HTTP
+    HTTP -->|expires_at y meta.server_time| CLOCK --> UI
+    CLOCK -->|Al llegar a cero: refrescar estado por API| HTTP
+
+    classDef frontend fill:#ecfeff,stroke:#0891b2,color:#164e63
+    classDef security fill:#fff7ed,stroke:#c2410c,color:#7c2d12,stroke-width:2px
+    classDef service fill:#eff6ff,stroke:#2563eb,color:#1e3a8a
+    classDef persistence fill:#f0fdf4,stroke:#16a34a,color:#14532d
+    classDef async fill:#faf5ff,stroke:#9333ea,color:#581c87
+    class UI,HTTP,ECHO,CLOCK frontend
+    class SESSION,AUTH_OK,POLICY,ALLOWED,CHANNEL,AUTH_SERVICE security
+    class A,B,C,D,E,F,USECASE,DOMAIN,TX service
+    class MYSQL,REPO,AUDIT,OUTBOX persistence
+    class SCHED,SCAN,ENQUEUE,QUEUE,WORKER_D,JOB_CHECK,WORKER_N,PUBLISH,REVERB,RETRY async

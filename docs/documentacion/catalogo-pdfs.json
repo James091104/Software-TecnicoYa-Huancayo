@@ -1,0 +1,108 @@
+{
+  "version": "2.0",
+  "date": "2026-09-29",
+  "documents": [
+    {
+      "file": "01-Analisis-del-MVP-TecnicoYa-Huancayo.pdf",
+      "title": "Análisis del MVP y sustento científico",
+      "pages": 19,
+      "sha256": "85532658732678b990441b5c174d4f2a4edd5756a204b5ed316f302833104848"
+    },
+    {
+      "file": "02-Analisis-MVP-Matching-y-Asistencia.pdf",
+      "title": "Análisis detallado: matching y asistencia",
+      "pages": 4,
+      "sha256": "0f01dfb622d6e3a5f76682c9aac7c7ccabb569b486cdf9513f10908a8904bd47"
+    },
+    {
+      "file": "03-Backlog-tecnico-de-implementacion.pdf",
+      "title": "Backlog técnico de implementación",
+      "pages": 11,
+      "sha256": "0680c0a5489d87b4cdb0021882eafe604ec09b73a737435022f3fed0ca7b35e2"
+    },
+    {
+      "file": "04-Diccionario-de-datos-fisico-PostgreSQL.pdf",
+      "title": "Diccionario de datos físico: PostgreSQL",
+      "pages": 9,
+      "sha256": "89962d73ed1cb75e3b57833f496d70101a6e74e3c11af265d05553874b53edcd"
+    },
+    {
+      "file": "05-Diccionario-conceptual-y-contratos.pdf",
+      "title": "Diccionario conceptual y contratos de datos",
+      "pages": 4,
+      "sha256": "5fe4c586603d7301242e9f69960b65cca1841f3d47862b3d1207017a6f294712"
+    },
+    {
+      "file": "06-Diseno-tecnico-arquitectura.pdf",
+      "title": "Diseño técnico: React, Laravel, FastAPI y PostgreSQL",
+      "pages": 4,
+      "sha256": "ae4efeae75186ace024dadf27ae4bb9ac5b39d2eb34ceb9539fe5fa5d38ad831"
+    },
+    {
+      "file": "07-Diseno-tecnico-integracion-servidor-y-pruebas.pdf",
+      "title": "Diseño técnico: integración, servidor y calidad",
+      "pages": 4,
+      "sha256": "f7c686f55fcd7b8fde6a0862e1ee7f1d88ca23f9e695280333d49b1e02b39d14"
+    },
+    {
+      "file": "08-Iteracion-01-Base-de-datos.pdf",
+      "title": "Iteración 1: Base de datos: núcleo del marketplace",
+      "pages": 3,
+      "sha256": "9d63e338ae33d4a7dbbfe1a1bbd3e94b6b3652bf4f81e9eea490e430da13dd6e"
+    },
+    {
+      "file": "09-Iteracion-02-Autenticacion-roles-y-permisos.pdf",
+      "title": "Iteración 2: Autenticación, roles y aislamiento de datos",
+      "pages": 3,
+      "sha256": "43b16ad2beb0bccda72303a24da73d25323e64c5fcf21128460514be19c121b4"
+    },
+    {
+      "file": "10-Iteracion-03-Habilitacion-y-condiciones-del-servicio.pdf",
+      "title": "Iteración 3: Habilitación y condiciones del servicio",
+      "pages": 3,
+      "sha256": "e1c639773f1d0b1d6e443e1c73a5dfa0f7fe23c6572c847a7cbbd93725f382d5"
+    },
+    {
+      "file": "11-Iteracion-04-Matching-disponibilidad-y-solicitudes.pdf",
+      "title": "Iteración 4: Matching, disponibilidad y ciclo de solicitudes",
+      "pages": 3,
+      "sha256": "6104fdbd90ca559b77af8cfe0cddc7cc8814c37d29636b2d3de35565bb10baec"
+    },
+    {
+      "file": "12-Iteracion-05-Frontend-tecnico-y-administrador.pdf",
+      "title": "Iteración 5: Frontend de técnico, administrador y UX",
+      "pages": 3,
+      "sha256": "d64175a0d1553e6ad124f795eeeaa7512e7a6203858d53daa6a860cae5d8b4a2"
+    },
+    {
+      "file": "13-Iteracion-06-Asistente-determinista-sin-LLM.pdf",
+      "title": "Iteración 6: Asistente determinista y registro guiado",
+      "pages": 3,
+      "sha256": "efd00d975fc87747157102417a25bd41e3bc17460b2d88cb55cac47e623764ff"
+    },
+    {
+      "file": "14-Iteracion-07-LLM-parseo-y-controles.pdf",
+      "title": "Iteración 7: LLM opcional: parseo y controles",
+      "pages": 3,
+      "sha256": "93ffed1bdba5d6339bda12fd8b935a5e39a0556549c2b5e9da72604d59debd7e"
+    },
+    {
+      "file": "15-Iteracion-08-Frontend-cliente-y-flujo-integral.pdf",
+      "title": "Iteración 8: Frontend cliente y flujo completo",
+      "pages": 3,
+      "sha256": "a29c0b715e6f0ba841b16f5137784ad642184f69762e0293f965aa2ac4efc02c"
+    },
+    {
+      "file": "16-Iteracion-09-Pagos-y-operacion-productiva.pdf",
+      "title": "Iteración 9: Pagos y operación productiva: extensión condicionada",
+      "pages": 3,
+      "sha256": "80fc41be84963c102b908cf12fdf8ce86d37f931cd05a82e1ad9f7ac879a2565"
+    },
+    {
+      "file": "17-Iteracion-10-Seguridad-calidad-y-despliegue.pdf",
+      "title": "Iteración 10: Seguridad, calidad y despliegue previo al lanzamiento",
+      "pages": 4,
+      "sha256": "c3478f959c3b260d863b6e9710b9ec8b96ca12c305476126c89d5dcde70a61f3"
+    }
+  ]
+}

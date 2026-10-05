@@ -1,0 +1,100 @@
+﻿RF y prioridad,Condición de prueba,Caso,Procedimiento,Ejecución,Defecto,Estado de auditoría del código
+"RF-01 P1
+Registro de solicitud","COND-01
+Válidos guardan borrador; incompletos bloquean envío.",CT-01,PROC-01,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-02 P1
+Revisión y confirmación","COND-02
+Editar y confirmar activa matching una sola vez.",CT-02,PROC-02,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-03 P2
+Evidencia fotográfica","COND-03
+Aceptar imágenes válidas y rechazar límites no permitidos; DP-03.",CT-03,PROC-03,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-04 P1
+Tarifa referencial","COND-04
+Rango según especialidad e historial; datos insuficientes; DP-04.",CT-04,PROC-04,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-05 P2
+Disponibilidad horaria","COND-05
+Guardar horarios y excluir incompatibles; DP-11.",CT-05,PROC-05,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-06 P1
+Matching automático","COND-06
+Aplicar criterios y derivar sin candidatos a RF-14; DP-01/05.",CT-06,PROC-06,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-07 P1
+Filtrado de habilitados","COND-07
+Solo verificados, disponibles y habilitados; DP-02.",CT-07,PROC-07,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-08 P1
+Ordenamiento","COND-08
+Orden descendente del puntaje aprobado; DP-01.",CT-08,PROC-08,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-09 P2
+Desempate","COND-09
+Empate por promedio; luego mayor antigüedad.",CT-09,PROC-09,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-10 P2
+Subespecialidad","COND-10
+Coincidencia exacta; alternativa general informada.",CT-10,PROC-10,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-11 P3
+Tiempo según experiencia","COND-11
+Historial similar o promedio general; cálculo por acordar.",CT-11,PROC-11,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-12 P2
+Distancia técnico cliente","COND-12
+Distancia aproximada o no disponible; DP-05.",CT-12,PROC-12,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-13 P2
+Técnicos por ronda","COND-13
+Límite por ronda y avance tras rechazo/vencimiento; DP-06.",CT-13,PROC-13,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-14 P1
+Espera y ampliación de zona","COND-14
+Espera 24 h, búsqueda y alternativas; DP-05/07.",CT-14,PROC-14,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-15 P1
+Notificación al técnico","COND-15
+Detalles de solicitud y hora exacta de envío; DP-14.",CT-15,PROC-15,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-16 P1
+SLA de 10 minutos","COND-16
+Antes, en y después de 10 min; no respuesta al vencer.",CT-16,PROC-16,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-17 P1
+Reasignación automática","COND-17
+Siguiente técnico y nuevo SLA; sin candidatos RF-14.",CT-17,PROC-17,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-18 P1
+Aceptación del cliente","COND-18
+Cliente confirma al aceptante y recibe recordatorio; DP-08/10.",CT-18,PROC-18,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-19 P1
+Estado en ejecución","COND-19
+Confirmación registra hora y notifica; catálogo DP-09.",CT-19,PROC-19,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-20 P2
+Reprogramación","COND-20
+Nueva fecha propuesta y confirmación; DP-11.",CT-20,PROC-20,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-21 P3
+Múltiples técnicos","COND-21
+Perfiles y horario común; DP-11/12.",CT-21,PROC-21,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-22 P1
+Reporte y cierre","COND-22
+Reporte y finalización; motivo si incompleto; DP-09.",CT-22,PROC-22,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-23 P1
+Calificación en 48 horas","COND-23
+Calificación dentro de 48 h; límites y propietario.",CT-23,PROC-23,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-24 P2
+Cierre sin calificación","COND-24
+Cierre al vencer sin puntuación ficticia.",CT-24,PROC-24,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-25 P1
+Historial del técnico","COND-25
+Servicio único y promedio consistente con valores registrados.",CT-25,PROC-25,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-26 P2
+Apelación","COND-26
+Solo decisión autorizada aceptada cambia historial; DP-13.",CT-26,PROC-26,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-27 P3
+Transparencia del matching","COND-27
+Técnico consulta criterios generales o resultado.",CT-27,PROC-27,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-28 P1
+Autenticación","COND-28
+Credenciales válidas e inválidas para tres roles; DP-16.",CT-28,PROC-28,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-29 P1
+Notificación por cambio","COND-29
+Evento, reintentos y estado pendiente; RNF-07/DP-14.",CT-29,PROC-29,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-30 P2
+Panel administrativo","COND-30
+Filtro por estado y SLA reiterado; acceso administrador.",CT-30,PROC-30,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-31 P3
+Reporte de cobertura","COND-31
+Zona/especialidad y aviso de datos insuficientes.",CT-31,PROC-31,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-32 P2
+Método de pago","COND-32
+Registrar método; alternativa ante fallo; DP-15.",CT-32,PROC-32,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.
+"RF-33 P1
+Protección de datos","COND-33
+Denegar acceso ajeno y registrar evento; DP-16.",CT-33,PROC-33,No ejecutado,—,Pendiente de verificación integral; consultar inventario de pruebas.

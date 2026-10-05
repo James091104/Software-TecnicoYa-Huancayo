@@ -1,0 +1,211 @@
+{
+  "date": "2026-09-30",
+  "base_commit": "86862f5",
+  "working_tree": "modificado",
+  "files": [
+    {
+      "file": "frontend/web/src/access.test.jsx",
+      "sha256": "b3eb678861b704641114cfc65b917c856426f34cba46d6eb5071096baaacb00e"
+    },
+    {
+      "file": "frontend/web/src/AccountPanel.jsx",
+      "sha256": "d9b0123022b128fc1c2b52fe589e56ab792501299dfb4d41ad5c60d0e6db3adf"
+    },
+    {
+      "file": "frontend/web/src/Announcements.jsx",
+      "sha256": "faf2add74d91b81a1958e7097b97b4547fb9befe3cd211ea9f8c5798e00fc848"
+    },
+    {
+      "file": "frontend/web/src/Announcements.test.jsx",
+      "sha256": "9a81df2001de6d7ed54d528cb7efe6510c21b45a8cae0fbaefb8e33f574f7589"
+    },
+    {
+      "file": "frontend/web/src/App.jsx",
+      "sha256": "9a14a445ff835bcf9be417272be204c27de2aabb515d0887e0c7478b05a693b1"
+    },
+    {
+      "file": "frontend/web/src/Auth.jsx",
+      "sha256": "bdcc9a31877cfb78ceab42f89e6792d128d594f31d664c613e58e19007322025"
+    },
+    {
+      "file": "frontend/web/src/forms.test.jsx",
+      "sha256": "54c151e51b70d4f491c9bb4d0c031f992309275fc9a4e8b554696f34901c3314"
+    },
+    {
+      "file": "frontend/web/src/main.jsx",
+      "sha256": "6f31ffd543f6e5d0838b6e6d5218b2cffd94e93de820a7ff73963564f133b50b"
+    },
+    {
+      "file": "frontend/web/src/marketplace-api.js",
+      "sha256": "d85fdc51ab9b7855319fb7beb1d919bb216635a426e8a1a33f9e2ce6cb48571f"
+    },
+    {
+      "file": "frontend/web/src/Marketplace.jsx",
+      "sha256": "cae2065b727e282fdd6611dad69fd5a6f828787eb27fc8ab516a3f283cc68900"
+    },
+    {
+      "file": "frontend/web/src/TechnicianProfile.jsx",
+      "sha256": "a70d73cc59425f2f2d54f0877a877a22378e7a40e914ffb99b8aad9eb83879f9"
+    },
+    {
+      "file": "frontend/web/src/TechnicianProfile.test.jsx",
+      "sha256": "df8de9ceb7fa38a2367d55bedcdf350047cf6dc7f115f335fce81707fc304a37"
+    },
+    {
+      "file": "frontend/web/src/test-setup.js",
+      "sha256": "91a3c8962a0edcb956206a501d943fe99e1c78c6d4d8b5c9a948a3362c75978c"
+    },
+    {
+      "file": "frontend/web/src/video-timing.js",
+      "sha256": "5927372fd226b2c588eb86f3a5d25754f33da3be978d94ebcfd3a01193ae428c"
+    },
+    {
+      "file": "frontend/web/src/VideoExperience.jsx",
+      "sha256": "2e6433079a6778b7aef8e7c3be057cf10bd1bdd7bcf7e49416ed0d3f0bd4e7aa"
+    },
+    {
+      "file": "frontend/web/src/VideoExperience.test.jsx",
+      "sha256": "dbc9c717eb3368bf4a0a32b524b0ebdc1b7b4fc1f046af755b50a891d8aecc3e"
+    },
+    {
+      "file": "frontend/web/src/domain/announcements.js",
+      "sha256": "89291e055860451d9df6684096756991fc00613364c6fdbbfde8353d0e953870"
+    },
+    {
+      "file": "frontend/web/src/domain/demo.js",
+      "sha256": "b4529e613290dbf98e2b76b690dc2559c7f79bb3dc1bf68027a77e9b5a74c902"
+    },
+    {
+      "file": "frontend/web/src/domain/marketplace.test.js",
+      "sha256": "be9e5f35159bbc623847f6cb6aa401f5c47301fb20a72017c3e97f428b2d431e"
+    },
+    {
+      "file": "frontend/web/src/domain/matching-fixture.json",
+      "sha256": "66f99df22f732c40b0eea6eddc299931a9888e019b63811a3f3c1ab310682bfd"
+    },
+    {
+      "file": "frontend/web/src/domain/matching.js",
+      "sha256": "f9156c7089931fb22b142adf23812200f786262ee939fd9624e1c0798f52d657"
+    },
+    {
+      "file": "frontend/web/src/domain/permissions.js",
+      "sha256": "4d21a5d6835db96942139a0880b419ab3de8c319923db8dca93d3fa1840fd640"
+    },
+    {
+      "file": "frontend/web/src/domain/rules.json",
+      "sha256": "99e6f316bb77f69d9333c52c226e2e3e801d4ea09a111906ef769a1b143f14cb"
+    },
+    {
+      "file": "frontend/web/src/scroll/FrameCache.js",
+      "sha256": "da2bfe3d40657680df4d2abb442b275076d61560c6fe101534cbc87ff4bff9ec"
+    },
+    {
+      "file": "frontend/web/src/scroll/scroll.test.jsx",
+      "sha256": "27e3beb19845376e5e9df9218d2bbe54a66eda027bfaa6b221a0cff416a09230"
+    },
+    {
+      "file": "frontend/web/src/scroll/ScrollServices.jsx",
+      "sha256": "81df5e76783b9508a5e988093fd0ac01ae8084a8c9047401e9c81d53c42faffd"
+    },
+    {
+      "file": "frontend/web/src/scroll/sequence.json",
+      "sha256": "95d93c02e8047fa8841da325404b6ff0d257c947f0d3eea852e1a9353f1b0af0"
+    },
+    {
+      "file": "frontend/web/src/scroll/timeline.js",
+      "sha256": "31b675649582ff8726839e522d2cfbab29f2ffe2241143f2eb207511ce2fde82"
+    },
+    {
+      "file": "backend/api/app/Models/User.php",
+      "sha256": "bc1553a387f5cd8130bbffb85c58a0004ad30602051eb4f40f81c8be714ad2c9"
+    },
+    {
+      "file": "backend/api/app/Providers/AppServiceProvider.php",
+      "sha256": "2c1ef1a9e5aa0d3661d8c363d0529a79746c5f1fdc8bc7b064db925be13974cd"
+    },
+    {
+      "file": "backend/api/app/Services/Announcements.php",
+      "sha256": "2b4a593d16cf86bb28c98c63c5b3e7a86a5fe3669904eb02a7ace25f6e2cceaf"
+    },
+    {
+      "file": "backend/api/app/Services/Marketplace.php",
+      "sha256": "2be19e0eee0d56610a2704312ad906f86bb42a24bce3a51d45201d5f71439c7b"
+    },
+    {
+      "file": "backend/api/app/Services/Matching.php",
+      "sha256": "1ea76a5be29fb4234ef98d7022148e4675fe2067272468b9020848802844477d"
+    },
+    {
+      "file": "backend/api/app/Services/Permissions.php",
+      "sha256": "80aab82b72ebc58f5bb3feac74b2895a91e2748ee0b3a50b92eda2f9192153a6"
+    },
+    {
+      "file": "backend/api/app/Http/Controllers/AuthController.php",
+      "sha256": "9cd922b6999433888721d120af6c8d0019ee2db58655f5d39b7828e57478a1ee"
+    },
+    {
+      "file": "backend/api/app/Http/Controllers/Controller.php",
+      "sha256": "25d1c1ef8e6cc8a376553faacfba2b07d9dfaee9bdbb84f14f77517580e9deb1"
+    },
+    {
+      "file": "backend/api/app/Http/Controllers/MarketplaceController.php",
+      "sha256": "7d7226d551fb2e0e21a9dfb5ee95ad8f330d7b0c8556e1ad88b23cb17971a398"
+    },
+    {
+      "file": "backend/api/app/Http/Middleware/ApiToken.php",
+      "sha256": "407cb4773925ed9197b5b12e2d636fa9038695566adcc286e7572400a226aad2"
+    },
+    {
+      "file": "backend/api/tests/matching-fixture.json",
+      "sha256": "66f99df22f732c40b0eea6eddc299931a9888e019b63811a3f3c1ab310682bfd"
+    },
+    {
+      "file": "backend/api/tests/TestCase.php",
+      "sha256": "4f31ee9b9e97c1867963fe0a22b6b4b3be1c14b5d439a2745c81e4f7f922f891"
+    },
+    {
+      "file": "backend/api/tests/Feature/AnnouncementsTest.php",
+      "sha256": "7389173e542bb6c1eac5b93a57a4c029c0abe82793ab11b89484c862e9ff9a87"
+    },
+    {
+      "file": "backend/api/tests/Feature/MarketplaceTest.php",
+      "sha256": "168b8fe59534df01d3c9105ac6c85645bbc3ff93a9077423ef4d10cd2065072f"
+    },
+    {
+      "file": "backend/api/database/migrations/2026_09_22_000001_create_marketplace.php",
+      "sha256": "06ca91b749aa454ea490551495467d5ff5027e4d64300c4d30eda5fcd59f5128"
+    },
+    {
+      "file": "backend/api/database/migrations/2026_09_28_000002_add_account_access.php",
+      "sha256": "73612ae94706b9b500bfd0e4e6e37214c5b6f228b6adfdd718f482ba06ea8103"
+    },
+    {
+      "file": "backend/api/database/migrations/2026_09_28_000003_create_announcements.php",
+      "sha256": "44193b002596af1dd1f829c7f6a682928a1938f9eee8b194540498dae41de91e"
+    },
+    {
+      "file": "python/api/app.py",
+      "sha256": "b9e329ba38ea229bcfc53ce491323afc5839d56513348a191fa599d36801a649"
+    },
+    {
+      "file": "python/api/matching-fixture.json",
+      "sha256": "66f99df22f732c40b0eea6eddc299931a9888e019b63811a3f3c1ab310682bfd"
+    },
+    {
+      "file": "python/api/rules.json",
+      "sha256": "99e6f316bb77f69d9333c52c226e2e3e801d4ea09a111906ef769a1b143f14cb"
+    },
+    {
+      "file": "python/api/test_matching.py",
+      "sha256": "9ff97f2fd44153c61f85637b6448b60830a5c36e8d5cb5c720b0a7bc57ef202d"
+    },
+    {
+      "file": "domain/matching-fixture.json",
+      "sha256": "66f99df22f732c40b0eea6eddc299931a9888e019b63811a3f3c1ab310682bfd"
+    },
+    {
+      "file": "domain/rules.json",
+      "sha256": "99e6f316bb77f69d9333c52c226e2e3e801d4ea09a111906ef769a1b143f14cb"
+    }
+  ]
+}

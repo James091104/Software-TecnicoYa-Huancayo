@@ -1,0 +1,512 @@
+{
+  "users": [
+    {
+      "name": "id",
+      "type": "bigint identidad",
+      "null": "No",
+      "rule": "PK",
+      "meaning": "Identificador primario",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "name",
+      "type": "varchar(255)",
+      "null": "No",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "Nombre visible",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "email",
+      "type": "varchar(255)",
+      "null": "No",
+      "rule": "UNIQUE",
+      "meaning": "Correo de acceso único",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "password",
+      "type": "varchar(255)",
+      "null": "No",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "Hash de contraseña",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "role",
+      "type": "varchar(255)",
+      "null": "No",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "client, technician o admin (validación de aplicación)",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp",
+      "null": "Sí",
+      "rule": "Marca temporal Eloquent",
+      "meaning": "Fecha de creación",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp",
+      "null": "Sí",
+      "rule": "Marca temporal Eloquent",
+      "meaning": "Fecha de última modificación",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "is_active",
+      "type": "boolean",
+      "null": "No",
+      "rule": "default true",
+      "meaning": "Permiso de acceso a la cuenta",
+      "source": "2026_09_28_000002_add_account_access.php"
+    }
+  ],
+  "api_tokens": [
+    {
+      "name": "id",
+      "type": "bigint identidad",
+      "null": "No",
+      "rule": "PK",
+      "meaning": "Identificador primario",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "user_id",
+      "type": "bigint FK",
+      "null": "No",
+      "rule": "FK; ver relaciones",
+      "meaning": "Usuario al que pertenece el registro",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "token_hash",
+      "type": "varchar(64)",
+      "null": "No",
+      "rule": "UNIQUE",
+      "meaning": "SHA-256 del token Bearer",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "expires_at",
+      "type": "timestamp",
+      "null": "No",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "Caducidad de sesión (timestamp) u oferta (ms), según tabla",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    }
+  ],
+  "technicians": [
+    {
+      "name": "id",
+      "type": "uuid",
+      "null": "No",
+      "rule": "PK",
+      "meaning": "Identificador primario",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "user_id",
+      "type": "bigint FK",
+      "null": "No",
+      "rule": "UNIQUE; FK; ver relaciones",
+      "meaning": "Usuario al que pertenece el registro",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "zone",
+      "type": "varchar(255)",
+      "null": "No",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "Zona principal o zona solicitada",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "zones",
+      "type": "json",
+      "null": "No",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "Arreglo JSON de zonas cubiertas",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "specialties",
+      "type": "json",
+      "null": "No",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "Arreglo JSON de rubros técnicos",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "fee",
+      "type": "numeric(10,2)",
+      "null": "No",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "Tarifa vigente de visita en PEN",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "rating",
+      "type": "numeric(9,6)",
+      "null": "No",
+      "rule": "default 0",
+      "meaning": "Promedio técnico o calificación del servicio, según tabla",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "reviews",
+      "type": "integer*",
+      "null": "No",
+      "rule": "default 0",
+      "meaning": "Número de calificaciones",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "years",
+      "type": "integer*",
+      "null": "No",
+      "rule": "default 0",
+      "meaning": "Años declarados de experiencia",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "verified",
+      "type": "boolean",
+      "null": "No",
+      "rule": "default false",
+      "meaning": "Habilitación administrativa",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "available",
+      "type": "boolean",
+      "null": "No",
+      "rule": "default false",
+      "meaning": "Disponibilidad operativa",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    }
+  ],
+  "requests": [
+    {
+      "name": "id",
+      "type": "uuid",
+      "null": "No",
+      "rule": "PK",
+      "meaning": "Identificador primario",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "client_id",
+      "type": "bigint FK",
+      "null": "No",
+      "rule": "FK; ver relaciones",
+      "meaning": "Propietario de la solicitud",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "specialty",
+      "type": "varchar(255)",
+      "null": "No",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "Rubro solicitado",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "zone",
+      "type": "varchar(255)",
+      "null": "No",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "Zona principal o zona solicitada",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "address",
+      "type": "varchar(255)",
+      "null": "No",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "Dirección privada del servicio",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "null": "No",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "Descripción de falla",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "status",
+      "type": "varchar(255)",
+      "null": "No",
+      "rule": "INDEX",
+      "meaning": "Estado del catálogo correspondiente",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "technician_id",
+      "type": "uuid",
+      "null": "Sí",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "Técnico invitado o asignado",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "agreed_fee",
+      "type": "numeric(10,2)",
+      "null": "Sí",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "Tarifa de visita fijada al aceptar",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "rating",
+      "type": "smallint*",
+      "null": "Sí",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "Promedio técnico o calificación del servicio, según tabla",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "created_ms",
+      "type": "bigint",
+      "null": "No",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "Instante de registro en epoch ms",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "pending_until",
+      "type": "bigint",
+      "null": "No",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "Fin de ventana de 24 h en epoch ms",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "completed_at",
+      "type": "bigint",
+      "null": "Sí",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "Instante de finalización en epoch ms",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "rating_until",
+      "type": "bigint",
+      "null": "Sí",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "Fin de plazo de 48 h en epoch ms",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "events",
+      "type": "json",
+      "null": "No",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "Arreglo JSON {at,text} del ciclo",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    }
+  ],
+  "offers": [
+    {
+      "name": "id",
+      "type": "bigint identidad",
+      "null": "No",
+      "rule": "PK",
+      "meaning": "Identificador primario",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "request_id",
+      "type": "uuid",
+      "null": "No",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "Solicitud que originó la oferta",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "technician_id",
+      "type": "uuid",
+      "null": "No",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "Técnico invitado o asignado",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "status",
+      "type": "varchar(255)",
+      "null": "No",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "Estado del catálogo correspondiente",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "sent_at",
+      "type": "bigint",
+      "null": "No",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "Instante de envío en epoch ms",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "expires_at",
+      "type": "bigint",
+      "null": "No",
+      "rule": "INDEX",
+      "meaning": "Caducidad de sesión (timestamp) u oferta (ms), según tabla",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    },
+    {
+      "name": "score",
+      "type": "numeric(9,6)",
+      "null": "No",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "Puntaje redondeado a 6 decimales",
+      "source": "2026_09_22_000001_create_marketplace.php"
+    }
+  ],
+  "access_events": [
+    {
+      "name": "id",
+      "type": "bigint identidad",
+      "null": "No",
+      "rule": "PK",
+      "meaning": "Identificador primario",
+      "source": "2026_09_28_000002_add_account_access.php"
+    },
+    {
+      "name": "actor_id",
+      "type": "bigint FK",
+      "null": "No",
+      "rule": "FK; ver relaciones",
+      "meaning": "Administrador que ejecutó cambio",
+      "source": "2026_09_28_000002_add_account_access.php"
+    },
+    {
+      "name": "user_id",
+      "type": "bigint FK",
+      "null": "No",
+      "rule": "FK; ver relaciones",
+      "meaning": "Usuario al que pertenece el registro",
+      "source": "2026_09_28_000002_add_account_access.php"
+    },
+    {
+      "name": "action",
+      "type": "varchar(255)",
+      "null": "No",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "activate o suspend",
+      "source": "2026_09_28_000002_add_account_access.php"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp",
+      "null": "No",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "Ver contrato de dominio",
+      "source": "2026_09_28_000002_add_account_access.php"
+    }
+  ],
+  "announcements": [
+    {
+      "name": "id",
+      "type": "uuid",
+      "null": "No",
+      "rule": "PK",
+      "meaning": "Identificador primario",
+      "source": "2026_09_28_000003_create_announcements.php"
+    },
+    {
+      "name": "title",
+      "type": "varchar(120)",
+      "null": "No",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "Título del anuncio",
+      "source": "2026_09_28_000003_create_announcements.php"
+    },
+    {
+      "name": "body",
+      "type": "text",
+      "null": "No",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "Texto del anuncio",
+      "source": "2026_09_28_000003_create_announcements.php"
+    },
+    {
+      "name": "audience",
+      "type": "varchar(20)",
+      "null": "No",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "client, technician o both",
+      "source": "2026_09_28_000003_create_announcements.php"
+    },
+    {
+      "name": "status",
+      "type": "varchar(20)",
+      "null": "No",
+      "rule": "default 'draft'",
+      "meaning": "Estado del catálogo correspondiente",
+      "source": "2026_09_28_000003_create_announcements.php"
+    },
+    {
+      "name": "priority",
+      "type": "integer*",
+      "null": "No",
+      "rule": "default 0",
+      "meaning": "Orden de presentación (0..100 API)",
+      "source": "2026_09_28_000003_create_announcements.php"
+    },
+    {
+      "name": "image",
+      "type": "text (PostgreSQL)",
+      "null": "Sí",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "Imagen data URL validada; no archivo externo",
+      "source": "2026_09_28_000003_create_announcements.php"
+    },
+    {
+      "name": "link_url",
+      "type": "varchar(2048)",
+      "null": "Sí",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "URL http/https opcional",
+      "source": "2026_09_28_000003_create_announcements.php"
+    },
+    {
+      "name": "link_label",
+      "type": "varchar(40)",
+      "null": "Sí",
+      "rule": "Sin restricción adicional declarada",
+      "meaning": "Texto del enlace opcional",
+      "source": "2026_09_28_000003_create_announcements.php"
+    },
+    {
+      "name": "updated_by",
+      "type": "bigint FK",
+      "null": "No",
+      "rule": "FK; ver relaciones",
+      "meaning": "Administrador que modificó anuncio",
+      "source": "2026_09_28_000003_create_announcements.php"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp",
+      "null": "Sí",
+      "rule": "Marca temporal Eloquent",
+      "meaning": "Fecha de creación",
+      "source": "2026_09_28_000003_create_announcements.php"
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp",
+      "null": "Sí",
+      "rule": "Marca temporal Eloquent",
+      "meaning": "Fecha de última modificación",
+      "source": "2026_09_28_000003_create_announcements.php"
+    }
+  ]
+}

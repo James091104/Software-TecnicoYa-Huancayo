@@ -1,0 +1,3862 @@
+[
+  {
+    "name": "01-Analisis-del-MVP-TecnicoYa-Huancayo.pdf",
+    "title": "Análisis del MVP y sustento científico",
+    "pages": [
+      {
+        "title": "Propósito, problema y alcance",
+        "sections": [
+          {
+            "title": "Control documental",
+            "text": "Versión 2.0 | Corte documental: 29/09/2026. Documento técnico para revisión académica. Implementado significa observado en código; no equivale a validación productiva. Las iteraciones son planes de trabajo, no actas ejecutadas."
+          },
+          {
+            "title": "Producto",
+            "text": "TécnicoYa Huancayo conecta hogares y MYPES con técnicos independientes de cómputo, refrigeración comercial y electricidad. El problema declarado por el proyecto es la búsqueda dispersa, la información desigual sobre calidad y tarifa, y la falta de seguimiento. Es una hipótesis contextual que debe validarse en Huancayo, no una prevalencia ya demostrada."
+          },
+          {
+            "title": "Objetivo general",
+            "text": "Diseñar, implementar y evaluar un marketplace que permita solicitar, asignar, confirmar, ejecutar y calificar servicios, con permisos por rol y trazabilidad. Medir reducción de fricción frente al proceso actual mediante un piloto acordado; no prometer resultados aún no medidos."
+          },
+          {
+            "title": "Objetivos específicos",
+            "heads": [
+              "ID",
+              "Resultado verificable",
+              "Medición"
+            ],
+            "rows": [
+              [
+                "O1",
+                "Registrar una falla y revisar condiciones",
+                "Tarea completada, errores, pasos y tiempo"
+              ],
+              [
+                "O2",
+                "Asignar únicamente técnicos elegibles",
+                "Casos de filtro, ranking y vencimiento"
+              ],
+              [
+                "O3",
+                "Controlar quién puede operar y ver datos",
+                "Pruebas por rol, propietario y estado"
+              ],
+              [
+                "O4",
+                "Trazar la atención hasta calificación",
+                "Secuencia de eventos y límites temporales"
+              ],
+              [
+                "O5",
+                "Evaluar calidad y operación",
+                "Pruebas, piloto local y despliegue QA reproducible"
+              ]
+            ]
+          },
+          {
+            "title": "Arquitectura de partida",
+            "text": "React/Vite en frontend/web; Laravel en backend/api; FastAPI en python/api. PostgreSQL es referencia de despliegue; SQLite local y de pruebas no demuestra los bloqueos de PostgreSQL. No existe multitenencia empresarial, agenda por horas, chat, LLM de negocio, suscripción ni cobro integrado en el código inspeccionado."
+          }
+        ]
+      },
+      {
+        "title": "Método de revisión del corpus",
+        "sections": [
+          {
+            "title": "Universo documental",
+            "text": "32 archivos PDF, 894 páginas físicas incluyendo duplicados. Se detectaron dos pares idénticos por SHA-256: A04=A03 y A16=A15. La revisión considera 30 documentos únicos (813 páginas sin duplicados), incluyendo artículos, revisiones, preprints y tesis. No es una revisión sistemática exhaustiva: el corpus fue entregado por el usuario, sin búsqueda bibliográfica completa ni protocolo PRISMA."
+          },
+          {
+            "title": "Procedimiento",
+            "text": "Se extrajo el texto de los 32 archivos, se identificaron título, método, resultados y limitaciones pertinentes, y se elaboró una ficha crítica por documento único. Se contrastaron hallazgos con el código y requisitos previos. A32 presentó codificación deficiente con pypdf y se recuperó con pdfplumber. No se realizó metaanálisis ni réplica de experimentos."
+          },
+          {
+            "title": "Jerarquía de uso",
+            "text": "Revisiones y estudios empíricos sustentan riesgos y principios; prototipos ilustran funciones; tesis aportan contexto e implementación; preprints se identifican expresamente. El índice de impacto impreso en una portada no acredita por sí solo calidad metodológica. La clasificación es una evaluación de este expediente."
+          },
+          {
+            "title": "Límites",
+            "text": "Los estudios peruanos se concentran en Lima y Arequipa; no demuestran el diagnóstico de Huancayo. La justificación de electricidad y cómputo es principalmente funcional; faltan mediciones sectoriales locales. No se verificó externamente cada DOI ni la revisión por pares de cada revista. Se conservan las versiones suministradas."
+          },
+          {
+            "title": "Lectura de citas",
+            "text": "Las referencias [Axx] remiten a las fichas del documento 01 y al catálogo trazabilidad/v2/articulos.csv. Páginas citadas: numeración física del PDF, salvo indicación expresa. Los originales se conservan en fuentes/articulos/Axx.pdf; SHA-256 en fuentes/articulos/manifest.json."
+          }
+        ]
+      },
+      {
+        "title": "Síntesis crítica y decisiones",
+        "sections": [
+          {
+            "title": "Del hallazgo al requisito",
+            "heads": [
+              "Evidencia",
+              "Decisión para TécnicoYa",
+              "Validación pendiente"
+            ],
+            "rows": [
+              [
+                "A01, A11: barreras digitales",
+                "Registro corto, lenguaje claro, web móvil",
+                "Piloto con hogares y MYPES de Huancayo"
+              ],
+              [
+                "A09, A14, A18: confianza y sesgos",
+                "Reseñas ligadas a servicios; mostrar cantidad",
+                "Revisión de fraude, apelaciones y arranque sin historial"
+              ],
+              [
+                "A03, A05, A15: espera y oferta",
+                "Temporizadores y reasignación",
+                "Calibrar plazos con datos locales"
+              ],
+              [
+                "A06, A12, A13, A19: exposición y gobernanza",
+                "Explicar ranking y suspensiones; revisión humana",
+                "Evaluar equidad sin recolectar datos sensibles innecesarios"
+              ],
+              [
+                "A22: referencias inventadas por IA",
+                "Catálogo real y parser opcional sin autoridad",
+                "Evaluar alucinación e inyección antes de activar IA"
+              ],
+              [
+                "A23-A31: prototipos de servicios",
+                "Roles y flujo integrado",
+                "No importar porcentajes ni stacks por imitación"
+              ]
+            ]
+          },
+          {
+            "title": "Alertas de lectura",
+            "text": "A24 presenta métricas de rapidez que requieren reconciliación (resumen 30%, tabla 58 a 35 segundos y texto 40%). A28 incluye bibliografía de agricultura y clima; se limita a referencia secundaria. A29 no sustenta por sí solo disponibilidad de nuestro servidor. A13 difiere en el número de países según sección. Estas observaciones reducen la fuerza de la inferencia; no invalidan automáticamente cada trabajo."
+          },
+          {
+            "title": "Lo que no se concluye",
+            "text": "No se concluye que TécnicoYa genere empleo formal, reduzca pérdidas en una proporción determinada, garantice seguridad técnica de una reparación o requiera un LLM. Ninguna fuente del corpus justifica los pesos 35/20/30/15 como óptimos."
+          }
+        ]
+      },
+      {
+        "title": "Investigación local y fronteras del MVP",
+        "sections": [
+          {
+            "title": "Incluye / no incluye",
+            "heads": [
+              "Núcleo actual",
+              "Fuera del núcleo / ampliación"
+            ],
+            "rows": [
+              [
+                "Tres roles y técnicos habilitados",
+                "Certificación externa automática de competencias"
+              ],
+              [
+                "Solicitudes, ofertas, confirmación, ejecución y calificación",
+                "Inventario, tienda, múltiples técnicos simultáneos"
+              ],
+              [
+                "Disponibilidad booleana y cobertura por zonas",
+                "Agenda horaria, GPS en vivo y optimización de rutas"
+              ],
+              [
+                "Tarifa de visita fijada al aceptar",
+                "Pasarela real, comisiones y suscripciones"
+              ],
+              [
+                "Registro y formularios deterministas",
+                "Chat y LLM: ampliaciones documentadas, no implementadas"
+              ]
+            ]
+          },
+          {
+            "title": "Plan de validación del problema",
+            "text": "Preparar entrevistas y observación del flujo AS-IS con hogares, MYPES y técnicos de los cinco distritos. Propuesta exploratoria: 12 clientes (6 hogares y 6 MYPES) y 8 técnicos, con diversidad de rubros; muestra por conveniencia, sin representatividad estadística. Acordar consentimiento, anonimización y preguntas antes de reclutar. Registrar tiempo de contacto, intentos, criterios de confianza, falla y costo de interrupción declarado."
+          },
+          {
+            "title": "Evaluación del valor",
+            "text": "Comparar tareas equivalentes con el canal habitual y con el prototipo, alternando orden para reducir aprendizaje. Reportar mediana, dispersión, abandonos y sesgos; no atribuir causalidad con una muestra exploratoria. Separar tiempo hasta recibir oferta, confirmación y atención efectiva. Los 10 minutos son respuesta, no llegada."
+          },
+          {
+            "title": "Aprobación",
+            "text": "Product Owner, docente y equipo deben confirmar alcance y criterios de salida. No se inventan responsables nominales, firmas, fechas de sprints ni resultados del piloto."
+          }
+        ]
+      },
+      {
+        "title": "Fichas de evidencia 1-2",
+        "sections": [
+          {
+            "title": "A01 | Velásquez Chacón (2025). Adopción digital en micro y pequeñas empresas post pandemia en Arequipa, Perú",
+            "text": "Método: Encuesta cuantitativa exploratoria a 267 MYPES.\nHallazgo: Identifica barreras de conocimiento y capacitación en adopción digital.\nLímite: Arequipa y contexto pospandemia; no mide demanda de técnicos en Huancayo ni demuestra causalidad.\nAplicación propuesta: Diseñar alta guiada y probar comprensión con MYPES locales.\nLocalización: PDF pp. 1-2, 14. Referencia: 10.31637/epsir-2025-1849. Archivo: 1849_Adopción+digital+en+micro+y.pdf"
+          },
+          {
+            "title": "A02 | Widell, Dhakal, Thakur y Hafner (2019). Refrigeration to prevent food losses",
+            "text": "Método: Síntesis técnica sobre cadena de frío, con foco en China e India.\nHallazgo: Relaciona pérdidas alimentarias con limitaciones de la cadena de frío y propone capacitación y mejora técnica.\nLímite: Cifras globales e históricas; no cuantifica pérdidas de comercios huancaínos.\nAplicación propuesta: Justifica incluir refrigeración; medir tiempo sin servicio y no prometer ahorro económico.\nLocalización: PDF pp. 1-2, 7. Referencia: 10.18462/iir.icr.2019.424. Archivo: 2019ICRWidellfoodloss.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Fichas de evidencia 3-4",
+        "sections": [
+          {
+            "title": "A03 | Aveklouris, DeValve, Stock y Ward. Matching Impatient and Heterogeneous Demand and Supply (arXiv:2102.02710v5)",
+            "text": "Método: Modelo matemático de demanda y oferta heterogénea con abandono; aproximación fluida.\nHallazgo: El equilibrio entre rapidez y calidad depende de la distribución de paciencia.\nLímite: Resultados asintóticos bajo supuestos; no validan 10 minutos ni los pesos de TécnicoYa.\nAplicación propuesta: Mantener plazos configurables y medir aceptación, espera y abandono.\nLocalización: PDF pp. 1, 31. Referencia: arXiv:2102.02710v5. Archivo: 2102.02710v5 (1).pdf"
+          },
+          {
+            "title": "A05 | Liu, Li, Wu y Zhang (2021). Two Basic Queueing Models of Service Platforms in Digital Sharing Economy",
+            "text": "Método: Dos modelos de colas y ejemplos numéricos.\nHallazgo: Analiza estabilidad, espera, oferta ociosa y beneficios bajo distintas políticas.\nLímite: Modelos simplificados; no representan una medición de carga del servidor.\nAplicación propuesta: Separar capacidad del marketplace de capacidad informática; simular ausencia de técnicos.\nLocalización: PDF pp. 1-3. Referencia: arXiv:2108.02852v1. Archivo: 2108.02852v1.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Fichas de evidencia 5-6",
+        "sections": [
+          {
+            "title": "A06 | Demsyn-Jones (2022). Measurement and Applications of Position Bias in a Marketplace Search Engine",
+            "text": "Método: Estudio aplicado en Thumbtack con intervención aleatoria en posiciones.\nHallazgo: La posición influye en interacción y puede contaminar señales históricas del ranking.\nLímite: Una plataforma concreta; no implica que el ranking local ya sea imparcial.\nAplicación propuesta: Medir exposición por zona y nuevos técnicos; documentar pesos y desempates.\nLocalización: PDF pp. 1, 13. Referencia: arXiv:2206.11720v2. Archivo: 2206.11720v2.pdf"
+          },
+          {
+            "title": "A07 | Kido y Ohtsubo (2026). Reputation and institutional certification as complementary trust mechanisms in a single online market",
+            "text": "Método: Estudio transversal de casi un millón de anuncios de cartas Pokémon en eBay y modelo de señalización.\nHallazgo: Reputación y certificación cumplen funciones complementarias según contexto y valor.\nLímite: Preprint; mercado de coleccionables, sin identificación causal de todos los mecanismos.\nAplicación propuesta: Distinguir verificación administrativa de puntuación; una bandera no equivale a certificación profesional.\nLocalización: PDF pp. 1, 10-11. Referencia: arXiv:2608.17312v2. Archivo: 2608.17312v2.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Fichas de evidencia 7-8",
+        "sections": [
+          {
+            "title": "A08 | Micha, Trombetta y Pereyra (2024). Digital Labor Platforms, Domestic Work and Formalization: Evidence from Argentina",
+            "text": "Método: Documento de trabajo RedNIE 330; 300 trabajadoras, 1048 observaciones empleo-persona, efectos fijos.\nHallazgo: Encuentra asociación favorable entre uso de la plataforma y formalización en el caso estudiado.\nLímite: El documento declara no haber sido revisado por pares; sector y marco argentino.\nAplicación propuesta: No afirmar que registrar técnicos formaliza su trabajo; documentar independencia y alcance de la plataforma.\nLocalización: PDF pp. 2-3. Referencia: RedNIE 330. Archivo: 330.pdf"
+          },
+          {
+            "title": "A09 | Luca (2017). Designing Online Marketplaces: Trust and Reputation Mechanisms",
+            "text": "Método: Síntesis económica sobre mecanismos de reputación e información.\nHallazgo: El diseño de reseñas y de información visible influye en confianza y discriminación.\nLímite: No es evaluación experimental de TécnicoYa ni prescribe un stack.\nAplicación propuesta: Una calificación por servicio propio; trazabilidad y canal de revisión propuesto.\nLocalización: PDF pp. 1-2, 15-16. Referencia: Capítulo NBER, pp. 77-93. Archivo: 688845.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Fichas de evidencia 9-10",
+        "sections": [
+          {
+            "title": "A10 | Herrera Zuasnábar, Uribe Kajatt y Rey-de-Castro Hidalgo (2023). Pagos digitales e inclusión financiera",
+            "text": "Método: Estudio transversal descriptivo-correlacional; método: muestra de 164 microempresarios de una población de 283, en Pueblo Libre.\nHallazgo: Reporta correlación 0,858 entre pagos digitales e inclusión financiera.\nLímite: Correlación no equivale a causalidad. El resumen llama población a 164; el método precisa muestra de 164 sobre 283.\nAplicación propuesta: Pagos como ampliación sujeta a validación; no imponer suscripción por esta evidencia.\nLocalización: PDF pp. 2, 6-7, 10. Referencia: 10.15381/idata.v26i2.25582. Archivo: 81678884013.pdf"
+          },
+          {
+            "title": "A11 | Ibarra-Fretell y Grijalva-Salazar (2025). Hacia una economía plataformizada: el impacto de las plataformas digitales en las MYPEs de Lima, Perú",
+            "text": "Método: Encuesta descriptiva no experimental a 385 MYPES de ropa en Gamarra.\nHallazgo: El 67,5% reporta redes sociales como principal plataforma; hay barreras técnicas y financieras.\nLímite: Sector textil de Lima; no mide directamente tiempos de reparación ni Huancayo.\nAplicación propuesta: Usar lenguaje familiar y flujo corto; contrastar canal informal mediante estudio local.\nLocalización: PDF pp. 1, 5, 7. Referencia: 10.15649/2346030X.3530. Archivo: Art8+-+Edicion.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Fichas de evidencia 11-12",
+        "sections": [
+          {
+            "title": "A12 | Dedema y Rosenbaum (2024). Socio-technical issues in the platform-mediated gig economy",
+            "text": "Método: Revisión sistemática: 515 registros, 132 trabajos codificados, nueve bases.\nHallazgo: Agrupa problemas en entorno laboral digital, gestión algorítmica y diseño ético.\nLímite: Heterogeneidad de plataformas; síntesis no sustituye requisitos verificables.\nAplicación propuesta: Incluir privacidad, transparencia, revisión de decisiones y autonomía del técnico.\nLocalización: PDF pp. 1, 20, 23. Referencia: 10.1002/asi.24868. Archivo: Asso for Info Science   Tech - 2024 - Dedema - Socio‐technical issues in the platform‐mediated gig economy  A systematic.pdf"
+          },
+          {
+            "title": "A13 | Valente y colaboradores (2026). Fairness in the Latin American platform economy",
+            "text": "Método: Evaluación Fairwork con fuentes públicas, trabajadores y gestores; 68 plataformas.\nHallazgo: Discute remuneración, condiciones, contratos, gestión y representación.\nLímite: El resumen habla de nueve países y la conclusión de ocho sudamericanos; conservar discrepancia, no unificar cifras.\nAplicación propuesta: Incorporar reglas de suspensión explicables y revisión humana; no prometer empleo justo solo por digitalizar.\nLocalización: PDF pp. 1-2, 18. Referencia: 10.5209/crla.103717. Archivo: Fairness_in_the_Latin_American_platform_economy_As.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Fichas de evidencia 13-14",
+        "sections": [
+          {
+            "title": "A14 | Peña-García, Losada-Otálora, Pérez Auza y Cruz (2024). Reviews, trust, and customer experience in online marketplaces",
+            "text": "Método: 326 respuestas válidas; muestra por conveniencia de compradores de Mercado Libre Colombia; PLS-SEM.\nHallazgo: La calidad percibida de reseñas se relaciona con confianza; se estudia percepción de reseñas falsas.\nLímite: Hay diferencias entre la redacción de limitaciones y la tabla de hipótesis; no convertir toda relación en causalidad.\nAplicación propuesta: Vincular calificación a servicio completado y mostrar cantidad de reseñas.\nLocalización: PDF pp. 1, 10-11. Referencia: 10.3389/fcomm.2024.1460321. Archivo: fcomm-09-1460321.pdf"
+          },
+          {
+            "title": "A15 | Taylor (2018). On-Demand Service Platforms",
+            "text": "Método: Modelo analítico de precios, remuneración, sensibilidad a espera e independencia del proveedor.\nHallazgo: Las decisiones óptimas dependen de incertidumbre y características del mercado.\nLímite: No entrega tiempos universales ni precios válidos para Huancayo.\nAplicación propuesta: Distinguir respuesta del técnico de llegada al domicilio y de duración del trabajo.\nLocalización: PDF pp. 1-3. Referencia: 10.1287/msom.2017.0678. Archivo: On-Demand Service Platforms (1).pdf"
+          }
+        ]
+      },
+      {
+        "title": "Fichas de evidencia 15-16",
+        "sections": [
+          {
+            "title": "A17 | Yan, Liu, Shi y Liu (2022). On-demand service platform operations management: a literature review and research agendas",
+            "text": "Método: Revisión de 72 artículos de cuatro bases; compara plataformas individuales y múltiples.\nHallazgo: Identifica agendas dinámicas, métodos empíricos y modelización combinada.\nLímite: No establece un tamaño de servidor ni un algoritmo ganador universal.\nAplicación propuesta: Evaluar el ranking con datos locales y carga reproducible antes de cambiar arquitectura.\nLocalización: PDF pp. 1, 11-12. Referencia: 10.1108/MSCRA-01-2022-0002. Archivo: On-demand_service_platform_operations_management_a.pdf"
+          },
+          {
+            "title": "A18 | Sterner (2026). Biases in online reputation systems: a survey of the empirical literature",
+            "text": "Método: Revisión de literatura empírica sobre reputación.\nHallazgo: Distingue manipulación, reciprocidad, influencia social, selección y ruido.\nLímite: Sesgo hacia literatura inglesa y plataformas consolidadas; transferibilidad limitada.\nAplicación propuesta: Registrar exposición, volumen de reseñas y riesgos del arranque sin historial.\nLocalización: PDF pp. 1, 49-50. Referencia: 10.1007/s10660-026-10176-7. Archivo: s10660-026-10176-7.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Fichas de evidencia 17-18",
+        "sections": [
+          {
+            "title": "A19 | Teng, Botelho y Sudhir (borrador 2025 según archivo). Can customer ratings be discrimination amplifiers?",
+            "text": "Método: Modelo analítico y datos de una plataforma de trabajo; segmentos de clientes.\nHallazgo: Los promedios mostrados pueden amplificar sesgos de valoraciones anteriores.\nLímite: Borrador; magnitudes dependen del modelo y población; no trasladar brechas porcentuales a TécnicoYa.\nAplicación propuesta: No usar puntuación como único criterio; investigar apelaciones y exposición de perfiles nuevos.\nLocalización: PDF pp. 1-2; discusión final. Referencia: Borrador local, sin DOI confirmado. Archivo: TengBotelhoSudhir2025CustomerDiscrimAmpDRAFT.pdf"
+          },
+          {
+            "title": "A20 | Fuentes y González (2025). Transitions into and out of the gig economy",
+            "text": "Método: Datos longitudinales de la Encuesta Nacional de Empleo de Chile, 2021T1-2024T1; modelos probit.\nHallazgo: Describe alta rotación y transiciones entre trabajo de plataformas, empleo y desempleo.\nLímite: Contexto chileno y asociaciones observacionales; no garantiza ingresos sostenibles.\nAplicación propuesta: Disponibilidad voluntaria y métricas de permanencia, sin promesas de empleo estable.\nLocalización: PDF pp. 2, 12. Referencia: 10.1080/1369118X.2025.2496896. Archivo: Transitions into and out of the gig economy.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Fichas de evidencia 19-20",
+        "sections": [
+          {
+            "title": "A21 | Peng, Kalliamvakou, Cihon y Demirer (2023). The Impact of AI on Developer Productivity: Evidence from GitHub Copilot",
+            "text": "Método: Experimento controlado con 95 desarrolladores asignados; tarea de servidor HTTP en JavaScript.\nHallazgo: Reporta menor tiempo de realización con asistencia en esa tarea.\nLímite: No evalúa calidad del código ni demuestra utilidad de un chatbot para contratar técnicos.\nAplicación propuesta: IA como apoyo de desarrollo con revisión y pruebas; no justificación principal de un LLM de negocio.\nLocalización: PDF pp. 1, 5, 7-8. Referencia: arXiv:2302.06590v1. Archivo: 2302.06590v1.pdf"
+          },
+          {
+            "title": "A22 | Ibrahim y Zaki (2026, versión suministrada). Understanding AI Provider Recommendations in Local Service Markets",
+            "text": "Método: Auditoría de recomendaciones con registros oficiales en 100 áreas metropolitanas de EE. UU.\nHallazgo: La configuración de recuperación cambia la existencia y selección de proveedores recomendados.\nLímite: Preprint reciente; dominios y registros de EE. UU.; no certifica resultados para técnicos peruanos.\nAplicación propuesta: LLM opcional solo para estructurar texto; técnicos, precios y permisos deben salir de la base real.\nLocalización: PDF pp. 1, 8, 10. Referencia: arXiv:2609.18341v1. Archivo: 2609.18341v1.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Fichas de evidencia 21-22",
+        "sections": [
+          {
+            "title": "A23 | Aji y colaboradores (2022). Quick Reacher: An Application for Home Services",
+            "text": "Método: Prototipo de servicios y tiendas; ubicación, opiniones y módulos por rol.\nHallazgo: Describe selección de proveedores y quejas en una aplicación web.\nLímite: Conclusión de desarrollo sin evaluación de impacto local reproducible; incluye comercio ajeno al MVP.\nAplicación propuesta: Tomar separación de roles y solicitud; excluir tienda e inventario del núcleo.\nLocalización: PDF pp. 2, 7. Referencia: 10.22214/ijraset.2022.43552. Archivo: doc.pdf"
+          },
+          {
+            "title": "A24 | Raj y Koushik (2025). AI-Driven Optimization of On-Demand Services",
+            "text": "Método: Propuesta de DBSCAN, predicción y precios dinámicos; resultados tabulados.\nHallazgo: Reporta mejoras de asignación y tiempos; menciona simulaciones con datos reales.\nLímite: El resumen dice 30% y el cuerpo 40% para rapidez/tiempo con métricas no equivalentes; faltan detalles suficientes de dataset y réplica.\nAplicación propuesta: Antecedente exploratorio; mantener baseline determinista y exigir benchmark antes de usar DBSCAN.\nLocalización: PDF pp. 1, 5-6. Referencia: IJCRT25A3180. Archivo: IJCRT25A3180.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Fichas de evidencia 23-24",
+        "sections": [
+          {
+            "title": "A25 | Gothankar y colaboradores (2024). HomeServe: The On-Demand Home Services Platform",
+            "text": "Método: Descripción de plataforma, matching, rutas y pantallas.\nHallazgo: Integra roles, reservas y búsqueda de servicios domésticos.\nLímite: Resultados principalmente descriptivos y capturas; no demuestra aumento cuantificado de ingresos.\nAplicación propuesta: Referencia funcional; no copiar ruteo ni agenda sin un requisito aprobado.\nLocalización: PDF pp. 1, 4-6. Referencia: IJRAR24B1713. Archivo: IJRAR24B1713.pdf"
+          },
+          {
+            "title": "A26 | Tambe y colaboradores (2020). An Online System for Home Services",
+            "text": "Método: Propuesta de sistema doméstico, autenticación, servicios y puntuaciones.\nHallazgo: Presenta centralización de búsqueda y comunicación entre proveedor y cliente.\nLímite: Sin prueba comparativa sólida de reducción de espera en el contexto de TécnicoYa.\nAplicación propuesta: Referencia de flujo; validar mediante casos de aceptación locales.\nLocalización: PDF pp. 1, 4. Referencia: IJSDR2009067. Archivo: IJSDR2009067.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Fichas de evidencia 25-26",
+        "sections": [
+          {
+            "title": "A27 | Rathod y colaboradores (2025). Android Application for Home Services: Cappie",
+            "text": "Método: Prototipo Flutter con categorías, GPS, reservas y pagos.\nHallazgo: Identifica dificultades en dispositivos modestos e integración de pagos.\nLímite: Describe satisfacción y carga sin suficiente protocolo numérico en la conclusión.\nAplicación propuesta: Priorizar web móvil liviana; medir en dispositivos modestos antes de añadir apps nativas.\nLocalización: PDF pp. 1, 4. Referencia: IRJMETS, vol. 7, núm. 4, p. inicial 11437. Archivo: irjmets70400364396.pdf"
+          },
+          {
+            "title": "A28 | Krishna Veni y Bharathkumarmr (2025). Home Services Management System",
+            "text": "Método: Descripción de sistema web/móvil con cliente, proveedor y administración.\nHallazgo: Enumera reservas, pagos, opiniones y supervisión.\nLímite: La bibliografía incluye agricultura y clima sin relación directa clara; baja fuerza para justificar decisiones técnicas.\nAplicación propuesta: Usar solo como antecedente funcional secundario; no como evidencia de escalabilidad o seguridad.\nLocalización: PDF pp. 1, 4-5. Referencia: 10.56726/IRJMETS87015. Archivo: irjmets71200065749.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Fichas de evidencia 27-28",
+        "sections": [
+          {
+            "title": "A29 | Anasune, Shaikh, Sharma y Singh (2026). Reparo: A Hyper-Local, On-Demand Home Service Platform",
+            "text": "Método: Prototipo Next.js/NestJS/Supabase; menciona evaluación con 30 usuarios.\nHallazgo: Reporta tiempos y disponibilidad, además de RBAC y matching local.\nLímite: No trasladar 99,7% ni 500 ms sin duración, carga y réplica; referencias poco detalladas.\nAplicación propuesta: Comparar responsabilidades, no reemplazar stack; medir nuestro despliegue.\nLocalización: PDF pp. 1, 5-6. Referencia: 10.48175/IJARSCT-34358. Archivo: Paper34358.pdf"
+          },
+          {
+            "title": "A30 | Bejarano Gavilanes (2022). Implementación de una aplicación web para gestión de servicios técnicos a domicilio y control de inventario",
+            "text": "Método: Proyecto de titulación, Instituto San Gabriel; caso Centro Comercial Machado, Riobamba.\nHallazgo: Documenta Laravel/MySQL y levantamiento de necesidades del negocio.\nLímite: Caso institucional con inventario; no comparación de motores ni marketplace regional validado.\nAplicación propuesta: Antecedente de implementación Laravel; PostgreSQL se conserva por arquitectura actual, no por superioridad demostrada.\nLocalización: PDF pp. 1, 68-69. Referencia: Tesis local, octubre de 2022. Archivo: tesis37.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Fichas de evidencia 29-30",
+        "sections": [
+          {
+            "title": "A31 | Navarro Rossel y Tang Gómez (2019). Plataforma digital que conecte responsables del hogar con técnicos de servicios del hogar",
+            "text": "Método: Trabajo de suficiencia profesional, Universidad de Lima; propuesta de negocio, diseño y encuestas.\nHallazgo: Anexos presentan 56 responsables del hogar y 53 técnicos; destaca confianza y dificultad de contacto.\nLímite: Encuestas de Lima y antigüedad del estudio; no estimación representativa de Huancayo.\nAplicación propuesta: Antecedente nacional más próximo al servicio; repetir diagnóstico y prueba de valor en Huancayo.\nLocalización: PDF pp. 1, 116-117, 128-130. Referencia: Universidad de Lima, octubre de 2019. Archivo: Trabajo.pdf"
+          },
+          {
+            "title": "A32 | Einav, Farronato y Levin (2015). Peer-to-Peer Markets",
+            "text": "Método: Documento de trabajo NBER 21496; revisión y modelo económico.\nHallazgo: Explica búsqueda, matching, precios y reputación como decisiones del diseño de mercados.\nLímite: Versión de trabajo no revisada por NBER; no prescribe software ni beneficios locales.\nAplicación propuesta: Definir marketplace de dos lados y separar confianza, asignación y monetización.\nLocalización: PDF pp. 1-4, 24-25. Referencia: NBER Working Paper 21496. Archivo: w21496.pdf"
+          }
+        ]
+      }
+    ],
+    "page_count": 19
+  },
+  {
+    "name": "02-Analisis-MVP-Matching-y-Asistencia.pdf",
+    "title": "Análisis detallado: matching y asistencia",
+    "pages": [
+      {
+        "title": "Propósito y principio rector",
+        "sections": [
+          {
+            "title": "Propósito",
+            "text": "Versión 2.0 | Corte documental: 29/09/2026. Documento técnico para revisión académica. Implementado significa observado en código; no equivale a validación productiva. Las iteraciones son planes de trabajo, no actas ejecutadas. Las referencias [Axx] remiten a las fichas del documento 01 y al catálogo trazabilidad/v2/articulos.csv. Páginas citadas: numeración física del PDF, salvo indicación expresa. Los originales se conservan en fuentes/articulos/Axx.pdf; SHA-256 en fuentes/articulos/manifest.json."
+          },
+          {
+            "title": "Principio rector",
+            "text": "El servidor determina identidad, permisos, elegibilidad, tarifa y transición del servicio. El cliente confirma la contratación. Un asistente, si se incorpora, solo ayuda a capturar información: no inventa técnicos ni acepta servicios en nombre del usuario."
+          },
+          {
+            "title": "Estado actual",
+            "text": "React/Vite en frontend/web; Laravel en backend/api; FastAPI en python/api. PostgreSQL es referencia de despliegue; SQLite local y de pruebas no demuestra los bloqueos de PostgreSQL. No existe multitenencia empresarial, agenda por horas, chat, LLM de negocio, suscripción ni cobro integrado en el código inspeccionado."
+          },
+          {
+            "title": "Reglas clave",
+            "text": "Respuesta: 10 minutos; máximo 3 ofertas simultáneas; ventana global: 24 horas; calificación: 48 horas desde finalización. Pesos: cercanía 35%, tarifa 20%, valoración 30%, experiencia 15%. Fuente única: domain/rules.json. Son decisiones del proyecto, no valores demostrados por los artículos."
+          },
+          {
+            "title": "Actores y casos de uso",
+            "heads": [
+              "Actor",
+              "Caso principal",
+              "Restricción"
+            ],
+            "rows": [
+              [
+                "Cliente",
+                "CU1 solicitar; CU2 confirmar; CU3 seguir; CU4 calificar",
+                "Solo sus solicitudes; no inicia ni termina trabajos"
+              ],
+              [
+                "Técnico",
+                "CU5 responder; CU6 ejecutar; CU7 cambiar disponibilidad y tarifa",
+                "Solo ofertas propias y trabajos asignados"
+              ],
+              [
+                "Administrador",
+                "CU8 verificar; CU9 suspender/reactivar; CU10 supervisar",
+                "No convierte registro público en cuenta admin"
+              ],
+              [
+                "Sistema",
+                "CU11 vencer ofertas y reasignar",
+                "Respeta plazo global y no repite candidato"
+              ]
+            ]
+          },
+          {
+            "title": "Separación del ejemplo sanitario",
+            "text": "No se usa paciente, consulta médica ni consultorio como entidad. El aislamiento entre usuarios es autorización por propiedad, no multitenencia. La suscripción del ejemplo se sustituye por habilitación del técnico; cualquier cobro futuro requiere decisión propia."
+          }
+        ]
+      },
+      {
+        "title": "Procesos AS-IS y TO-BE",
+        "sections": [
+          {
+            "title": "AS-IS declarado, pendiente de campo",
+            "text": "Cliente detecta falla -> consulta contactos o redes -> busca técnico -> negocia -> recibe atención -> conserva referencias dispersas. Los puntos de dolor son hipótesis del proyecto a contrastar con A01, A11 y A31 y con investigación local."
+          },
+          {
+            "title": "TO-BE actual",
+            "text": "Cliente autenticado registra rubro, zona, dirección y falla. Laravel filtra elegibles y ordena el ranking; envía hasta tres ofertas internas. Un técnico acepta antes de vencer. Se fija agreed_fee y se requiere confirmación del cliente. Técnico inicia y finaliza; cliente puede calificar hasta 48 horas. Cada transición agrega evento."
+          },
+          {
+            "title": "Excepciones",
+            "text": "Sin candidatos: pendiente de disponibilidad hasta 24 horas. Oferta rechazada o vencida: buscar siguiente sin repetir técnico. Dos aceptaciones concurrentes: una sola debe ganar bajo bloqueo; pendiente demostrarlo con PostgreSQL real. Cliente cancela antes de ejecución: liberar disponibilidad y cancelar ofertas. Calificación vencida: no inventar puntuación."
+          },
+          {
+            "title": "BPMN textual para Bizagi",
+            "text": "Pools: Cliente, Plataforma, Técnico. Lane administrativa para habilitación. Evento de mensaje: solicitud. Tarea de servicio: calcular ranking. Compuerta exclusiva: ¿hay candidatos? Tarea de envío: hasta tres ofertas. Evento temporizador: 10 min por oferta y 24 h global. Compuerta basada en eventos: aceptación/rechazo/vencimiento. Confirmación cliente -> ejecución -> cierre -> temporizador de calificación. Modelar errores y cancelación en subproceso; el BPMN previo no cubre aún todas estas ramas."
+          },
+          {
+            "title": "Entregable de proceso",
+            "text": "Conservar archivo BPMN editable, exportación PDF, versión de herramienta y prueba de recorrido con cada rol. Esta descripción no acredita validación de un diagrama en Bizagi."
+          }
+        ]
+      },
+      {
+        "title": "Reglas de ranking y datos conceptuales",
+        "sections": [
+          {
+            "title": "Cálculo vigente",
+            "text": "Elegibles: verificados, disponibles, especialidad y zona coincidentes, no excluidos por ronda anterior. Cercanía=1 en zona principal y 0,5 en otra cubierta; no son kilómetros. Precio=1 si todas las tarifas son iguales; en otro caso (máximo-tarifa)/(máximo-mínimo). Valoración=rating/5. Experiencia=min(años/10,1). Puntaje ponderado redondeado a 6 decimales."
+          },
+          {
+            "title": "Desempate y conflicto heredado",
+            "text": "El código desempata por mayor valoración y después ID ascendente. RF-09 previo menciona antigüedad como criterio adicional. Se conserva como discrepancia D-01: decidir entre adecuar el requisito o añadir antigüedad validada. No declarar coincidencia total del código con el plan previo."
+          },
+          {
+            "title": "Modelo conceptual",
+            "text": "Usuario 1 -> 0..1 Perfil técnico. Cliente 1 -> N Solicitudes. Solicitud 1 -> N Ofertas; técnico 1 -> N Ofertas. Solicitud 0..1 -> Técnico asignado. Calificación y eventos residen hoy en Solicitud. Administrador 1 -> N cambios de acceso y anuncios. Chat, reservas horarias y pagos son entidades futuras separadas."
+          },
+          {
+            "title": "Riesgos de ranking",
+            "text": "Rating cero en nuevos técnicos reduce puntuación sin indicar mala calidad. La tarifa mínima puede favorecer precios no sostenibles. Exposición previa influye en reseñas [A06, A18, A19]. Proponer métricas y revisión humana; no alterar pesos sin datos y versionado."
+          },
+          {
+            "title": "TDD transversal",
+            "text": "Definir un caso que falla (RED), implementar lo mínimo (GREEN), refactorizar conservando pruebas. Usar reloj fijo, identidades sintéticas y fixture compartido JS/PHP/Python. Que existan pruebas hoy no demuestra que el desarrollo histórico siguiera TDD."
+          }
+        ]
+      },
+      {
+        "title": "Ampliaciones y criterios de cierre",
+        "sections": [
+          {
+            "title": "Decisiones de producto",
+            "heads": [
+              "Código",
+              "Propuesta",
+              "Condición"
+            ],
+            "rows": [
+              [
+                "E1",
+                "Chat determinista para registrar falla",
+                "Reusar validación y confirmación; no reemplazar formulario"
+              ],
+              [
+                "E2",
+                "LLM solo extracción de campos",
+                "E1 estable, corpus etiquetado, presupuesto y proveedor aprobados"
+              ],
+              [
+                "E3",
+                "Pagos integrados",
+                "Definir quién cobra, concepto, devolución y conciliación"
+              ],
+              [
+                "E4",
+                "Agenda por franjas",
+                "Requisito nuevo, conflictos, zona horaria y pruebas concurrentes"
+              ],
+              [
+                "E5",
+                "Empresas con varias cuentas",
+                "Tenants y membresías explícitos; no inferidos de roles"
+              ]
+            ]
+          },
+          {
+            "title": "Criterios de finalización del núcleo",
+            "text": "Flujo cliente-técnico-admin reproducible en QA, pruebas negativas aprobadas, reglas sincronizadas, migraciones verificadas con PostgreSQL, respaldo restaurado, errores visibles y accesibilidad revisada. Cada requisito tiene evidencia o una exclusión aprobada. Chat, pagos y LLM no bloquean el núcleo mientras estén formalmente fuera de alcance."
+          },
+          {
+            "title": "Estado de pruebas conocido",
+            "text": "El 28/09/2026 se ejecutaron 30 pruebas frontend y 19 Laravel (156 aserciones), además del build. Referencia: ejecución de la tarea de desarrollo; no se adjunta aquí un log nuevo ni se afirma cobertura porcentual. La suite Laravel usa SQLite. Se requiere generar evidencia persistente con commit, fecha y entorno en cada iteración."
+          },
+          {
+            "title": "Referencias",
+            "text": "Las referencias [Axx] remiten a las fichas del documento 01 y al catálogo trazabilidad/v2/articulos.csv. Páginas citadas: numeración física del PDF, salvo indicación expresa. Los originales se conservan en fuentes/articulos/Axx.pdf; SHA-256 en fuentes/articulos/manifest.json."
+          }
+        ]
+      }
+    ],
+    "page_count": 4
+  },
+  {
+    "name": "03-Backlog-tecnico-de-implementacion.pdf",
+    "title": "Backlog técnico de implementación",
+    "pages": [
+      {
+        "title": "Cómo trabajar este backlog",
+        "sections": [
+          {
+            "title": "Control",
+            "text": "Versión 2.0 | Corte documental: 29/09/2026. Documento técnico para revisión académica. Implementado significa observado en código; no equivale a validación productiva. Las iteraciones son planes de trabajo, no actas ejecutadas."
+          },
+          {
+            "title": "Orden y alcance",
+            "text": "Las diez iteraciones son paquetes de trabajo, no diez sprints ya realizados ni un calendario aprobado. I01-I05 e I08/I10 consolidan el núcleo. I06/I07/I09 son extensiones condicionadas. I09 depende de la puerta de calidad I10; sus números no obligan a publicar pagos antes de endurecer el sistema."
+          },
+          {
+            "title": "Scrum propuesto",
+            "text": "Product Owner ordena valor y alcance; Developers estiman y producen incremento; Scrum Master facilita el marco. Proponer sprints de dos semanas, capacidad y fechas por acordar. Cada sprint incluye planificación, Daily Scrum, revisión y retrospectiva. Una iteración puede dividirse en varios sprints si supera capacidad."
+          },
+          {
+            "title": "Para un desarrollador junior",
+            "text": "1. Leer historia y caso esperado. 2. Ubicar archivos. 3. Crear prueba que falla. 4. Cambiar una capa y validar contrato. 5. Ejecutar regresión. 6. Documentar migración y error. 7. Entregar en QA con evidencia. No copiar IDs, roles ni precios confiando en el navegador."
+          },
+          {
+            "title": "Definition of Ready",
+            "text": "Historia con actor y valor, reglas, criterios positivos/negativos, dependencias, dataset y alcance aprobados. Sin un criterio comprobable, refinar antes de desarrollar."
+          },
+          {
+            "title": "Definition of Done",
+            "text": "Código revisado, pruebas pertinentes aprobadas, contrato y diccionario actualizados, permisos probados, QA desplegado y evidencia vinculada a commit. Se documenta también lo pendiente. Un build exitoso no cierra aceptación ni rendimiento."
+          }
+        ]
+      },
+      {
+        "title": "I01 | Base de datos: núcleo del marketplace",
+        "sections": [
+          {
+            "title": "Objetivo y estado",
+            "text": "Reproducir el esquema real y garantizar integridad en PostgreSQL. Migraciones existentes; validación de concurrencia y recuperación en PostgreSQL pendiente."
+          },
+          {
+            "title": "Dependencias y trazabilidad",
+            "text": "Base de código y copias de prueba; ninguna ampliación de negocio. O2-O4; RF-01, RF-13, RF-23, RF-25; RNF-14. A09, A31."
+          },
+          {
+            "title": "Historias",
+            "heads": [
+              "ID",
+              "Necesidad"
+            ],
+            "rows": [
+              [
+                "HU-01",
+                "Como cliente quiero que mi solicitud se conserve sin mezclarse con la de otra cuenta."
+              ],
+              [
+                "HU-02",
+                "Como técnico quiero que una oferta y su aceptación queden registradas una sola vez."
+              ]
+            ]
+          },
+          {
+            "title": "Trabajo por capa",
+            "heads": [
+              "Área",
+              "Tarea concreta"
+            ],
+            "rows": [
+              [
+                "Frontend",
+                "Revisar tipos y nulabilidad consumidos en Marketplace.jsx. Mantener estados vacíos cuando no existan solicitudes. No crear tablas desde React."
+              ],
+              [
+                "Laravel",
+                "Revisar las tres migraciones de backend/api/database/migrations; probar up/down únicamente en BD desechable. Mantener FK, unique(request_id, technician_id) e índices. Corregir diferencias de database/init.sql mediante migración nueva, no editando una ya aplicada."
+              ],
+              [
+                "Python",
+                "Validar que las estructuras recibidas por /match mantengan IDs y números; no otorgar al microservicio acceso directo a la BD."
+              ],
+              [
+                "Datos",
+                "users, api_tokens, technicians, requests, offers, access_events y announcements. Diccionario físico en documento 04; tablas futuras en documento 05."
+              ]
+            ]
+          },
+          {
+            "title": "Cierre esperado",
+            "text": "I01-01: La restricción unique rechaza la segunda fila. Desplegar BD QA aislada; ejecutar php artisan migrate --force con variables de QA y comprobar migrate:status. Nunca ejecutar migrate:fresh en la base del usuario."
+          }
+        ]
+      },
+      {
+        "title": "I02 | Autenticación, roles y aislamiento de datos",
+        "sections": [
+          {
+            "title": "Objetivo y estado",
+            "text": "Asegurar que cada identidad solo opere sobre recursos autorizados. Registro, login, revocación, permisos y propiedad implementados; endurecimiento productivo pendiente."
+          },
+          {
+            "title": "Dependencias y trazabilidad",
+            "text": "I01 y catálogo de permisos revisado. O3; RF-28, RF-33; RNF-08, RNF-09. A09, A12."
+          },
+          {
+            "title": "Historias",
+            "heads": [
+              "ID",
+              "Necesidad"
+            ],
+            "rows": [
+              [
+                "HU-03",
+                "Como usuario quiero iniciar sesión y ver el panel de mi rol."
+              ],
+              [
+                "HU-04",
+                "Como administrador quiero suspender una cuenta sin permitir reutilizar sus tokens."
+              ]
+            ]
+          },
+          {
+            "title": "Trabajo por capa",
+            "heads": [
+              "Área",
+              "Tarea concreta"
+            ],
+            "rows": [
+              [
+                "Frontend",
+                "Auth.jsx maneja registro e inicio; marketplace-api.js elimina sesión ante 401; Marketplace.jsx confirma actor mediante /state antes de mostrar datos. Probar cambio de cuenta con respuesta anterior demorada."
+              ],
+              [
+                "Laravel",
+                "AuthController, ApiToken y Permissions son autoridad. Registro público solo client/technician; admin se crea con marketplace:admin. profile ignora role y userId arbitrarios. Suspensión revoca tokens; no suspender administradores ni cuentas con trabajo activo."
+              ],
+              [
+                "Python",
+                "No recibe contraseñas, Bearer tokens ni direcciones para ranking. Su ruta debe estar restringida a red interna."
+              ],
+              [
+                "Datos",
+                "api_tokens guarda SHA-256 del token y expiración; users usa password hasheado e is_active. No existe tenant_id: aislamiento actual por propiedad. Multitenencia futura requiere diseño y migración específicos."
+              ]
+            ]
+          },
+          {
+            "title": "Cierre esperado",
+            "text": "I02-01: 403 y ningún cambio de estado. Migrar acceso en QA; crear administrador por comando interactivo sin contraseña predeterminada; smoke de tres roles. Tokens y secretos fuera de Git."
+          }
+        ]
+      },
+      {
+        "title": "I03 | Habilitación y condiciones del servicio",
+        "sections": [
+          {
+            "title": "Objetivo y estado",
+            "text": "Controlar elegibilidad y mostrar condiciones económicas antes de confirmar. Habilitación, disponibilidad, tarifa y cobertura implementadas. Cobros y suscripción no existen."
+          },
+          {
+            "title": "Dependencias y trazabilidad",
+            "text": "I01-I02; definir qué evidencia revisa realmente el administrador. O2-O3; RF-07, RF-18, RF-30. A07, A09, A13."
+          },
+          {
+            "title": "Historias",
+            "heads": [
+              "ID",
+              "Necesidad"
+            ],
+            "rows": [
+              [
+                "HU-05",
+                "Como técnico quiero gestionar tarifa y cobertura sin cambiar acuerdos activos."
+              ],
+              [
+                "HU-06",
+                "Como cliente quiero confirmar la tarifa de visita del técnico propuesto."
+              ]
+            ]
+          },
+          {
+            "title": "Trabajo por capa",
+            "heads": [
+              "Área",
+              "Tarea concreta"
+            ],
+            "rows": [
+              [
+                "Frontend",
+                "TechnicianProfile.jsx permite tarifa y zonas; bloquea edición con ofertas pendientes o atenciones. Admin muestra verificación y AccessManager suspensión. Mostrar que visita no incluye necesariamente materiales ni reparación completa."
+              ],
+              [
+                "Laravel",
+                "technician-profile obtiene identidad de sesión, incluye zona principal y valida fee 0..100000. Bloquear cambio con ofertas pendientes o estados proposed/confirmed/in_progress. verify solo admin; nuevas cuentas técnicas no verificadas ni disponibles."
+              ],
+              [
+                "Python",
+                "Elegibilidad exige verified y available; no aceptar un pago como prueba de competencia. Probar exclusiones antes del ranking."
+              ],
+              [
+                "Datos",
+                "technicians.fee es referencia actual; requests.agreed_fee se copia al aceptar. La revisión documental detallada no tiene entidad propia: proponer verification_reviews antes de afirmar certificación."
+              ]
+            ]
+          },
+          {
+            "title": "Cierre esperado",
+            "text": "I03-01: No se modifica verificación. Publicar incremento en QA; administrador habilita una cuenta sintética; técnico activa disponibilidad y cliente revisa condiciones."
+          }
+        ]
+      },
+      {
+        "title": "I04 | Matching, disponibilidad y ciclo de solicitudes",
+        "sections": [
+          {
+            "title": "Objetivo y estado",
+            "text": "Asignar y reasignar sin duplicados, respetando plazos y confirmación. Algoritmo y ciclo implementados; integración real, concurrencia y calibración local pendientes."
+          },
+          {
+            "title": "Dependencias y trazabilidad",
+            "text": "I01-I03; fixture y reglas versionados. O2-O4; RF-06 a RF-19, RF-23. A03, A05, A06, A15."
+          },
+          {
+            "title": "Historias",
+            "heads": [
+              "ID",
+              "Necesidad"
+            ],
+            "rows": [
+              [
+                "HU-07",
+                "Como cliente quiero recibir una propuesta de un técnico elegible."
+              ],
+              [
+                "HU-08",
+                "Como técnico quiero responder antes del vencimiento sin doble asignación."
+              ]
+            ]
+          },
+          {
+            "title": "Trabajo por capa",
+            "heads": [
+              "Área",
+              "Tarea concreta"
+            ],
+            "rows": [
+              [
+                "Frontend",
+                "Mostrar estado y plazo real en RequestCard; no convertir contador en autoridad. Deshabilitar envío mientras procesa y mostrar 409 si otro actor ganó. Explicar ausencia de cobertura."
+              ],
+              [
+                "Laravel",
+                "Marketplace::dispatch, tick y action conservan ventana global. Procesador cada segundo mediante schedule:work. Mantener bloqueo de solicitud y técnico. Evaluar idempotencia de create antes de reintento automático; hoy no se observa clave idempotente."
+              ],
+              [
+                "Python",
+                "POST /match ordena elegibles y devuelve rulesVersion. Laravel contrasta IDs y puntajes con fallback local; timeout total 2 s, conexión 1 s. Probar caída, JSON inválido y versión divergente."
+              ],
+              [
+                "Datos",
+                "Ofertas pending/accepted/declined/expired/cancelled; no reiniciar pending_until al reasignar. Agreed_fee fija condición. Dirección solo asignado después de confirmación."
+              ]
+            ]
+          },
+          {
+            "title": "Cierre esperado",
+            "text": "I04-01: Como máximo tres ofertas pendientes. Desplegar API y Python juntos en QA; ejecutar worker de plazos supervisado y reiniciarlo durante una solicitud de prueba. Verificar recuperación sin reiniciar ventanas."
+          }
+        ]
+      },
+      {
+        "title": "I05 | Frontend de técnico, administrador y UX",
+        "sections": [
+          {
+            "title": "Objetivo y estado",
+            "text": "Hacer operables las tareas de proveedor y supervisión con estados claros. Paneles y anuncios por audiencia implementados; auditoría móvil y accesibilidad integral pendiente."
+          },
+          {
+            "title": "Dependencias y trazabilidad",
+            "text": "I02-I04 y contratos estables. O1-O3; RF-25, RF-30, RF-31; RNF-03, RNF-04. A01, A12, A27."
+          },
+          {
+            "title": "Historias",
+            "heads": [
+              "ID",
+              "Necesidad"
+            ],
+            "rows": [
+              [
+                "HU-09",
+                "Como técnico quiero distinguir ofertas, trabajos activos e historial."
+              ],
+              [
+                "HU-10",
+                "Como administrador quiero verificar perfiles y revisar cobertura por rubro."
+              ]
+            ]
+          },
+          {
+            "title": "Trabajo por capa",
+            "heads": [
+              "Área",
+              "Tarea concreta"
+            ],
+            "rows": [
+              [
+                "Frontend",
+                "Marketplace.jsx, AccountPanel.jsx, TechnicianProfile.jsx y Announcements.jsx. Revisar filtros, vacíos, busy, errores, teclado y foco visible. Mantener landing separada del panel y demo rotulada. No añadir roles elegibles en login real."
+              ],
+              [
+                "Laravel",
+                "state filtra solicitudes por propietario/ofertas; users y accessEvents solo admin. announcement-save valida audiencia, texto, URL e imagen; borrar/archivar no equivale a perder historial de servicios."
+              ],
+              [
+                "Python",
+                "No agregar endpoints de interfaz al motor de matching. Verificar que fallos de ranking no dejen pantalla sin mensaje."
+              ],
+              [
+                "Datos",
+                "Anuncios draft/published/archived para client/technician/both; catálogo de acceso visible sin hashes ni tokens."
+              ]
+            ]
+          },
+          {
+            "title": "Cierre esperado",
+            "text": "I05-01: Respuesta antigua no reemplaza actor actual. Compilar Vite y publicar QA; smoke técnico y admin con identidades sintéticas. Registrar capturas de escritorio y móvil y defectos de accesibilidad."
+          }
+        ]
+      },
+      {
+        "title": "I06 | Asistente determinista y registro guiado",
+        "sections": [
+          {
+            "title": "Objetivo y estado",
+            "text": "Proponer captura conversacional de una falla sin IA generativa. Ampliación propuesta, no implementada. Requiere aprobación del Product Owner antes de desarrollo."
+          },
+          {
+            "title": "Dependencias y trazabilidad",
+            "text": "I02-I04; validar que el formulario actual resulta insuficiente. O1; extensión EX-CHAT-01, relacionada con RF-01/02. A23, A25, A31."
+          },
+          {
+            "title": "Historias",
+            "heads": [
+              "ID",
+              "Necesidad"
+            ],
+            "rows": [
+              [
+                "HU-11",
+                "Como cliente quiero describir mi necesidad paso a paso y revisar el resumen antes de enviarlo."
+              ]
+            ]
+          },
+          {
+            "title": "Trabajo por capa",
+            "heads": [
+              "Área",
+              "Tarea concreta"
+            ],
+            "rows": [
+              [
+                "Frontend",
+                "Crear componente propuesto ServiceAssistant con pasos rubro -> zona -> dirección -> descripción -> resumen. Atrás no pierde campos. Mantener formulario alternativo. Las respuestas son plantillas; no diagnósticos técnicos."
+              ],
+              [
+                "Laravel",
+                "Reusar validación de create; añadir borrador persistente solo si se aprueba. Crear la solicitud únicamente al confirmar y con idempotencia del envío. No abrir chat libre entre usuarios en esta iteración."
+              ],
+              [
+                "Python",
+                "Sin LLM y sin nuevo servicio obligatorio; la clasificación manual por catálogo es suficiente. El ranking sigue por /match al confirmar."
+              ],
+              [
+                "Datos",
+                "Propuesta service_drafts: owner, paso, datos y expiración. No almacenar conversación completa por defecto. Definir retención y borrado antes de activar."
+              ]
+            ]
+          },
+          {
+            "title": "Cierre esperado",
+            "text": "I06-01: Resumen cambia; no hay solicitud prematura. Bandera de función apagada por defecto; habilitar en QA para usuarios de prueba. Rollback apaga bandera sin borrar solicitudes ya creadas."
+          }
+        ]
+      },
+      {
+        "title": "I07 | LLM opcional: parseo y controles",
+        "sections": [
+          {
+            "title": "Objetivo y estado",
+            "text": "Evaluar extracción de campos desde texto manteniendo decisiones deterministas. Experimento propuesto, no implementado ni aprobado para producción."
+          },
+          {
+            "title": "Dependencias y trazabilidad",
+            "text": "I06; dataset etiquetado, proveedor, costo y tratamiento de datos aprobados. O1-O3; EX-IA-01. A22 como riesgo de referencias inventadas; A21 solo apoyo al desarrollo."
+          },
+          {
+            "title": "Historias",
+            "heads": [
+              "ID",
+              "Necesidad"
+            ],
+            "rows": [
+              [
+                "HU-12",
+                "Como cliente quiero una sugerencia de rubro que pueda revisar y corregir antes de enviar."
+              ]
+            ]
+          },
+          {
+            "title": "Trabajo por capa",
+            "heads": [
+              "Área",
+              "Tarea concreta"
+            ],
+            "rows": [
+              [
+                "Frontend",
+                "Mostrar campos sugeridos y corrección manual. Pedir zona/dirección por controles explícitos; no inferir identidad. Si falla el parser, volver al flujo determinista sin perder borrador."
+              ],
+              [
+                "Laravel",
+                "Proponer adaptador server-side que valida JSON cerrado y lista permitida de especialidades. No entregar credenciales al navegador. No permitir tool calls, SQL, confirmación, tarifas o asignación por salida del modelo."
+              ],
+              [
+                "Python",
+                "Si se aloja parser en FastAPI, separar /parse propuesto de /match existente. Entrada limitada; salida {specialty, description, needsClarification}; validar enum y tamaño. Regla incierta -> null/pregunta, nunca inventar técnico."
+              ],
+              [
+                "Datos",
+                "Guardar solo resultado aceptado y versión del parser si se aprueba; registro de evaluación anonimizado, sin direcciones ni tokens enviados al proveedor por defecto."
+              ]
+            ]
+          },
+          {
+            "title": "Cierre esperado",
+            "text": "I07-01: Sin cambio de permisos ni acción. Solo QA, bandera apagada, cupo de costo y timeout fijados antes del ensayo. Comparar con baseline sin LLM. Activar únicamente si existe mejora medida sin pérdida de seguridad."
+          }
+        ]
+      },
+      {
+        "title": "I08 | Frontend cliente y flujo completo",
+        "sections": [
+          {
+            "title": "Objetivo y estado",
+            "text": "Validar de extremo a extremo la experiencia de solicitud a calificación. Formulario y ciclo básico implementados; asistente opcional y E2E integral pendientes."
+          },
+          {
+            "title": "Dependencias y trazabilidad",
+            "text": "I02-I05; I06 solo si se habilita asistente. I07 no es obligatorio. O1-O4; RF-01, RF-18, RF-22, RF-23, RF-25. A01, A14, A31."
+          },
+          {
+            "title": "Historias",
+            "heads": [
+              "ID",
+              "Necesidad"
+            ],
+            "rows": [
+              [
+                "HU-13",
+                "Como cliente quiero revisar tarifa, confirmar, seguir y calificar mi atención con claridad."
+              ]
+            ]
+          },
+          {
+            "title": "Trabajo por capa",
+            "heads": [
+              "Área",
+              "Tarea concreta"
+            ],
+            "rows": [
+              [
+                "Frontend",
+                "RequestForm, RequestCard y Auth: mantener sesión, errores de red y datos ingresados; confirmar tarifa de visita y estado sin falsa promesa de llegada. Revisar video con movimiento reducido y acceso directo al formulario."
+              ],
+              [
+                "Laravel",
+                "Verificar create, confirm, cancel y rate con autorización; calificar una vez, entero 1..5 y antes de 48 h. El historial no debe atribuir pagos inexistentes ni reporte técnico que todavía no se captura."
+              ],
+              [
+                "Python",
+                "Probar flujo con Python activo y caído sin cambiar resultado esperado del ranking."
+              ],
+              [
+                "Datos",
+                "Una calificación por solicitud en requests; promedio y reviews del técnico se actualizan en transacción. El estado completed permanece si no se califica: resolver discrepancia RF-24 antes de afirmar cierre automático."
+              ]
+            ]
+          },
+          {
+            "title": "Cierre esperado",
+            "text": "I08-01: Estados correctos, eventos y promedio consistente. Smoke completo en QA con cliente, técnico y admin distintos. Conservar IDs sintéticos y capturas sin datos personales. Publicar evidencia de camino feliz y excepciones."
+          }
+        ]
+      },
+      {
+        "title": "I09 | Pagos y operación productiva: extensión condicionada",
+        "sections": [
+          {
+            "title": "Objetivo y estado",
+            "text": "Diseñar cobro verificable sin alterar el núcleo hasta aprobar el modelo comercial. No implementado; diseño propuesto. No hay suscripción ni pasarela configurada."
+          },
+          {
+            "title": "Dependencias y trazabilidad",
+            "text": "Decidir si se cobra visita, comisión o suscripción; proveedor y obligaciones operativas; I02/I08/I10. RF-32 previo (método de pago), EX-PAY-01 (cobro real nuevo). A10, A15, A32."
+          },
+          {
+            "title": "Historias",
+            "heads": [
+              "ID",
+              "Necesidad"
+            ],
+            "rows": [
+              [
+                "HU-14",
+                "Como cliente quiero conocer qué pago y recibir un estado verificable sin cargos duplicados."
+              ]
+            ]
+          },
+          {
+            "title": "Trabajo por capa",
+            "heads": [
+              "Área",
+              "Tarea concreta"
+            ],
+            "rows": [
+              [
+                "Frontend",
+                "Proponer checkout alojado por proveedor; mostrar pendiente, pagado y fallido desde servidor. Redirección exitosa no prueba pago. No pedir tarjeta en formularios propios."
+              ],
+              [
+                "Laravel",
+                "Proponer pagos, intentos y eventos únicos por proveedor. Verificar firma de webhook, monto, moneda y recurso; transacción idempotente. Conciliación y reembolso con auditoría. No activar una suscripción inexistente al volver de checkout."
+              ],
+              [
+                "Python",
+                "Matching no participa en cobros ni recibe datos financieros. No cambiar ranking para privilegiar pagos sin regla de producto explícita."
+              ],
+              [
+                "Datos",
+                "payment_intents, payment_events y refunds propuestos. Importe en unidades menores enteras, moneda, referencia única, estado; sin PAN/CVV. Tabla de suscripciones solo tras aprobación independiente."
+              ]
+            ]
+          },
+          {
+            "title": "Cierre esperado",
+            "text": "I09-01: No duplicar cargo ni degradar pago confirmado. Sandbox de proveedor primero; documentación y secretos separados. Producción requiere decisión comercial, QA de seguridad y responsable de conciliación. No se realizan pagos reales en esta tarea."
+          }
+        ]
+      },
+      {
+        "title": "I10 | Seguridad, calidad y despliegue previo al lanzamiento",
+        "sections": [
+          {
+            "title": "Objetivo y estado",
+            "text": "Cerrar riesgos del núcleo con evidencia y autorizar una versión candidata. Pruebas unitarias/HTTP parciales existentes; carga, PostgreSQL real, restauración y auditoría integral pendientes."
+          },
+          {
+            "title": "Dependencias y trazabilidad",
+            "text": "I01-I05/I08 para núcleo. I06/I07/I09 únicamente si entran en la versión. O3-O5; RF-33; RNF-01 a RNF-14. A12, A18, A29."
+          },
+          {
+            "title": "Historias",
+            "heads": [
+              "ID",
+              "Necesidad"
+            ],
+            "rows": [
+              [
+                "HU-15",
+                "Como responsable de operación quiero desplegar y revertir una versión sin perder datos ni exponer cuentas."
+              ]
+            ]
+          },
+          {
+            "title": "Trabajo por capa",
+            "heads": [
+              "Área",
+              "Tarea concreta"
+            ],
+            "rows": [
+              [
+                "Frontend",
+                "Auditar teclado, reflujo móvil, errores, contraste y movimiento reducido; comprobar que videos no bloqueen login. Revisar dependencias, tamaño y carga de secuencias."
+              ],
+              [
+                "Laravel",
+                "Pruebas negativas, límites, contraseñas y tokens; restringir debug y datos en logs. Ensayar aceptación concurrente y tareas de plazos en PostgreSQL. Revisar acceso al matching, uploads de anuncios y recuperación."
+              ],
+              [
+                "Python",
+                "Pruebas de contrato, payloads límite, versión de reglas y caída. Restringir red y medir consumo; no exponer /match directamente a Internet."
+              ],
+              [
+                "Datos",
+                "Respaldo cifrado y restauración ensayada con objetivos acordados; política de retención y eliminación pendiente de revisión. Datos sintéticos para pruebas de carga."
+              ]
+            ]
+          },
+          {
+            "title": "Cierre esperado",
+            "text": "I10-01: Funciona con API, BD y worker reales. Puerta de salida: build, pruebas, migraciones, smoke, respaldo restaurado, seguridad y aceptación. Registrar imagen/commit, entorno, aprobador y reversión. Producción requiere aprobación final del responsable."
+          }
+        ]
+      }
+    ],
+    "page_count": 11
+  },
+  {
+    "name": "04-Diccionario-de-datos-fisico-PostgreSQL.pdf",
+    "title": "Diccionario de datos físico: PostgreSQL",
+    "pages": [
+      {
+        "title": "Fuente de verdad y convenciones",
+        "sections": [
+          {
+            "title": "Alcance",
+            "text": "Versión 2.0 | Corte documental: 29/09/2026. Documento técnico para revisión académica. Implementado significa observado en código; no equivale a validación productiva. Las iteraciones son planes de trabajo, no actas ejecutadas. Este diccionario describe las tres migraciones Laravel inspeccionadas. No es un esquema MySQL ni una migración a otro motor."
+          },
+          {
+            "title": "Jerarquía de fuentes",
+            "text": "Las migraciones aplicadas son la referencia del esquema evolutivo. database/init.sql es una referencia anterior y no incluye todas las incorporaciones recientes. PostgreSQL de despliegue y SQLite de desarrollo se distinguen; una columna unsigned de Blueprint no garantiza restricción de no negativos en PostgreSQL sin CHECK."
+          },
+          {
+            "title": "Notación",
+            "text": "PK: clave primaria. FK: clave foránea. UNIQUE: unicidad. Nulo Sí/No describe declaración. epoch ms: milisegundos UTC desde Unix; visualización America/Lima. Montos en PEN con dos decimales; agreed_fee no representa cobro realizado. *: Blueprint unsigned requiere verificar SQL generado por motor."
+          },
+          {
+            "title": "Relaciones",
+            "heads": [
+              "Origen",
+              "Destino",
+              "Cardinalidad"
+            ],
+            "rows": [
+              [
+                "technicians.user_id",
+                "users.id",
+                "0..1 perfil por usuario, UNIQUE"
+              ],
+              [
+                "requests.client_id",
+                "users.id",
+                "N solicitudes por cliente"
+              ],
+              [
+                "requests.technician_id",
+                "technicians.id",
+                "0..1 asignado por solicitud"
+              ],
+              [
+                "offers.request_id / technician_id",
+                "requests / technicians",
+                "N ofertas; par único"
+              ],
+              [
+                "access_events.actor_id / user_id",
+                "users.id",
+                "Actor y cuenta afectada"
+              ],
+              [
+                "announcements.updated_by",
+                "users.id",
+                "Administrador autor"
+              ]
+            ]
+          },
+          {
+            "title": "Seguridad de datos",
+            "text": "No exponer password ni token_hash. Dirección accesible al cliente, admin y técnico asignado solo tras confirmación. Minimizar datos en logs. Catálogos de roles y estados están en aplicación; faltan CHECK equivalentes para varias reglas."
+          }
+        ]
+      },
+      {
+        "title": "Tabla: users",
+        "sections": [
+          {
+            "title": "Responsabilidad",
+            "text": "Identidades de los tres roles y habilitación de acceso."
+          },
+          {
+            "title": "Columnas",
+            "heads": [
+              "Campo / tipo",
+              "Nulo",
+              "Regla / significado"
+            ],
+            "rows": [
+              [
+                "id (bigint identidad)",
+                "No",
+                "PK. Identificador primario"
+              ],
+              [
+                "name (varchar(255))",
+                "No",
+                "Sin restricción adicional declarada. Nombre visible"
+              ],
+              [
+                "email (varchar(255))",
+                "No",
+                "UNIQUE. Correo de acceso único"
+              ],
+              [
+                "password (varchar(255))",
+                "No",
+                "Sin restricción adicional declarada. Hash de contraseña"
+              ],
+              [
+                "role (varchar(255))",
+                "No",
+                "Sin restricción adicional declarada. client, technician o admin (validación de aplicación)"
+              ],
+              [
+                "created_at (timestamp)",
+                "Sí",
+                "Marca temporal Eloquent. Fecha de creación"
+              ],
+              [
+                "updated_at (timestamp)",
+                "Sí",
+                "Marca temporal Eloquent. Fecha de última modificación"
+              ],
+              [
+                "is_active (boolean)",
+                "No",
+                "default true. Permiso de acceso a la cuenta"
+              ]
+            ]
+          },
+          {
+            "title": "Fuente",
+            "text": "backend/api/database/migrations/: 2026_09_22_000001_create_marketplace.php, 2026_09_28_000002_add_account_access.php"
+          }
+        ]
+      },
+      {
+        "title": "Tabla: api_tokens",
+        "sections": [
+          {
+            "title": "Responsabilidad",
+            "text": "Sesiones revocables; nunca almacenar el token en claro."
+          },
+          {
+            "title": "Columnas",
+            "heads": [
+              "Campo / tipo",
+              "Nulo",
+              "Regla / significado"
+            ],
+            "rows": [
+              [
+                "id (bigint identidad)",
+                "No",
+                "PK. Identificador primario"
+              ],
+              [
+                "user_id (bigint FK)",
+                "No",
+                "FK; ver relaciones. Usuario al que pertenece el registro"
+              ],
+              [
+                "token_hash (varchar(64))",
+                "No",
+                "UNIQUE. SHA-256 del token Bearer"
+              ],
+              [
+                "expires_at (timestamp)",
+                "No",
+                "Sin restricción adicional declarada. Caducidad de sesión (timestamp) u oferta (ms), según tabla"
+              ]
+            ]
+          },
+          {
+            "title": "Fuente",
+            "text": "backend/api/database/migrations/: 2026_09_22_000001_create_marketplace.php"
+          }
+        ]
+      },
+      {
+        "title": "Tabla: technicians",
+        "sections": [
+          {
+            "title": "Responsabilidad",
+            "text": "Perfil de oferta profesional; relación 1:1 opcional con usuario."
+          },
+          {
+            "title": "Columnas",
+            "heads": [
+              "Campo / tipo",
+              "Nulo",
+              "Regla / significado"
+            ],
+            "rows": [
+              [
+                "id (uuid)",
+                "No",
+                "PK. Identificador primario"
+              ],
+              [
+                "user_id (bigint FK)",
+                "No",
+                "UNIQUE; FK; ver relaciones. Usuario al que pertenece el registro"
+              ],
+              [
+                "zone (varchar(255))",
+                "No",
+                "Sin restricción adicional declarada. Zona principal o zona solicitada"
+              ],
+              [
+                "zones (json)",
+                "No",
+                "Sin restricción adicional declarada. Arreglo JSON de zonas cubiertas"
+              ],
+              [
+                "specialties (json)",
+                "No",
+                "Sin restricción adicional declarada. Arreglo JSON de rubros técnicos"
+              ],
+              [
+                "fee (numeric(10,2))",
+                "No",
+                "Sin restricción adicional declarada. Tarifa vigente de visita en PEN"
+              ],
+              [
+                "rating (numeric(9,6))",
+                "No",
+                "default 0. Promedio técnico o calificación del servicio, según tabla"
+              ],
+              [
+                "reviews (integer*)",
+                "No",
+                "default 0. Número de calificaciones"
+              ],
+              [
+                "years (integer*)",
+                "No",
+                "default 0. Años declarados de experiencia"
+              ],
+              [
+                "verified (boolean)",
+                "No",
+                "default false. Habilitación administrativa"
+              ],
+              [
+                "available (boolean)",
+                "No",
+                "default false. Disponibilidad operativa"
+              ]
+            ]
+          },
+          {
+            "title": "Fuente",
+            "text": "backend/api/database/migrations/: 2026_09_22_000001_create_marketplace.php"
+          }
+        ]
+      },
+      {
+        "title": "Tabla: requests",
+        "sections": [
+          {
+            "title": "Responsabilidad",
+            "text": "Solicitud y ciclo de atención del cliente."
+          },
+          {
+            "title": "Columnas",
+            "heads": [
+              "Campo / tipo",
+              "Nulo",
+              "Regla / significado"
+            ],
+            "rows": [
+              [
+                "id (uuid)",
+                "No",
+                "PK. Identificador primario"
+              ],
+              [
+                "client_id (bigint FK)",
+                "No",
+                "FK; ver relaciones. Propietario de la solicitud"
+              ],
+              [
+                "specialty (varchar(255))",
+                "No",
+                "Sin restricción adicional declarada. Rubro solicitado"
+              ],
+              [
+                "zone (varchar(255))",
+                "No",
+                "Sin restricción adicional declarada. Zona principal o zona solicitada"
+              ],
+              [
+                "address (varchar(255))",
+                "No",
+                "Sin restricción adicional declarada. Dirección privada del servicio"
+              ],
+              [
+                "description (text)",
+                "No",
+                "Sin restricción adicional declarada. Descripción de falla"
+              ],
+              [
+                "status (varchar(255))",
+                "No",
+                "INDEX. Estado del catálogo correspondiente"
+              ],
+              [
+                "technician_id (uuid)",
+                "Sí",
+                "Sin restricción adicional declarada. Técnico invitado o asignado"
+              ],
+              [
+                "agreed_fee (numeric(10,2))",
+                "Sí",
+                "Sin restricción adicional declarada. Tarifa de visita fijada al aceptar"
+              ],
+              [
+                "rating (smallint*)",
+                "Sí",
+                "Sin restricción adicional declarada. Promedio técnico o calificación del servicio, según tabla"
+              ],
+              [
+                "created_ms (bigint)",
+                "No",
+                "Sin restricción adicional declarada. Instante de registro en epoch ms"
+              ],
+              [
+                "pending_until (bigint)",
+                "No",
+                "Sin restricción adicional declarada. Fin de ventana de 24 h en epoch ms"
+              ],
+              [
+                "completed_at (bigint)",
+                "Sí",
+                "Sin restricción adicional declarada. Instante de finalización en epoch ms"
+              ],
+              [
+                "rating_until (bigint)",
+                "Sí",
+                "Sin restricción adicional declarada. Fin de plazo de 48 h en epoch ms"
+              ],
+              [
+                "events (json)",
+                "No",
+                "Sin restricción adicional declarada. Arreglo JSON {at,text} del ciclo"
+              ]
+            ]
+          },
+          {
+            "title": "Fuente",
+            "text": "backend/api/database/migrations/: 2026_09_22_000001_create_marketplace.php"
+          }
+        ]
+      },
+      {
+        "title": "Tabla: offers",
+        "sections": [
+          {
+            "title": "Responsabilidad",
+            "text": "Invitaciones individuales a técnicos y su respuesta."
+          },
+          {
+            "title": "Columnas",
+            "heads": [
+              "Campo / tipo",
+              "Nulo",
+              "Regla / significado"
+            ],
+            "rows": [
+              [
+                "id (bigint identidad)",
+                "No",
+                "PK. Identificador primario"
+              ],
+              [
+                "request_id (uuid)",
+                "No",
+                "Sin restricción adicional declarada. Solicitud que originó la oferta"
+              ],
+              [
+                "technician_id (uuid)",
+                "No",
+                "Sin restricción adicional declarada. Técnico invitado o asignado"
+              ],
+              [
+                "status (varchar(255))",
+                "No",
+                "Sin restricción adicional declarada. Estado del catálogo correspondiente"
+              ],
+              [
+                "sent_at (bigint)",
+                "No",
+                "Sin restricción adicional declarada. Instante de envío en epoch ms"
+              ],
+              [
+                "expires_at (bigint)",
+                "No",
+                "INDEX. Caducidad de sesión (timestamp) u oferta (ms), según tabla"
+              ],
+              [
+                "score (numeric(9,6))",
+                "No",
+                "Sin restricción adicional declarada. Puntaje redondeado a 6 decimales"
+              ]
+            ]
+          },
+          {
+            "title": "Fuente",
+            "text": "backend/api/database/migrations/: 2026_09_22_000001_create_marketplace.php"
+          }
+        ]
+      },
+      {
+        "title": "Tabla: access_events",
+        "sections": [
+          {
+            "title": "Responsabilidad",
+            "text": "Auditoría de suspensión o reactivación de cuenta."
+          },
+          {
+            "title": "Columnas",
+            "heads": [
+              "Campo / tipo",
+              "Nulo",
+              "Regla / significado"
+            ],
+            "rows": [
+              [
+                "id (bigint identidad)",
+                "No",
+                "PK. Identificador primario"
+              ],
+              [
+                "actor_id (bigint FK)",
+                "No",
+                "FK; ver relaciones. Administrador que ejecutó cambio"
+              ],
+              [
+                "user_id (bigint FK)",
+                "No",
+                "FK; ver relaciones. Usuario al que pertenece el registro"
+              ],
+              [
+                "action (varchar(255))",
+                "No",
+                "Sin restricción adicional declarada. activate o suspend"
+              ],
+              [
+                "created_at (timestamp)",
+                "No",
+                "Sin restricción adicional declarada. Ver contrato de dominio"
+              ]
+            ]
+          },
+          {
+            "title": "Fuente",
+            "text": "backend/api/database/migrations/: 2026_09_28_000002_add_account_access.php"
+          }
+        ]
+      },
+      {
+        "title": "Tabla: announcements",
+        "sections": [
+          {
+            "title": "Responsabilidad",
+            "text": "Mensajes administrativos dirigidos por audiencia."
+          },
+          {
+            "title": "Columnas",
+            "heads": [
+              "Campo / tipo",
+              "Nulo",
+              "Regla / significado"
+            ],
+            "rows": [
+              [
+                "id (uuid)",
+                "No",
+                "PK. Identificador primario"
+              ],
+              [
+                "title (varchar(120))",
+                "No",
+                "Sin restricción adicional declarada. Título del anuncio"
+              ],
+              [
+                "body (text)",
+                "No",
+                "Sin restricción adicional declarada. Texto del anuncio"
+              ],
+              [
+                "audience (varchar(20))",
+                "No",
+                "Sin restricción adicional declarada. client, technician o both"
+              ],
+              [
+                "status (varchar(20))",
+                "No",
+                "default 'draft'. Estado del catálogo correspondiente"
+              ],
+              [
+                "priority (integer*)",
+                "No",
+                "default 0. Orden de presentación (0..100 API)"
+              ],
+              [
+                "image (text (PostgreSQL))",
+                "Sí",
+                "Sin restricción adicional declarada. Imagen data URL validada; no archivo externo"
+              ],
+              [
+                "link_url (varchar(2048))",
+                "Sí",
+                "Sin restricción adicional declarada. URL http/https opcional"
+              ],
+              [
+                "link_label (varchar(40))",
+                "Sí",
+                "Sin restricción adicional declarada. Texto del enlace opcional"
+              ],
+              [
+                "updated_by (bigint FK)",
+                "No",
+                "FK; ver relaciones. Administrador que modificó anuncio"
+              ],
+              [
+                "created_at (timestamp)",
+                "Sí",
+                "Marca temporal Eloquent. Fecha de creación"
+              ],
+              [
+                "updated_at (timestamp)",
+                "Sí",
+                "Marca temporal Eloquent. Fecha de última modificación"
+              ]
+            ]
+          },
+          {
+            "title": "Fuente",
+            "text": "backend/api/database/migrations/: 2026_09_28_000003_create_announcements.php"
+          }
+        ]
+      },
+      {
+        "title": "Integridad y cambios pendientes",
+        "sections": [
+          {
+            "title": "Restricciones adicionales",
+            "heads": [
+              "Objeto",
+              "Declaración"
+            ],
+            "rows": [
+              [
+                "offers",
+                "UNIQUE(request_id, technician_id); índice expires_at; FK request con cascada de eliminación"
+              ],
+              [
+                "requests",
+                "Índice status; technician_id FK nullable; client_id FK users"
+              ],
+              [
+                "api_tokens",
+                "token_hash único; user_id FK con cascada"
+              ],
+              [
+                "announcements",
+                "Índice compuesto (status, audience); updated_by FK"
+              ]
+            ]
+          },
+          {
+            "title": "Brechas del esquema",
+            "text": "Validación de role, status, rangos y formatos reside principalmente en Laravel. Proponer CHECK para importes y calificaciones, restricciones de estados y política de eliminación antes de carga directa. Revisión de verificación profesional, chat y pagos no tiene tablas actuales. No incluirlas como ejecutadas."
+          },
+          {
+            "title": "Procedimiento de cambio",
+            "text": "Crear migración nueva; probar con copia de QA, datos inválidos y rollback compatible; actualizar diccionario y contratos; registrar commit e imagen. No editar una migración ya desplegada para ocultar diferencias."
+          }
+        ]
+      }
+    ],
+    "page_count": 9
+  },
+  {
+    "name": "05-Diccionario-conceptual-y-contratos.pdf",
+    "title": "Diccionario conceptual y contratos de datos",
+    "pages": [
+      {
+        "title": "Conceptos y propiedad",
+        "sections": [
+          {
+            "title": "Propósito",
+            "text": "Versión 2.0 | Corte documental: 29/09/2026. Documento técnico para revisión académica. Implementado significa observado en código; no equivale a validación productiva. Las iteraciones son planes de trabajo, no actas ejecutadas. Complementa el diccionario físico: define significado de negocio y datos intercambiados, no duplica columnas."
+          },
+          {
+            "title": "Concepto",
+            "heads": [
+              "Entidad de negocio",
+              "Responsable",
+              "Regla"
+            ],
+            "rows": [
+              [
+                "Cuenta",
+                "Usuario autenticado",
+                "Un rol vigente; acceso revocable"
+              ],
+              [
+                "Perfil profesional",
+                "Técnico",
+                "Habilitación y disponibilidad son independientes"
+              ],
+              [
+                "Solicitud",
+                "Cliente",
+                "Una falla en un rubro y zona; propietario inmutable"
+              ],
+              [
+                "Oferta",
+                "Sistema / técnico destinatario",
+                "Una invitación por técnico y solicitud"
+              ],
+              [
+                "Acuerdo",
+                "Cliente y técnico",
+                "Asignación propuesta por aceptación y confirmada por cliente"
+              ],
+              [
+                "Calificación",
+                "Cliente propietario",
+                "Única, 1..5, tras finalización y antes del vencimiento"
+              ],
+              [
+                "Evento",
+                "Sistema",
+                "Traza temporal; no sustituye auditoría completa"
+              ],
+              [
+                "Anuncio",
+                "Administrador",
+                "Audiencia y estado controlan visibilidad"
+              ]
+            ]
+          },
+          {
+            "title": "Modelo de relaciones",
+            "text": "Cuenta cliente -> Solicitud -> Oferta <- Perfil técnico <- Cuenta técnica. Solicitud -> Perfil asignado es opcional hasta aceptación. No hay entidad de paciente, consultorio ni tenant. La dirección pertenece al contexto de la solicitud y no se envía al motor de ranking."
+          },
+          {
+            "title": "Glosario",
+            "text": "Habilitado: verified=true; no certificación legal automática. Disponible: puede recibir ofertas. Propuesto: técnico aceptó, falta cliente. Tarifa: visita, no presupuesto total. Sin cobertura: no se asignó dentro del plazo, no significa ausencia definitiva de técnicos."
+          }
+        ]
+      },
+      {
+        "title": "Contrato de escritura y lectura actual",
+        "sections": [
+          {
+            "title": "Payload de acción",
+            "heads": [
+              "Acción",
+              "Campos",
+              "Origen confiable"
+            ],
+            "rows": [
+              [
+                "create",
+                "specialty, zone, address, description",
+                "client_id sale de sesión"
+              ],
+              [
+                "accept/decline/confirm/start/complete/cancel",
+                "id de solicitud",
+                "Permisos y estado en servidor"
+              ],
+              [
+                "rate",
+                "id, rating entero 1..5",
+                "Cliente dueño; ventana de 48 h"
+              ],
+              [
+                "technician-profile",
+                "zone, zones[], fee",
+                "Perfil identificado por usuario de sesión"
+              ],
+              [
+                "verify",
+                "technicianId, verified boolean",
+                "Solo admin"
+              ],
+              [
+                "accounts",
+                "userId, active boolean",
+                "Solo admin; protege trabajo activo"
+              ],
+              [
+                "profile",
+                "name",
+                "Solo propio usuario"
+              ],
+              [
+                "announcement-save",
+                "id opcional, título, texto, audiencia, estado y otros",
+                "Solo admin; ver validación del servicio"
+              ]
+            ]
+          },
+          {
+            "title": "GET /api/state",
+            "text": "actor contiene id, name, role, email, permissions. state contiene requests, technicians, announcements, users y accessEvents. users y accessEvents están vacíos para no administradores. Técnicos ven solicitudes asignadas o con oferta previa; dirección es null antes de confirmación o si no son asignados. No se afirma anonimización completa del resto del historial."
+          },
+          {
+            "title": "Convención de IDs",
+            "text": "actor.id técnico usa UUID del perfil; actor.id cliente/admin usa ID de users convertido a texto. userId de accounts usa ID numérico de users. No intercambiar identificadores; esta diferencia merece pruebas de contrato."
+          },
+          {
+            "title": "Errores",
+            "text": "401 sesión ausente/vencida; 403 falta de autorización; 409 transición o condición incompatible; 422 datos inválidos. Validar mensajes legibles; no depender de texto exacto para lógica de permisos."
+          }
+        ]
+      },
+      {
+        "title": "Estados y tiempos",
+        "sections": [
+          {
+            "title": "Transición principal",
+            "heads": [
+              "Desde",
+              "Evento autorizado",
+              "Hacia"
+            ],
+            "rows": [
+              [
+                "Sin solicitud",
+                "create cliente",
+                "searching o pending_availability"
+              ],
+              [
+                "searching",
+                "accept técnico elegible",
+                "proposed"
+              ],
+              [
+                "searching",
+                "decline/vencimiento",
+                "searching, pending_availability o unassigned"
+              ],
+              [
+                "pending_availability",
+                "candidato disponible / 24 h",
+                "searching / unassigned"
+              ],
+              [
+                "proposed",
+                "confirm propietario",
+                "confirmed"
+              ],
+              [
+                "confirmed",
+                "start asignado",
+                "in_progress"
+              ],
+              [
+                "in_progress",
+                "complete asignado",
+                "completed"
+              ],
+              [
+                "completed",
+                "rate propietario dentro de plazo",
+                "rated"
+              ],
+              [
+                "searching/pendiente/proposed/confirmed",
+                "cancel propietario",
+                "cancelled"
+              ]
+            ]
+          },
+          {
+            "title": "Reglas de tiempo",
+            "text": "Respuesta: 10 minutos; máximo 3 ofertas simultáneas; ventana global: 24 horas; calificación: 48 horas desde finalización. Pesos: cercanía 35%, tarifa 20%, valoración 30%, experiencia 15%. Fuente única: domain/rules.json. Son decisiones del proyecto, no valores demostrados por los artículos."
+          },
+          {
+            "title": "Datos derivados",
+            "text": "count de ofertas pendientes, contador de respuesta y cobertura se calculan; no son autoridad del navegador. rating del técnico es promedio incremental y reviews el denominador. No mezclar milisegundos con segundos ni timestamp SQL con epoch sin conversión."
+          },
+          {
+            "title": "Discrepancia de cierre",
+            "text": "completed sin calificación no cambia automáticamente a rated ni a un nuevo estado al vencer. RF-24 previo exige cierre sin puntuación: conservar brecha y acordar semántica antes de implementar."
+          }
+        ]
+      },
+      {
+        "title": "Modelo futuro separado del vigente",
+        "sections": [
+          {
+            "title": "Extensión propuesta",
+            "heads": [
+              "Concepto",
+              "Entidad propuesta",
+              "Campos mínimos",
+              "Condición"
+            ],
+            "rows": [
+              [
+                "Borrador guiado",
+                "service_drafts",
+                "id, owner, step, payload, expires_at",
+                "I06 aprobado; no contiene credenciales"
+              ],
+              [
+                "Mensajería libre",
+                "conversations / messages",
+                "participantes autorizados, texto, fecha, retención",
+                "No incluida por defecto en I06"
+              ],
+              [
+                "Pago",
+                "payment_intents / events",
+                "request, minor_amount, currency, provider_ref, status",
+                "I09; firma e idempotencia"
+              ],
+              [
+                "Reembolso",
+                "refunds",
+                "payment, amount, reason, audit",
+                "Proceso aprobado y conciliación"
+              ],
+              [
+                "Agenda",
+                "availability_slots / bookings",
+                "técnico, inicio, fin, zona horaria, estado",
+                "Fuera del núcleo; resolver solapamientos"
+              ],
+              [
+                "Multitenencia",
+                "organizations / memberships",
+                "organización, usuario, rol de membresía",
+                "Nueva necesidad empresarial explícita"
+              ]
+            ]
+          },
+          {
+            "title": "Compatibilidad",
+            "text": "Campos futuros no deben aparecer como tablas actuales ni migraciones ejecutadas. El parser LLM propuesto devuelve campos sugeridos, no IDs de técnicos ni precios. Los ejemplos de payload deben usar datos sintéticos y no copiar información personal de los artículos."
+          },
+          {
+            "title": "Referencias",
+            "text": "Las referencias [Axx] remiten a las fichas del documento 01 y al catálogo trazabilidad/v2/articulos.csv. Páginas citadas: numeración física del PDF, salvo indicación expresa. Los originales se conservan en fuentes/articulos/Axx.pdf; SHA-256 en fuentes/articulos/manifest.json."
+          }
+        ]
+      }
+    ],
+    "page_count": 4
+  },
+  {
+    "name": "06-Diseno-tecnico-arquitectura.pdf",
+    "title": "Diseño técnico: React, Laravel, FastAPI y PostgreSQL",
+    "pages": [
+      {
+        "title": "Arquitectura y límites",
+        "sections": [
+          {
+            "title": "Control",
+            "text": "Versión 2.0 | Corte documental: 29/09/2026. Documento técnico para revisión académica. Implementado significa observado en código; no equivale a validación productiva. Las iteraciones son planes de trabajo, no actas ejecutadas."
+          },
+          {
+            "title": "Componente",
+            "heads": [
+              "Ruta",
+              "Tecnología",
+              "Responsabilidad",
+              "Límite"
+            ],
+            "rows": [
+              [
+                "frontend/web",
+                "React + Vite",
+                "Landing, acceso, paneles y demo",
+                "No autoriza operaciones reales"
+              ],
+              [
+                "backend/api",
+                "Laravel",
+                "Identidad, permisos, estados y transacciones",
+                "Fuente de verdad del servicio"
+              ],
+              [
+                "python/api",
+                "FastAPI",
+                "Ranking numérico",
+                "No opera cuentas ni solicitudes"
+              ],
+              [
+                "database + migraciones",
+                "PostgreSQL",
+                "Persistencia e integridad",
+                "No sustituye validación de API"
+              ]
+            ]
+          },
+          {
+            "title": "Recorrido de datos",
+            "text": "Navegador -> web/proxy -> Laravel -> PostgreSQL. Laravel -> FastAPI /match, con fallback PHP si falla. Worker Laravel procesa plazos. JS calcula ranking solo para demo localStorage. En producción, API y matching deben quedar detrás de los controles de red previstos."
+          },
+          {
+            "title": "Decisión de stack",
+            "text": "Se mantiene la arquitectura académica del monorepo por separación de responsabilidades y trabajo previo. A30 ilustra un caso Laravel/MySQL, pero no demuestra que MySQL sea obligatorio ni superior. A29 usa otro stack: se comparan capacidades, no marcas. Cambiar motor requiere ADR, migraciones y evaluación propias."
+          },
+          {
+            "title": "Riesgo de redundancia",
+            "text": "La regla se replica en tres lenguajes por finalidad demostrativa. domain/rules.json y fixture compartido evitan cambios manuales divergentes. Laravel verifica ranking remoto contra su cálculo; esto añade trabajo duplicado que debe incluirse en las mediciones."
+          }
+        ]
+      },
+      {
+        "title": "Secuencias técnicas principales",
+        "sections": [
+          {
+            "title": "Registro e inicio",
+            "text": "React POST /api/register -> validación client/technician -> usuario y perfil en transacción -> 201 sin token. Login verifica hash y acceso -> crea token aleatorio, persiste hash y expiración -> actor. React consulta /state; recién entonces habilita panel. Logout elimina token; 401 borra sesión local."
+          },
+          {
+            "title": "Creación y matching",
+            "text": "Cliente POST actions/create -> permisos -> validación -> transacción de solicitud -> filtrar candidatos -> llamada Python -> comprobar versión, orden y score -> fallback si corresponde -> insertar hasta tres ofertas -> persistir eventos -> devolver ok -> React refresca estado."
+          },
+          {
+            "title": "Aceptación y confirmación",
+            "text": "Técnico POST accept -> lock solicitud -> validar oferta y reloj -> lock técnico -> verificar disponibilidad -> marcar oferta accepted, cancelar otras y fijar agreed_fee -> proposed. Cliente propietario POST confirm -> confirmed. Técnico asignado puede iniciar. Probar dos aceptaciones concurrentes con conexiones diferentes en PostgreSQL."
+          },
+          {
+            "title": "Finalización y valoración",
+            "text": "complete solo asignado y desde in_progress -> completed + completed_at + rating_until; libera disponibilidad. rate solo propietario antes del límite y una vez -> actualiza promedio/reviews con bloqueo + rated. El backend rechaza transición repetida aunque UI se manipule."
+          },
+          {
+            "title": "Consistencia pendiente",
+            "text": "create no incluye actualmente clave de idempotencia; se documenta como brecha de reintentos. El esquema no añade CHECK a todos los catálogos. Antes del lanzamiento se exige prueba concurrente y revisión de orden de bloqueos, no solo suite SQLite."
+          }
+        ]
+      },
+      {
+        "title": "Decisiones arquitectónicas",
+        "sections": [
+          {
+            "title": "Registro ADR",
+            "heads": [
+              "Decisión",
+              "Motivo",
+              "Consecuencia"
+            ],
+            "rows": [
+              [
+                "ADR-01 Mantener políglota",
+                "Convención académica y motor independiente",
+                "Más contratos y pruebas de paridad"
+              ],
+              [
+                "ADR-02 PostgreSQL referencia",
+                "Stack y Compose existentes",
+                "SQLite local no cierra pruebas de concurrencia"
+              ],
+              [
+                "ADR-03 Matching determinista",
+                "Trazabilidad y falta de dataset local",
+                "Calibrar pesos; no afirmar optimalidad"
+              ],
+              [
+                "ADR-04 Aislamiento por propiedad",
+                "Marketplace actual, tres roles",
+                "No multitenencia implícita"
+              ],
+              [
+                "ADR-05 Asistencia opcional",
+                "A22 advierte sobre proveedores inventados",
+                "LLM no ejecuta decisiones ni sustituye catálogo"
+              ],
+              [
+                "ADR-06 Pagos desacoplados",
+                "Modelo comercial aún no aprobado",
+                "Núcleo funciona sin checkout ni suscripción"
+              ]
+            ]
+          },
+          {
+            "title": "Observabilidad propuesta",
+            "text": "Medir latencia del ranking, uso de fallback, número de ofertas, vencimientos y errores por acción. Usar IDs de correlación; no guardar contraseñas, tokens, direcciones ni texto libre sensible en logs. Las métricas de producto son distintas de latencia HTTP."
+          },
+          {
+            "title": "Gobernanza del cambio",
+            "text": "Cambio -> ADR -> historia -> prueba -> implementación -> QA -> evidencia -> aceptación. Un artículo inspira una hipótesis; el Product Owner decide su incorporación y el equipo la valida. Preservar versiones de reglas y migraciones."
+          }
+        ]
+      },
+      {
+        "title": "Riesgos y responsabilidades de seguridad",
+        "sections": [
+          {
+            "title": "Riesgo",
+            "heads": [
+              "Riesgo",
+              "Control",
+              "Prueba"
+            ],
+            "rows": [
+              [
+                "Acceso ajeno",
+                "Servidor comprueba rol, propiedad y estado",
+                "Pruebas 403 y respuesta sin dirección"
+              ],
+              [
+                "Suplantación de habilitación",
+                "verify solo admin; no mass assignment",
+                "Enviar verified/role en formularios públicos"
+              ],
+              [
+                "Sesión suspendida",
+                "Revocar tokens y comprobar is_active",
+                "Token antiguo no vuelve a servir"
+              ],
+              [
+                "Competencia por oferta",
+                "Bloqueos y restricciones",
+                "Dos clientes DB aceptan al mismo tiempo"
+              ],
+              [
+                "Inyección y contenido de anuncio",
+                "Validación, escape React, URL restringida",
+                "XSS, MIME incorrecto, URL javascript"
+              ],
+              [
+                "Caída del motor",
+                "Fallback y reglas versionadas",
+                "Timeout, score inválido y versión distinta"
+              ],
+              [
+                "Sesgo de reputación",
+                "Medición, transparencia y revisión propuesta",
+                "Comparar exposición de perfiles nuevos"
+              ]
+            ]
+          },
+          {
+            "title": "Alcance de protección",
+            "text": "No se declara seguridad completa ni cumplimiento certificado. El control de verificación profesional todavía necesita criterios operativos y evidencia. A12, A13 y A18 fundamentan la necesidad de gobernanza; no reemplazan un análisis de amenazas del sistema concreto."
+          },
+          {
+            "title": "Fuentes",
+            "text": "Las referencias [Axx] remiten a las fichas del documento 01 y al catálogo trazabilidad/v2/articulos.csv. Páginas citadas: numeración física del PDF, salvo indicación expresa. Los originales se conservan en fuentes/articulos/Axx.pdf; SHA-256 en fuentes/articulos/manifest.json. Código: Permissions.php, ApiToken.php, Marketplace.php, Matching.php y python/api/app.py."
+          }
+        ]
+      }
+    ],
+    "page_count": 4
+  },
+  {
+    "name": "07-Diseno-tecnico-integracion-servidor-y-pruebas.pdf",
+    "title": "Diseño técnico: integración, servidor y calidad",
+    "pages": [
+      {
+        "title": "Contratos e infraestructura",
+        "sections": [
+          {
+            "title": "Control",
+            "text": "Versión 2.0 | Corte documental: 29/09/2026. Documento técnico para revisión académica. Implementado significa observado en código; no equivale a validación productiva. Las iteraciones son planes de trabajo, no actas ejecutadas."
+          },
+          {
+            "title": "API actual",
+            "heads": [
+              "Ruta",
+              "Acceso",
+              "Resultado"
+            ],
+            "rows": [
+              [
+                "GET /api/health",
+                "Público",
+                "status y nombre servicio"
+              ],
+              [
+                "POST /api/register",
+                "Público, limitado",
+                "201, sin sesión automática"
+              ],
+              [
+                "POST /api/login",
+                "Público, limitado",
+                "token y actor"
+              ],
+              [
+                "POST /api/logout",
+                "Bearer",
+                "Revocación"
+              ],
+              [
+                "GET /api/state",
+                "Bearer",
+                "Datos filtrados y permisos"
+              ],
+              [
+                "POST /api/actions/{action}",
+                "Bearer + permisos",
+                "Mutación validada"
+              ],
+              [
+                "POST /match; GET /health",
+                "FastAPI interno",
+                "Ranking/version y salud"
+              ]
+            ]
+          },
+          {
+            "title": "Entorno actual",
+            "text": "Compose referencia postgres:16-alpine, API, matching y web; expone web en 5173. PHP usa timeout 2 s hacia Python; frontend espera hasta 12 s. Autenticación limitada 10/min y rutas con token 120/min. Revisar esos límites al diseñar prueba de carga, sin desactivarlos en producción para aprobar una métrica."
+          },
+          {
+            "title": "Servidor: decisión informada",
+            "text": "Ningún artículo del corpus dimensiona esta aplicación React/Laravel/FastAPI ni justifica un proveedor concreto. Se propone QA con contenedores en una máquina controlada y BD persistente; medir CPU, memoria, I/O, pool de conexiones y latencia. El tamaño final se decide por ensayo y costo, no copiando el hardware de HomeServe o métricas de Reparo."
+          },
+          {
+            "title": "Alternativas",
+            "text": "Host único: menor complejidad y punto único de fallo. Aplicación y BD separadas: mejor aislamiento, mayor operación. BD administrada: respaldos y servicio externo con costo y dependencia. Elegir mediante ADR, presupuesto y restauración verificada; no contratar infraestructura en esta tarea."
+          }
+        ]
+      },
+      {
+        "title": "Plan transversal de pruebas",
+        "sections": [
+          {
+            "title": "Nivel",
+            "heads": [
+              "Nivel",
+              "Prueba",
+              "Oráculo",
+              "Evidencia"
+            ],
+            "rows": [
+              [
+                "Unidad",
+                "Ranking, validación y estado",
+                "Fixture y límites temporales",
+                "Log, commit, dataset"
+              ],
+              [
+                "Integración",
+                "Laravel + PostgreSQL + FastAPI",
+                "Contrato y persistencia",
+                "HTTP, consultas y fallos inyectados"
+              ],
+              [
+                "Sistema",
+                "Tres roles en navegador",
+                "Casos de I08",
+                "Capturas y IDs sintéticos"
+              ],
+              [
+                "Seguridad",
+                "Rol, propiedad, sesión y entrada",
+                "Matriz de permisos",
+                "Negativas y no modificación"
+              ],
+              [
+                "Operación",
+                "Worker, backup y rollback",
+                "Plazos e integridad",
+                "Log de restauración y smoke"
+              ],
+              [
+                "Aceptación",
+                "Tareas con participantes locales",
+                "Criterio acordado",
+                "Acta, observaciones y pendientes"
+              ]
+            ]
+          },
+          {
+            "title": "Pruebas existentes",
+            "text": "Frontend: npm test y npm run build desde frontend/web. Laravel: php artisan test desde backend/api, sobre SQLite de pruebas. Python: python -m pytest -q desde python/api. No ejecutar semillas ni refresh/fresh sobre datos reales. Los 30/19 resultados del 28/09 son un antecedente, no certificación global."
+          },
+          {
+            "title": "Vínculo con plan anterior",
+            "text": "El plan maestro anterior y los originales se conservan en historico/v1-previa-2026-09-29 y plan-de-pruebas/. Las matrices RF/RNF originales permanecen para trazabilidad. Este diseño y la iteración 10 complementan el plan; no convierten automáticamente los 33 RF y 14 RNF en aprobados."
+          },
+          {
+            "title": "Registro obligatorio",
+            "text": "Caso, requisito, riesgo, precondiciones, pasos, esperado, observado, entorno, commit, fecha, ejecutor, estado y evidencia. Defecto: ID, severidad, reproducción, corrección, retest y regresión. TDD registra RED/GREEN si se ejecuta; no reconstruir falsamente un RED histórico."
+          }
+        ]
+      },
+      {
+        "title": "Referencias normativas y método",
+        "sections": [
+          {
+            "title": "Uso responsable",
+            "text": "Las normas orientan la organización y verificación. No se compró ni auditó aquí todo el texto normativo; se consultaron fichas oficiales el 29/09/2026. No se asignan números de cláusula sin cotejo ni se declara certificación ISO."
+          },
+          {
+            "title": "Marco de referencia",
+            "heads": [
+              "Documento",
+              "Aplicación"
+            ],
+            "rows": [
+              [
+                "ISO 9001:2026",
+                "Gestión de procesos, riesgos, mejora y control documental. Nueva edición verificada; base anterior 2015 conservada como antecedente."
+              ],
+              [
+                "ISO/IEC/IEEE 29148:2018",
+                "Requisitos identificables, verificables y trazables."
+              ],
+              [
+                "ISO/IEC 25010:2023",
+                "Modelo de calidad de producto para organizar RNF."
+              ],
+              [
+                "ISO/IEC/IEEE 29119-3:2021",
+                "Estructurar plan, casos, incidentes y resultados de pruebas."
+              ],
+              [
+                "OWASP ASVS",
+                "Requisitos verificables de seguridad; fijar versión y controles antes de auditoría."
+              ],
+              [
+                "WCAG 2.2 AA",
+                "Objetivo de accesibilidad; requiere evaluación manual y automática."
+              ],
+              [
+                "Scrum Guide 2020",
+                "Marco de iteraciones y revisión del incremento; no metodología de base de datos."
+              ]
+            ]
+          },
+          {
+            "title": "Cambio respecto de la documentación anterior",
+            "text": "La ficha oficial de ISO presenta ISO 9001:2026 como edición publicada en septiembre de 2026. La referencia a 2015 queda histórica; la adopción formal de la nueva edición debe acordarse con el docente. ISO 25010:2023 se usa para calidad de producto; no mezclar automáticamente su estructura con las ocho características de 2011."
+          },
+          {
+            "title": "Fuentes oficiales",
+            "text": "ISO 9001:2026: https://www.iso.org/standard/9001\nISO/IEC/IEEE 29148:2018: https://www.iso.org/standard/72089.html\nISO/IEC 25010:2023: https://www.iso.org/standard/78176.html\nISO/IEC/IEEE 29119-3:2021: https://www.iso.org/standard/79429.html\nOWASP ASVS: https://owasp.org/projects/asvs\nWCAG 2.2 AA: https://www.w3.org/TR/WCAG22/\nScrum Guide 2020: https://scrumguides.org/scrum-guide.html"
+          }
+        ]
+      },
+      {
+        "title": "Puertas de despliegue y reversión",
+        "sections": [
+          {
+            "title": "Pipeline esperado",
+            "text": "Checkout de commit -> instalar dependencias bloqueadas -> tests de los tres módulos -> build -> imagen identificada -> QA -> migración controlada -> smoke con worker -> evidencia -> aprobación. .gitlab-ci.yml delega en plantilla externa: su existencia no demuestra ejecución ni despliegue exitoso."
+          },
+          {
+            "title": "Antes de QA",
+            "text": "Configurar secretos fuera de Git, APP_DEBUG=false, red privada para BD/Python, salud y volúmenes persistentes. Distinguir liveness de readiness: /api/health actual no comprueba todos los servicios. Comprobar configuración de DB y no asumir entorno por nombre de archivo."
+          },
+          {
+            "title": "Antes de producción",
+            "text": "TLS, autorización, restauración, observabilidad, política de retención, responsables de incidentes y prueba de carga aprobados. Exigir prueba real de 200 concurrentes si se mantiene RNF-02. El 99% mensual solo se valida en una ventana mensual observada; una prueba corta no basta."
+          },
+          {
+            "title": "Rollback",
+            "text": "Conservar imagen anterior; preferir migraciones compatibles hacia adelante. Respaldar antes de cambio y ensayar restauración en QA. No usar down destructivo como reversión automática. Si hay pagos, detener nuevas operaciones y conciliar eventos antes de reintentar."
+          },
+          {
+            "title": "Registro de entrega",
+            "text": "Nombre de versión, commit/digest, requisitos incluidos, exclusiones, migraciones, pruebas, defectos abiertos, plan de reversión, responsable y aceptación. Campos sin evidencia se marcan pendientes. No hay despliegue productivo ejecutado por generar este PDF."
+          }
+        ]
+      }
+    ],
+    "page_count": 4
+  },
+  {
+    "name": "08-Iteracion-01-Base-de-datos.pdf",
+    "title": "Iteración 1: Base de datos: núcleo del marketplace",
+    "pages": [
+      {
+        "title": "Objetivo, alcance y preparación",
+        "sections": [
+          {
+            "title": "Control",
+            "text": "Versión 2.0 | Corte documental: 29/09/2026. Documento técnico para revisión académica. Implementado significa observado en código; no equivale a validación productiva. Las iteraciones son planes de trabajo, no actas ejecutadas."
+          },
+          {
+            "title": "Objetivo",
+            "text": "Reproducir el esquema real y garantizar integridad en PostgreSQL."
+          },
+          {
+            "title": "Situación observada",
+            "text": "Migraciones existentes; validación de concurrencia y recuperación en PostgreSQL pendiente."
+          },
+          {
+            "title": "Dependencias",
+            "text": "Base de código y copias de prueba; ninguna ampliación de negocio."
+          },
+          {
+            "title": "Historias de usuario",
+            "heads": [
+              "ID",
+              "Historia"
+            ],
+            "rows": [
+              [
+                "HU-01",
+                "Como cliente quiero que mi solicitud se conserve sin mezclarse con la de otra cuenta."
+              ],
+              [
+                "HU-02",
+                "Como técnico quiero que una oferta y su aceptación queden registradas una sola vez."
+              ]
+            ]
+          },
+          {
+            "title": "Trazabilidad y antecedentes",
+            "text": "O2-O4; RF-01, RF-13, RF-23, RF-25; RNF-14. A09, A31. Las referencias [Axx] remiten a las fichas del documento 01 y al catálogo trazabilidad/v2/articulos.csv. Páginas citadas: numeración física del PDF, salvo indicación expresa. Los originales se conservan en fuentes/articulos/Axx.pdf; SHA-256 en fuentes/articulos/manifest.json."
+          },
+          {
+            "title": "Incluye",
+            "text": "users, api_tokens, technicians, requests, offers, access_events y announcements. Diccionario físico en documento 04; tablas futuras en documento 05."
+          },
+          {
+            "title": "No incluye / riesgo principal",
+            "text": "SQLite no demuestra lockForUpdate. No ampliar esquema de pagos/chat sin decisión de alcance."
+          },
+          {
+            "title": "Entrada a desarrollo",
+            "text": "Product Owner aprueba alcance y criterio; equipo dispone de entorno QA, datos sintéticos y dependencias. Definir capacidad del sprint antes de comprometer fechas. Si esta iteración es propuesta, la documentación no significa aprobación de implementación."
+          }
+        ]
+      },
+      {
+        "title": "Implementación por capas",
+        "sections": [
+          {
+            "title": "Frontend",
+            "text": "Revisar tipos y nulabilidad consumidos en Marketplace.jsx. Mantener estados vacíos cuando no existan solicitudes. No crear tablas desde React."
+          },
+          {
+            "title": "Backend Laravel",
+            "text": "Revisar las tres migraciones de backend/api/database/migrations; probar up/down únicamente en BD desechable. Mantener FK, unique(request_id, technician_id) e índices. Corregir diferencias de database/init.sql mediante migración nueva, no editando una ya aplicada."
+          },
+          {
+            "title": "Python",
+            "text": "Validar que las estructuras recibidas por /match mantengan IDs y números; no otorgar al microservicio acceso directo a la BD."
+          },
+          {
+            "title": "Base de datos y contrato",
+            "text": "users, api_tokens, technicians, requests, offers, access_events y announcements. Diccionario físico en documento 04; tablas futuras en documento 05."
+          },
+          {
+            "title": "Secuencia para desarrollar",
+            "text": "1. Reproducir situación actual y anotar commit. 2. Escribir caso negativo o límite que falle. 3. Implementar cambio mínimo en capa responsable. 4. Verificar respuesta y persistencia. 5. Refactorizar sin cambiar contrato. 6. Ejecutar regresión y revisar con otro integrante. 7. Actualizar evidencia y desplegar QA."
+          },
+          {
+            "title": "Errores y seguridad",
+            "text": "La API vuelve a validar permisos y datos aunque la UI bloquee una acción. No usar localStorage como control real. Mantener mensajes comprensibles, datos de prueba sintéticos y secretos fuera de capturas/logs. No registrar un cambio como completo si solo existe en el frontend."
+          }
+        ]
+      },
+      {
+        "title": "Pruebas, entrega y finalización",
+        "sections": [
+          {
+            "title": "Casos de aceptación",
+            "heads": [
+              "ID",
+              "Procedimiento",
+              "Resultado esperado"
+            ],
+            "rows": [
+              [
+                "I01-01",
+                "Insertar oferta duplicada para misma solicitud y técnico",
+                "La restricción unique rechaza la segunda fila"
+              ],
+              [
+                "I01-02",
+                "Crear referencia a cliente inexistente",
+                "FK rechaza dato huérfano"
+              ],
+              [
+                "I01-03",
+                "Restaurar respaldo en BD vacía de QA",
+                "Conteos y relaciones coinciden; guardar log sin secretos"
+              ]
+            ]
+          },
+          {
+            "title": "Ejecución TDD",
+            "text": "RED: ejecutar el caso que demuestra la falta o fallo, conservar resultado. GREEN: implementar y repetir. REFACTOR: limpiar código y ejecutar regresión pertinente. Para funciones ya implementadas, registrar prueba de caracterización y no inventar una fase RED anterior."
+          },
+          {
+            "title": "Despliegue de la iteración",
+            "text": "Desplegar BD QA aislada; ejecutar php artisan migrate --force con variables de QA y comprobar migrate:status. Nunca ejecutar migrate:fresh en la base del usuario."
+          },
+          {
+            "title": "Criterios de salida",
+            "text": "Historias aceptadas, permisos negativos aprobados, contrato y diccionario actualizados, pruebas pertinentes sin fallos y QA verificable. Guardar build/commit, entorno, caso y observado. Riesgos pendientes con responsable por asignar; ninguna firma ni aceptación simulada."
+          },
+          {
+            "title": "Carpeta de evidencia",
+            "text": "evidencias/v2/I01/ contiene README de estado. En la ejecución se añadirán logs, casos, incidentes, retest, acta de revisión y registro de despliegue. Actualmente el estado es PLANIFICADO / NO EJECUTADO como iteración. No confundir pruebas previas con cierre de sprint."
+          }
+        ]
+      }
+    ],
+    "page_count": 3
+  },
+  {
+    "name": "09-Iteracion-02-Autenticacion-roles-y-permisos.pdf",
+    "title": "Iteración 2: Autenticación, roles y aislamiento de datos",
+    "pages": [
+      {
+        "title": "Objetivo, alcance y preparación",
+        "sections": [
+          {
+            "title": "Control",
+            "text": "Versión 2.0 | Corte documental: 29/09/2026. Documento técnico para revisión académica. Implementado significa observado en código; no equivale a validación productiva. Las iteraciones son planes de trabajo, no actas ejecutadas."
+          },
+          {
+            "title": "Objetivo",
+            "text": "Asegurar que cada identidad solo opere sobre recursos autorizados."
+          },
+          {
+            "title": "Situación observada",
+            "text": "Registro, login, revocación, permisos y propiedad implementados; endurecimiento productivo pendiente."
+          },
+          {
+            "title": "Dependencias",
+            "text": "I01 y catálogo de permisos revisado."
+          },
+          {
+            "title": "Historias de usuario",
+            "heads": [
+              "ID",
+              "Historia"
+            ],
+            "rows": [
+              [
+                "HU-03",
+                "Como usuario quiero iniciar sesión y ver el panel de mi rol."
+              ],
+              [
+                "HU-04",
+                "Como administrador quiero suspender una cuenta sin permitir reutilizar sus tokens."
+              ]
+            ]
+          },
+          {
+            "title": "Trazabilidad y antecedentes",
+            "text": "O3; RF-28, RF-33; RNF-08, RNF-09. A09, A12. Las referencias [Axx] remiten a las fichas del documento 01 y al catálogo trazabilidad/v2/articulos.csv. Páginas citadas: numeración física del PDF, salvo indicación expresa. Los originales se conservan en fuentes/articulos/Axx.pdf; SHA-256 en fuentes/articulos/manifest.json."
+          },
+          {
+            "title": "Incluye",
+            "text": "api_tokens guarda SHA-256 del token y expiración; users usa password hasheado e is_active. No existe tenant_id: aislamiento actual por propiedad. Multitenencia futura requiere diseño y migración específicos."
+          },
+          {
+            "title": "No incluye / riesgo principal",
+            "text": "Sin recuperación de contraseña ni MFA observados. No confundir ocultar botones con autorización real."
+          },
+          {
+            "title": "Entrada a desarrollo",
+            "text": "Product Owner aprueba alcance y criterio; equipo dispone de entorno QA, datos sintéticos y dependencias. Definir capacidad del sprint antes de comprometer fechas. Si esta iteración es propuesta, la documentación no significa aprobación de implementación."
+          }
+        ]
+      },
+      {
+        "title": "Implementación por capas",
+        "sections": [
+          {
+            "title": "Frontend",
+            "text": "Auth.jsx maneja registro e inicio; marketplace-api.js elimina sesión ante 401; Marketplace.jsx confirma actor mediante /state antes de mostrar datos. Probar cambio de cuenta con respuesta anterior demorada."
+          },
+          {
+            "title": "Backend Laravel",
+            "text": "AuthController, ApiToken y Permissions son autoridad. Registro público solo client/technician; admin se crea con marketplace:admin. profile ignora role y userId arbitrarios. Suspensión revoca tokens; no suspender administradores ni cuentas con trabajo activo."
+          },
+          {
+            "title": "Python",
+            "text": "No recibe contraseñas, Bearer tokens ni direcciones para ranking. Su ruta debe estar restringida a red interna."
+          },
+          {
+            "title": "Base de datos y contrato",
+            "text": "api_tokens guarda SHA-256 del token y expiración; users usa password hasheado e is_active. No existe tenant_id: aislamiento actual por propiedad. Multitenencia futura requiere diseño y migración específicos."
+          },
+          {
+            "title": "Secuencia para desarrollar",
+            "text": "1. Reproducir situación actual y anotar commit. 2. Escribir caso negativo o límite que falle. 3. Implementar cambio mínimo en capa responsable. 4. Verificar respuesta y persistencia. 5. Refactorizar sin cambiar contrato. 6. Ejecutar regresión y revisar con otro integrante. 7. Actualizar evidencia y desplegar QA."
+          },
+          {
+            "title": "Errores y seguridad",
+            "text": "La API vuelve a validar permisos y datos aunque la UI bloquee una acción. No usar localStorage como control real. Mantener mensajes comprensibles, datos de prueba sintéticos y secretos fuera de capturas/logs. No registrar un cambio como completo si solo existe en el frontend."
+          }
+        ]
+      },
+      {
+        "title": "Pruebas, entrega y finalización",
+        "sections": [
+          {
+            "title": "Casos de aceptación",
+            "heads": [
+              "ID",
+              "Procedimiento",
+              "Resultado esperado"
+            ],
+            "rows": [
+              [
+                "I02-01",
+                "Cliente B intenta cancelar solicitud de A",
+                "403 y ningún cambio de estado"
+              ],
+              [
+                "I02-02",
+                "Registro público envía role=admin",
+                "422; no crear usuario"
+              ],
+              [
+                "I02-03",
+                "Suspender, reactivar y reutilizar token anterior",
+                "401; debe iniciar sesión otra vez"
+              ],
+              [
+                "I02-04",
+                "Técnico no asignado consulta solicitud ofrecida",
+                "Dirección no revelada; no puede iniciar trabajo"
+              ]
+            ]
+          },
+          {
+            "title": "Ejecución TDD",
+            "text": "RED: ejecutar el caso que demuestra la falta o fallo, conservar resultado. GREEN: implementar y repetir. REFACTOR: limpiar código y ejecutar regresión pertinente. Para funciones ya implementadas, registrar prueba de caracterización y no inventar una fase RED anterior."
+          },
+          {
+            "title": "Despliegue de la iteración",
+            "text": "Migrar acceso en QA; crear administrador por comando interactivo sin contraseña predeterminada; smoke de tres roles. Tokens y secretos fuera de Git."
+          },
+          {
+            "title": "Criterios de salida",
+            "text": "Historias aceptadas, permisos negativos aprobados, contrato y diccionario actualizados, pruebas pertinentes sin fallos y QA verificable. Guardar build/commit, entorno, caso y observado. Riesgos pendientes con responsable por asignar; ninguna firma ni aceptación simulada."
+          },
+          {
+            "title": "Carpeta de evidencia",
+            "text": "evidencias/v2/I02/ contiene README de estado. En la ejecución se añadirán logs, casos, incidentes, retest, acta de revisión y registro de despliegue. Actualmente el estado es PLANIFICADO / NO EJECUTADO como iteración. No confundir pruebas previas con cierre de sprint."
+          }
+        ]
+      }
+    ],
+    "page_count": 3
+  },
+  {
+    "name": "10-Iteracion-03-Habilitacion-y-condiciones-del-servicio.pdf",
+    "title": "Iteración 3: Habilitación y condiciones del servicio",
+    "pages": [
+      {
+        "title": "Objetivo, alcance y preparación",
+        "sections": [
+          {
+            "title": "Control",
+            "text": "Versión 2.0 | Corte documental: 29/09/2026. Documento técnico para revisión académica. Implementado significa observado en código; no equivale a validación productiva. Las iteraciones son planes de trabajo, no actas ejecutadas."
+          },
+          {
+            "title": "Objetivo",
+            "text": "Controlar elegibilidad y mostrar condiciones económicas antes de confirmar."
+          },
+          {
+            "title": "Situación observada",
+            "text": "Habilitación, disponibilidad, tarifa y cobertura implementadas. Cobros y suscripción no existen."
+          },
+          {
+            "title": "Dependencias",
+            "text": "I01-I02; definir qué evidencia revisa realmente el administrador."
+          },
+          {
+            "title": "Historias de usuario",
+            "heads": [
+              "ID",
+              "Historia"
+            ],
+            "rows": [
+              [
+                "HU-05",
+                "Como técnico quiero gestionar tarifa y cobertura sin cambiar acuerdos activos."
+              ],
+              [
+                "HU-06",
+                "Como cliente quiero confirmar la tarifa de visita del técnico propuesto."
+              ]
+            ]
+          },
+          {
+            "title": "Trazabilidad y antecedentes",
+            "text": "O2-O3; RF-07, RF-18, RF-30. A07, A09, A13. Las referencias [Axx] remiten a las fichas del documento 01 y al catálogo trazabilidad/v2/articulos.csv. Páginas citadas: numeración física del PDF, salvo indicación expresa. Los originales se conservan en fuentes/articulos/Axx.pdf; SHA-256 en fuentes/articulos/manifest.json."
+          },
+          {
+            "title": "Incluye",
+            "text": "technicians.fee es referencia actual; requests.agreed_fee se copia al aceptar. La revisión documental detallada no tiene entidad propia: proponer verification_reviews antes de afirmar certificación."
+          },
+          {
+            "title": "No incluye / riesgo principal",
+            "text": "Sustituye el gating de suscripción de la plantilla sanitaria. No introducir plan de pago obligatorio ni prometer certificación externa."
+          },
+          {
+            "title": "Entrada a desarrollo",
+            "text": "Product Owner aprueba alcance y criterio; equipo dispone de entorno QA, datos sintéticos y dependencias. Definir capacidad del sprint antes de comprometer fechas. Si esta iteración es propuesta, la documentación no significa aprobación de implementación."
+          }
+        ]
+      },
+      {
+        "title": "Implementación por capas",
+        "sections": [
+          {
+            "title": "Frontend",
+            "text": "TechnicianProfile.jsx permite tarifa y zonas; bloquea edición con ofertas pendientes o atenciones. Admin muestra verificación y AccessManager suspensión. Mostrar que visita no incluye necesariamente materiales ni reparación completa."
+          },
+          {
+            "title": "Backend Laravel",
+            "text": "technician-profile obtiene identidad de sesión, incluye zona principal y valida fee 0..100000. Bloquear cambio con ofertas pendientes o estados proposed/confirmed/in_progress. verify solo admin; nuevas cuentas técnicas no verificadas ni disponibles."
+          },
+          {
+            "title": "Python",
+            "text": "Elegibilidad exige verified y available; no aceptar un pago como prueba de competencia. Probar exclusiones antes del ranking."
+          },
+          {
+            "title": "Base de datos y contrato",
+            "text": "technicians.fee es referencia actual; requests.agreed_fee se copia al aceptar. La revisión documental detallada no tiene entidad propia: proponer verification_reviews antes de afirmar certificación."
+          },
+          {
+            "title": "Secuencia para desarrollar",
+            "text": "1. Reproducir situación actual y anotar commit. 2. Escribir caso negativo o límite que falle. 3. Implementar cambio mínimo en capa responsable. 4. Verificar respuesta y persistencia. 5. Refactorizar sin cambiar contrato. 6. Ejecutar regresión y revisar con otro integrante. 7. Actualizar evidencia y desplegar QA."
+          },
+          {
+            "title": "Errores y seguridad",
+            "text": "La API vuelve a validar permisos y datos aunque la UI bloquee una acción. No usar localStorage como control real. Mantener mensajes comprensibles, datos de prueba sintéticos y secretos fuera de capturas/logs. No registrar un cambio como completo si solo existe en el frontend."
+          }
+        ]
+      },
+      {
+        "title": "Pruebas, entrega y finalización",
+        "sections": [
+          {
+            "title": "Casos de aceptación",
+            "heads": [
+              "ID",
+              "Procedimiento",
+              "Resultado esperado"
+            ],
+            "rows": [
+              [
+                "I03-01",
+                "Técnico añade verified=true al editar tarifa",
+                "No se modifica verificación"
+              ],
+              [
+                "I03-02",
+                "Cambiar fee teniendo oferta pendiente",
+                "409 y tarifa intacta"
+              ],
+              [
+                "I03-03",
+                "Aceptar con fee=40 y revisar servicio",
+                "agreed_fee=40; futuras tarifas no alteran ese acuerdo"
+              ]
+            ]
+          },
+          {
+            "title": "Ejecución TDD",
+            "text": "RED: ejecutar el caso que demuestra la falta o fallo, conservar resultado. GREEN: implementar y repetir. REFACTOR: limpiar código y ejecutar regresión pertinente. Para funciones ya implementadas, registrar prueba de caracterización y no inventar una fase RED anterior."
+          },
+          {
+            "title": "Despliegue de la iteración",
+            "text": "Publicar incremento en QA; administrador habilita una cuenta sintética; técnico activa disponibilidad y cliente revisa condiciones."
+          },
+          {
+            "title": "Criterios de salida",
+            "text": "Historias aceptadas, permisos negativos aprobados, contrato y diccionario actualizados, pruebas pertinentes sin fallos y QA verificable. Guardar build/commit, entorno, caso y observado. Riesgos pendientes con responsable por asignar; ninguna firma ni aceptación simulada."
+          },
+          {
+            "title": "Carpeta de evidencia",
+            "text": "evidencias/v2/I03/ contiene README de estado. En la ejecución se añadirán logs, casos, incidentes, retest, acta de revisión y registro de despliegue. Actualmente el estado es PLANIFICADO / NO EJECUTADO como iteración. No confundir pruebas previas con cierre de sprint."
+          }
+        ]
+      }
+    ],
+    "page_count": 3
+  },
+  {
+    "name": "11-Iteracion-04-Matching-disponibilidad-y-solicitudes.pdf",
+    "title": "Iteración 4: Matching, disponibilidad y ciclo de solicitudes",
+    "pages": [
+      {
+        "title": "Objetivo, alcance y preparación",
+        "sections": [
+          {
+            "title": "Control",
+            "text": "Versión 2.0 | Corte documental: 29/09/2026. Documento técnico para revisión académica. Implementado significa observado en código; no equivale a validación productiva. Las iteraciones son planes de trabajo, no actas ejecutadas."
+          },
+          {
+            "title": "Objetivo",
+            "text": "Asignar y reasignar sin duplicados, respetando plazos y confirmación."
+          },
+          {
+            "title": "Situación observada",
+            "text": "Algoritmo y ciclo implementados; integración real, concurrencia y calibración local pendientes."
+          },
+          {
+            "title": "Dependencias",
+            "text": "I01-I03; fixture y reglas versionados."
+          },
+          {
+            "title": "Historias de usuario",
+            "heads": [
+              "ID",
+              "Historia"
+            ],
+            "rows": [
+              [
+                "HU-07",
+                "Como cliente quiero recibir una propuesta de un técnico elegible."
+              ],
+              [
+                "HU-08",
+                "Como técnico quiero responder antes del vencimiento sin doble asignación."
+              ]
+            ]
+          },
+          {
+            "title": "Trazabilidad y antecedentes",
+            "text": "O2-O4; RF-06 a RF-19, RF-23. A03, A05, A06, A15. Las referencias [Axx] remiten a las fichas del documento 01 y al catálogo trazabilidad/v2/articulos.csv. Páginas citadas: numeración física del PDF, salvo indicación expresa. Los originales se conservan en fuentes/articulos/Axx.pdf; SHA-256 en fuentes/articulos/manifest.json."
+          },
+          {
+            "title": "Incluye",
+            "text": "Ofertas pending/accepted/declined/expired/cancelled; no reiniciar pending_until al reasignar. Agreed_fee fija condición. Dirección solo asignado después de confirmación."
+          },
+          {
+            "title": "No incluye / riesgo principal",
+            "text": "El score usa zonas, no GPS. La agenda del ejemplo se adapta a disponibilidad inmediata; reservas horarias quedan fuera del núcleo."
+          },
+          {
+            "title": "Entrada a desarrollo",
+            "text": "Product Owner aprueba alcance y criterio; equipo dispone de entorno QA, datos sintéticos y dependencias. Definir capacidad del sprint antes de comprometer fechas. Si esta iteración es propuesta, la documentación no significa aprobación de implementación."
+          }
+        ]
+      },
+      {
+        "title": "Implementación por capas",
+        "sections": [
+          {
+            "title": "Frontend",
+            "text": "Mostrar estado y plazo real en RequestCard; no convertir contador en autoridad. Deshabilitar envío mientras procesa y mostrar 409 si otro actor ganó. Explicar ausencia de cobertura."
+          },
+          {
+            "title": "Backend Laravel",
+            "text": "Marketplace::dispatch, tick y action conservan ventana global. Procesador cada segundo mediante schedule:work. Mantener bloqueo de solicitud y técnico. Evaluar idempotencia de create antes de reintento automático; hoy no se observa clave idempotente."
+          },
+          {
+            "title": "Python",
+            "text": "POST /match ordena elegibles y devuelve rulesVersion. Laravel contrasta IDs y puntajes con fallback local; timeout total 2 s, conexión 1 s. Probar caída, JSON inválido y versión divergente."
+          },
+          {
+            "title": "Base de datos y contrato",
+            "text": "Ofertas pending/accepted/declined/expired/cancelled; no reiniciar pending_until al reasignar. Agreed_fee fija condición. Dirección solo asignado después de confirmación."
+          },
+          {
+            "title": "Secuencia para desarrollar",
+            "text": "1. Reproducir situación actual y anotar commit. 2. Escribir caso negativo o límite que falle. 3. Implementar cambio mínimo en capa responsable. 4. Verificar respuesta y persistencia. 5. Refactorizar sin cambiar contrato. 6. Ejecutar regresión y revisar con otro integrante. 7. Actualizar evidencia y desplegar QA."
+          },
+          {
+            "title": "Errores y seguridad",
+            "text": "La API vuelve a validar permisos y datos aunque la UI bloquee una acción. No usar localStorage como control real. Mantener mensajes comprensibles, datos de prueba sintéticos y secretos fuera de capturas/logs. No registrar un cambio como completo si solo existe en el frontend."
+          }
+        ]
+      },
+      {
+        "title": "Pruebas, entrega y finalización",
+        "sections": [
+          {
+            "title": "Casos de aceptación",
+            "heads": [
+              "ID",
+              "Procedimiento",
+              "Resultado esperado"
+            ],
+            "rows": [
+              [
+                "I04-01",
+                "Cuatro técnicos elegibles al crear",
+                "Como máximo tres ofertas pendientes"
+              ],
+              [
+                "I04-02",
+                "Aceptar en 10 minutos exactos",
+                "Oferta rechazada como vencida"
+              ],
+              [
+                "I04-03",
+                "Avanzar reloj hasta 24 horas",
+                "unassigned; ninguna oferta pendiente"
+              ],
+              [
+                "I04-04",
+                "Dos aceptaciones simultáneas en PostgreSQL",
+                "Una sola asignación; perdedor recibe conflicto"
+              ],
+              [
+                "I04-05",
+                "Python caído o ranking alterado",
+                "Fallback PHP coincide con fixture"
+              ]
+            ]
+          },
+          {
+            "title": "Ejecución TDD",
+            "text": "RED: ejecutar el caso que demuestra la falta o fallo, conservar resultado. GREEN: implementar y repetir. REFACTOR: limpiar código y ejecutar regresión pertinente. Para funciones ya implementadas, registrar prueba de caracterización y no inventar una fase RED anterior."
+          },
+          {
+            "title": "Despliegue de la iteración",
+            "text": "Desplegar API y Python juntos en QA; ejecutar worker de plazos supervisado y reiniciarlo durante una solicitud de prueba. Verificar recuperación sin reiniciar ventanas."
+          },
+          {
+            "title": "Criterios de salida",
+            "text": "Historias aceptadas, permisos negativos aprobados, contrato y diccionario actualizados, pruebas pertinentes sin fallos y QA verificable. Guardar build/commit, entorno, caso y observado. Riesgos pendientes con responsable por asignar; ninguna firma ni aceptación simulada."
+          },
+          {
+            "title": "Carpeta de evidencia",
+            "text": "evidencias/v2/I04/ contiene README de estado. En la ejecución se añadirán logs, casos, incidentes, retest, acta de revisión y registro de despliegue. Actualmente el estado es PLANIFICADO / NO EJECUTADO como iteración. No confundir pruebas previas con cierre de sprint."
+          }
+        ]
+      }
+    ],
+    "page_count": 3
+  },
+  {
+    "name": "12-Iteracion-05-Frontend-tecnico-y-administrador.pdf",
+    "title": "Iteración 5: Frontend de técnico, administrador y UX",
+    "pages": [
+      {
+        "title": "Objetivo, alcance y preparación",
+        "sections": [
+          {
+            "title": "Control",
+            "text": "Versión 2.0 | Corte documental: 29/09/2026. Documento técnico para revisión académica. Implementado significa observado en código; no equivale a validación productiva. Las iteraciones son planes de trabajo, no actas ejecutadas."
+          },
+          {
+            "title": "Objetivo",
+            "text": "Hacer operables las tareas de proveedor y supervisión con estados claros."
+          },
+          {
+            "title": "Situación observada",
+            "text": "Paneles y anuncios por audiencia implementados; auditoría móvil y accesibilidad integral pendiente."
+          },
+          {
+            "title": "Dependencias",
+            "text": "I02-I04 y contratos estables."
+          },
+          {
+            "title": "Historias de usuario",
+            "heads": [
+              "ID",
+              "Historia"
+            ],
+            "rows": [
+              [
+                "HU-09",
+                "Como técnico quiero distinguir ofertas, trabajos activos e historial."
+              ],
+              [
+                "HU-10",
+                "Como administrador quiero verificar perfiles y revisar cobertura por rubro."
+              ]
+            ]
+          },
+          {
+            "title": "Trazabilidad y antecedentes",
+            "text": "O1-O3; RF-25, RF-30, RF-31; RNF-03, RNF-04. A01, A12, A27. Las referencias [Axx] remiten a las fichas del documento 01 y al catálogo trazabilidad/v2/articulos.csv. Páginas citadas: numeración física del PDF, salvo indicación expresa. Los originales se conservan en fuentes/articulos/Axx.pdf; SHA-256 en fuentes/articulos/manifest.json."
+          },
+          {
+            "title": "Incluye",
+            "text": "Anuncios draft/published/archived para client/technician/both; catálogo de acceso visible sin hashes ni tokens."
+          },
+          {
+            "title": "No incluye / riesgo principal",
+            "text": "Verificado debe significar revisión definida; no usar badge como garantía absoluta. No asumir WCAG AA por tener foco visible."
+          },
+          {
+            "title": "Entrada a desarrollo",
+            "text": "Product Owner aprueba alcance y criterio; equipo dispone de entorno QA, datos sintéticos y dependencias. Definir capacidad del sprint antes de comprometer fechas. Si esta iteración es propuesta, la documentación no significa aprobación de implementación."
+          }
+        ]
+      },
+      {
+        "title": "Implementación por capas",
+        "sections": [
+          {
+            "title": "Frontend",
+            "text": "Marketplace.jsx, AccountPanel.jsx, TechnicianProfile.jsx y Announcements.jsx. Revisar filtros, vacíos, busy, errores, teclado y foco visible. Mantener landing separada del panel y demo rotulada. No añadir roles elegibles en login real."
+          },
+          {
+            "title": "Backend Laravel",
+            "text": "state filtra solicitudes por propietario/ofertas; users y accessEvents solo admin. announcement-save valida audiencia, texto, URL e imagen; borrar/archivar no equivale a perder historial de servicios."
+          },
+          {
+            "title": "Python",
+            "text": "No agregar endpoints de interfaz al motor de matching. Verificar que fallos de ranking no dejen pantalla sin mensaje."
+          },
+          {
+            "title": "Base de datos y contrato",
+            "text": "Anuncios draft/published/archived para client/technician/both; catálogo de acceso visible sin hashes ni tokens."
+          },
+          {
+            "title": "Secuencia para desarrollar",
+            "text": "1. Reproducir situación actual y anotar commit. 2. Escribir caso negativo o límite que falle. 3. Implementar cambio mínimo en capa responsable. 4. Verificar respuesta y persistencia. 5. Refactorizar sin cambiar contrato. 6. Ejecutar regresión y revisar con otro integrante. 7. Actualizar evidencia y desplegar QA."
+          },
+          {
+            "title": "Errores y seguridad",
+            "text": "La API vuelve a validar permisos y datos aunque la UI bloquee una acción. No usar localStorage como control real. Mantener mensajes comprensibles, datos de prueba sintéticos y secretos fuera de capturas/logs. No registrar un cambio como completo si solo existe en el frontend."
+          }
+        ]
+      },
+      {
+        "title": "Pruebas, entrega y finalización",
+        "sections": [
+          {
+            "title": "Casos de aceptación",
+            "heads": [
+              "ID",
+              "Procedimiento",
+              "Resultado esperado"
+            ],
+            "rows": [
+              [
+                "I05-01",
+                "Usuario cambia de cuenta con /state antiguo en vuelo",
+                "Respuesta antigua no reemplaza actor actual"
+              ],
+              [
+                "I05-02",
+                "Cliente inspecciona respuesta API",
+                "Sin listado de usuarios ni auditoría administrativa"
+              ],
+              [
+                "I05-03",
+                "Navegar formularios con teclado y móvil",
+                "Controles alcanzables, etiquetas y foco; sin desbordamiento"
+              ],
+              [
+                "I05-04",
+                "Anuncio borrador o de otra audiencia",
+                "No visible al destinatario incorrecto"
+              ]
+            ]
+          },
+          {
+            "title": "Ejecución TDD",
+            "text": "RED: ejecutar el caso que demuestra la falta o fallo, conservar resultado. GREEN: implementar y repetir. REFACTOR: limpiar código y ejecutar regresión pertinente. Para funciones ya implementadas, registrar prueba de caracterización y no inventar una fase RED anterior."
+          },
+          {
+            "title": "Despliegue de la iteración",
+            "text": "Compilar Vite y publicar QA; smoke técnico y admin con identidades sintéticas. Registrar capturas de escritorio y móvil y defectos de accesibilidad."
+          },
+          {
+            "title": "Criterios de salida",
+            "text": "Historias aceptadas, permisos negativos aprobados, contrato y diccionario actualizados, pruebas pertinentes sin fallos y QA verificable. Guardar build/commit, entorno, caso y observado. Riesgos pendientes con responsable por asignar; ninguna firma ni aceptación simulada."
+          },
+          {
+            "title": "Carpeta de evidencia",
+            "text": "evidencias/v2/I05/ contiene README de estado. En la ejecución se añadirán logs, casos, incidentes, retest, acta de revisión y registro de despliegue. Actualmente el estado es PLANIFICADO / NO EJECUTADO como iteración. No confundir pruebas previas con cierre de sprint."
+          }
+        ]
+      }
+    ],
+    "page_count": 3
+  },
+  {
+    "name": "13-Iteracion-06-Asistente-determinista-sin-LLM.pdf",
+    "title": "Iteración 6: Asistente determinista y registro guiado",
+    "pages": [
+      {
+        "title": "Objetivo, alcance y preparación",
+        "sections": [
+          {
+            "title": "Control",
+            "text": "Versión 2.0 | Corte documental: 29/09/2026. Documento técnico para revisión académica. Implementado significa observado en código; no equivale a validación productiva. Las iteraciones son planes de trabajo, no actas ejecutadas."
+          },
+          {
+            "title": "Objetivo",
+            "text": "Proponer captura conversacional de una falla sin IA generativa."
+          },
+          {
+            "title": "Situación observada",
+            "text": "Ampliación propuesta, no implementada. Requiere aprobación del Product Owner antes de desarrollo."
+          },
+          {
+            "title": "Dependencias",
+            "text": "I02-I04; validar que el formulario actual resulta insuficiente."
+          },
+          {
+            "title": "Historias de usuario",
+            "heads": [
+              "ID",
+              "Historia"
+            ],
+            "rows": [
+              [
+                "HU-11",
+                "Como cliente quiero describir mi necesidad paso a paso y revisar el resumen antes de enviarlo."
+              ]
+            ]
+          },
+          {
+            "title": "Trazabilidad y antecedentes",
+            "text": "O1; extensión EX-CHAT-01, relacionada con RF-01/02. A23, A25, A31. Las referencias [Axx] remiten a las fichas del documento 01 y al catálogo trazabilidad/v2/articulos.csv. Páginas citadas: numeración física del PDF, salvo indicación expresa. Los originales se conservan en fuentes/articulos/Axx.pdf; SHA-256 en fuentes/articulos/manifest.json."
+          },
+          {
+            "title": "Incluye",
+            "text": "Propuesta service_drafts: owner, paso, datos y expiración. No almacenar conversación completa por defecto. Definir retención y borrado antes de activar."
+          },
+          {
+            "title": "No incluye / riesgo principal",
+            "text": "No confundir asistente guiado con chat técnico-cliente. Toda acción sigue autenticada y confirmada."
+          },
+          {
+            "title": "Entrada a desarrollo",
+            "text": "Product Owner aprueba alcance y criterio; equipo dispone de entorno QA, datos sintéticos y dependencias. Definir capacidad del sprint antes de comprometer fechas. Si esta iteración es propuesta, la documentación no significa aprobación de implementación."
+          }
+        ]
+      },
+      {
+        "title": "Implementación por capas",
+        "sections": [
+          {
+            "title": "Frontend",
+            "text": "Crear componente propuesto ServiceAssistant con pasos rubro -> zona -> dirección -> descripción -> resumen. Atrás no pierde campos. Mantener formulario alternativo. Las respuestas son plantillas; no diagnósticos técnicos."
+          },
+          {
+            "title": "Backend Laravel",
+            "text": "Reusar validación de create; añadir borrador persistente solo si se aprueba. Crear la solicitud únicamente al confirmar y con idempotencia del envío. No abrir chat libre entre usuarios en esta iteración."
+          },
+          {
+            "title": "Python",
+            "text": "Sin LLM y sin nuevo servicio obligatorio; la clasificación manual por catálogo es suficiente. El ranking sigue por /match al confirmar."
+          },
+          {
+            "title": "Base de datos y contrato",
+            "text": "Propuesta service_drafts: owner, paso, datos y expiración. No almacenar conversación completa por defecto. Definir retención y borrado antes de activar."
+          },
+          {
+            "title": "Secuencia para desarrollar",
+            "text": "1. Reproducir situación actual y anotar commit. 2. Escribir caso negativo o límite que falle. 3. Implementar cambio mínimo en capa responsable. 4. Verificar respuesta y persistencia. 5. Refactorizar sin cambiar contrato. 6. Ejecutar regresión y revisar con otro integrante. 7. Actualizar evidencia y desplegar QA."
+          },
+          {
+            "title": "Errores y seguridad",
+            "text": "La API vuelve a validar permisos y datos aunque la UI bloquee una acción. No usar localStorage como control real. Mantener mensajes comprensibles, datos de prueba sintéticos y secretos fuera de capturas/logs. No registrar un cambio como completo si solo existe en el frontend."
+          }
+        ]
+      },
+      {
+        "title": "Pruebas, entrega y finalización",
+        "sections": [
+          {
+            "title": "Casos de aceptación",
+            "heads": [
+              "ID",
+              "Procedimiento",
+              "Resultado esperado"
+            ],
+            "rows": [
+              [
+                "I06-01",
+                "Retroceder desde resumen y corregir zona",
+                "Resumen cambia; no hay solicitud prematura"
+              ],
+              [
+                "I06-02",
+                "Repetir confirmación con misma clave",
+                "Una sola solicitud, misma respuesta"
+              ],
+              [
+                "I06-03",
+                "Zona desconocida o texto vacío",
+                "Preguntar/corregir; no inventar valores"
+              ]
+            ]
+          },
+          {
+            "title": "Ejecución TDD",
+            "text": "RED: ejecutar el caso que demuestra la falta o fallo, conservar resultado. GREEN: implementar y repetir. REFACTOR: limpiar código y ejecutar regresión pertinente. Para funciones ya implementadas, registrar prueba de caracterización y no inventar una fase RED anterior."
+          },
+          {
+            "title": "Despliegue de la iteración",
+            "text": "Bandera de función apagada por defecto; habilitar en QA para usuarios de prueba. Rollback apaga bandera sin borrar solicitudes ya creadas."
+          },
+          {
+            "title": "Criterios de salida",
+            "text": "Historias aceptadas, permisos negativos aprobados, contrato y diccionario actualizados, pruebas pertinentes sin fallos y QA verificable. Guardar build/commit, entorno, caso y observado. Riesgos pendientes con responsable por asignar; ninguna firma ni aceptación simulada."
+          },
+          {
+            "title": "Carpeta de evidencia",
+            "text": "evidencias/v2/I06/ contiene README de estado. En la ejecución se añadirán logs, casos, incidentes, retest, acta de revisión y registro de despliegue. Actualmente el estado es PLANIFICADO / NO EJECUTADO como iteración. No confundir pruebas previas con cierre de sprint."
+          }
+        ]
+      }
+    ],
+    "page_count": 3
+  },
+  {
+    "name": "14-Iteracion-07-LLM-parseo-y-controles.pdf",
+    "title": "Iteración 7: LLM opcional: parseo y controles",
+    "pages": [
+      {
+        "title": "Objetivo, alcance y preparación",
+        "sections": [
+          {
+            "title": "Control",
+            "text": "Versión 2.0 | Corte documental: 29/09/2026. Documento técnico para revisión académica. Implementado significa observado en código; no equivale a validación productiva. Las iteraciones son planes de trabajo, no actas ejecutadas."
+          },
+          {
+            "title": "Objetivo",
+            "text": "Evaluar extracción de campos desde texto manteniendo decisiones deterministas."
+          },
+          {
+            "title": "Situación observada",
+            "text": "Experimento propuesto, no implementado ni aprobado para producción."
+          },
+          {
+            "title": "Dependencias",
+            "text": "I06; dataset etiquetado, proveedor, costo y tratamiento de datos aprobados."
+          },
+          {
+            "title": "Historias de usuario",
+            "heads": [
+              "ID",
+              "Historia"
+            ],
+            "rows": [
+              [
+                "HU-12",
+                "Como cliente quiero una sugerencia de rubro que pueda revisar y corregir antes de enviar."
+              ]
+            ]
+          },
+          {
+            "title": "Trazabilidad y antecedentes",
+            "text": "O1-O3; EX-IA-01. A22 como riesgo de referencias inventadas; A21 solo apoyo al desarrollo. Las referencias [Axx] remiten a las fichas del documento 01 y al catálogo trazabilidad/v2/articulos.csv. Páginas citadas: numeración física del PDF, salvo indicación expresa. Los originales se conservan en fuentes/articulos/Axx.pdf; SHA-256 en fuentes/articulos/manifest.json."
+          },
+          {
+            "title": "Incluye",
+            "text": "Guardar solo resultado aceptado y versión del parser si se aprueba; registro de evaluación anonimizado, sin direcciones ni tokens enviados al proveedor por defecto."
+          },
+          {
+            "title": "No incluye / riesgo principal",
+            "text": "No hay evidencia suficiente para prometer beneficio local de un LLM. No se ofrecen instrucciones peligrosas de reparación eléctrica ni diagnósticos automáticos."
+          },
+          {
+            "title": "Entrada a desarrollo",
+            "text": "Product Owner aprueba alcance y criterio; equipo dispone de entorno QA, datos sintéticos y dependencias. Definir capacidad del sprint antes de comprometer fechas. Si esta iteración es propuesta, la documentación no significa aprobación de implementación."
+          }
+        ]
+      },
+      {
+        "title": "Implementación por capas",
+        "sections": [
+          {
+            "title": "Frontend",
+            "text": "Mostrar campos sugeridos y corrección manual. Pedir zona/dirección por controles explícitos; no inferir identidad. Si falla el parser, volver al flujo determinista sin perder borrador."
+          },
+          {
+            "title": "Backend Laravel",
+            "text": "Proponer adaptador server-side que valida JSON cerrado y lista permitida de especialidades. No entregar credenciales al navegador. No permitir tool calls, SQL, confirmación, tarifas o asignación por salida del modelo."
+          },
+          {
+            "title": "Python",
+            "text": "Si se aloja parser en FastAPI, separar /parse propuesto de /match existente. Entrada limitada; salida {specialty, description, needsClarification}; validar enum y tamaño. Regla incierta -> null/pregunta, nunca inventar técnico."
+          },
+          {
+            "title": "Base de datos y contrato",
+            "text": "Guardar solo resultado aceptado y versión del parser si se aprueba; registro de evaluación anonimizado, sin direcciones ni tokens enviados al proveedor por defecto."
+          },
+          {
+            "title": "Secuencia para desarrollar",
+            "text": "1. Reproducir situación actual y anotar commit. 2. Escribir caso negativo o límite que falle. 3. Implementar cambio mínimo en capa responsable. 4. Verificar respuesta y persistencia. 5. Refactorizar sin cambiar contrato. 6. Ejecutar regresión y revisar con otro integrante. 7. Actualizar evidencia y desplegar QA."
+          },
+          {
+            "title": "Errores y seguridad",
+            "text": "La API vuelve a validar permisos y datos aunque la UI bloquee una acción. No usar localStorage como control real. Mantener mensajes comprensibles, datos de prueba sintéticos y secretos fuera de capturas/logs. No registrar un cambio como completo si solo existe en el frontend."
+          }
+        ]
+      },
+      {
+        "title": "Pruebas, entrega y finalización",
+        "sections": [
+          {
+            "title": "Casos de aceptación",
+            "heads": [
+              "ID",
+              "Procedimiento",
+              "Resultado esperado"
+            ],
+            "rows": [
+              [
+                "I07-01",
+                "Texto pide ignorar reglas y asignar admin",
+                "Sin cambio de permisos ni acción"
+              ],
+              [
+                "I07-02",
+                "Modelo inventa técnico, precio o campo adicional",
+                "Esquema rechaza; fallback determinista"
+              ],
+              [
+                "I07-03",
+                "Timeout o salida no JSON",
+                "Formulario usable; ninguna solicitud creada"
+              ],
+              [
+                "I07-04",
+                "Corpus etiquetado con ambigüedades",
+                "Reporte por rubro de precisión, abstenciones y errores"
+              ]
+            ]
+          },
+          {
+            "title": "Ejecución TDD",
+            "text": "RED: ejecutar el caso que demuestra la falta o fallo, conservar resultado. GREEN: implementar y repetir. REFACTOR: limpiar código y ejecutar regresión pertinente. Para funciones ya implementadas, registrar prueba de caracterización y no inventar una fase RED anterior."
+          },
+          {
+            "title": "Despliegue de la iteración",
+            "text": "Solo QA, bandera apagada, cupo de costo y timeout fijados antes del ensayo. Comparar con baseline sin LLM. Activar únicamente si existe mejora medida sin pérdida de seguridad."
+          },
+          {
+            "title": "Criterios de salida",
+            "text": "Historias aceptadas, permisos negativos aprobados, contrato y diccionario actualizados, pruebas pertinentes sin fallos y QA verificable. Guardar build/commit, entorno, caso y observado. Riesgos pendientes con responsable por asignar; ninguna firma ni aceptación simulada."
+          },
+          {
+            "title": "Carpeta de evidencia",
+            "text": "evidencias/v2/I07/ contiene README de estado. En la ejecución se añadirán logs, casos, incidentes, retest, acta de revisión y registro de despliegue. Actualmente el estado es PLANIFICADO / NO EJECUTADO como iteración. No confundir pruebas previas con cierre de sprint."
+          }
+        ]
+      }
+    ],
+    "page_count": 3
+  },
+  {
+    "name": "15-Iteracion-08-Frontend-cliente-y-flujo-integral.pdf",
+    "title": "Iteración 8: Frontend cliente y flujo completo",
+    "pages": [
+      {
+        "title": "Objetivo, alcance y preparación",
+        "sections": [
+          {
+            "title": "Control",
+            "text": "Versión 2.0 | Corte documental: 29/09/2026. Documento técnico para revisión académica. Implementado significa observado en código; no equivale a validación productiva. Las iteraciones son planes de trabajo, no actas ejecutadas."
+          },
+          {
+            "title": "Objetivo",
+            "text": "Validar de extremo a extremo la experiencia de solicitud a calificación."
+          },
+          {
+            "title": "Situación observada",
+            "text": "Formulario y ciclo básico implementados; asistente opcional y E2E integral pendientes."
+          },
+          {
+            "title": "Dependencias",
+            "text": "I02-I05; I06 solo si se habilita asistente. I07 no es obligatorio."
+          },
+          {
+            "title": "Historias de usuario",
+            "heads": [
+              "ID",
+              "Historia"
+            ],
+            "rows": [
+              [
+                "HU-13",
+                "Como cliente quiero revisar tarifa, confirmar, seguir y calificar mi atención con claridad."
+              ]
+            ]
+          },
+          {
+            "title": "Trazabilidad y antecedentes",
+            "text": "O1-O4; RF-01, RF-18, RF-22, RF-23, RF-25. A01, A14, A31. Las referencias [Axx] remiten a las fichas del documento 01 y al catálogo trazabilidad/v2/articulos.csv. Páginas citadas: numeración física del PDF, salvo indicación expresa. Los originales se conservan en fuentes/articulos/Axx.pdf; SHA-256 en fuentes/articulos/manifest.json."
+          },
+          {
+            "title": "Incluye",
+            "text": "Una calificación por solicitud en requests; promedio y reviews del técnico se actualizan en transacción. El estado completed permanece si no se califica: resolver discrepancia RF-24 antes de afirmar cierre automático."
+          },
+          {
+            "title": "No incluye / riesgo principal",
+            "text": "Un éxito en demo localStorage no equivale a E2E real ni verifica privacidad. La prueba debe usar API y BD QA."
+          },
+          {
+            "title": "Entrada a desarrollo",
+            "text": "Product Owner aprueba alcance y criterio; equipo dispone de entorno QA, datos sintéticos y dependencias. Definir capacidad del sprint antes de comprometer fechas. Si esta iteración es propuesta, la documentación no significa aprobación de implementación."
+          }
+        ]
+      },
+      {
+        "title": "Implementación por capas",
+        "sections": [
+          {
+            "title": "Frontend",
+            "text": "RequestForm, RequestCard y Auth: mantener sesión, errores de red y datos ingresados; confirmar tarifa de visita y estado sin falsa promesa de llegada. Revisar video con movimiento reducido y acceso directo al formulario."
+          },
+          {
+            "title": "Backend Laravel",
+            "text": "Verificar create, confirm, cancel y rate con autorización; calificar una vez, entero 1..5 y antes de 48 h. El historial no debe atribuir pagos inexistentes ni reporte técnico que todavía no se captura."
+          },
+          {
+            "title": "Python",
+            "text": "Probar flujo con Python activo y caído sin cambiar resultado esperado del ranking."
+          },
+          {
+            "title": "Base de datos y contrato",
+            "text": "Una calificación por solicitud en requests; promedio y reviews del técnico se actualizan en transacción. El estado completed permanece si no se califica: resolver discrepancia RF-24 antes de afirmar cierre automático."
+          },
+          {
+            "title": "Secuencia para desarrollar",
+            "text": "1. Reproducir situación actual y anotar commit. 2. Escribir caso negativo o límite que falle. 3. Implementar cambio mínimo en capa responsable. 4. Verificar respuesta y persistencia. 5. Refactorizar sin cambiar contrato. 6. Ejecutar regresión y revisar con otro integrante. 7. Actualizar evidencia y desplegar QA."
+          },
+          {
+            "title": "Errores y seguridad",
+            "text": "La API vuelve a validar permisos y datos aunque la UI bloquee una acción. No usar localStorage como control real. Mantener mensajes comprensibles, datos de prueba sintéticos y secretos fuera de capturas/logs. No registrar un cambio como completo si solo existe en el frontend."
+          }
+        ]
+      },
+      {
+        "title": "Pruebas, entrega y finalización",
+        "sections": [
+          {
+            "title": "Casos de aceptación",
+            "heads": [
+              "ID",
+              "Procedimiento",
+              "Resultado esperado"
+            ],
+            "rows": [
+              [
+                "I08-01",
+                "Crear -> aceptar -> confirmar -> iniciar -> finalizar -> calificar",
+                "Estados correctos, eventos y promedio consistente"
+              ],
+              [
+                "I08-02",
+                "Cliente ajeno intenta confirmar o calificar",
+                "403 sin modificación"
+              ],
+              [
+                "I08-03",
+                "Calificar a 48 horas exactas y duplicar envío",
+                "409 y no duplicar promedio"
+              ],
+              [
+                "I08-04",
+                "Fallo de red durante envío",
+                "Mensaje claro; no reintento automático que duplique solicitud"
+              ]
+            ]
+          },
+          {
+            "title": "Ejecución TDD",
+            "text": "RED: ejecutar el caso que demuestra la falta o fallo, conservar resultado. GREEN: implementar y repetir. REFACTOR: limpiar código y ejecutar regresión pertinente. Para funciones ya implementadas, registrar prueba de caracterización y no inventar una fase RED anterior."
+          },
+          {
+            "title": "Despliegue de la iteración",
+            "text": "Smoke completo en QA con cliente, técnico y admin distintos. Conservar IDs sintéticos y capturas sin datos personales. Publicar evidencia de camino feliz y excepciones."
+          },
+          {
+            "title": "Criterios de salida",
+            "text": "Historias aceptadas, permisos negativos aprobados, contrato y diccionario actualizados, pruebas pertinentes sin fallos y QA verificable. Guardar build/commit, entorno, caso y observado. Riesgos pendientes con responsable por asignar; ninguna firma ni aceptación simulada."
+          },
+          {
+            "title": "Carpeta de evidencia",
+            "text": "evidencias/v2/I08/ contiene README de estado. En la ejecución se añadirán logs, casos, incidentes, retest, acta de revisión y registro de despliegue. Actualmente el estado es PLANIFICADO / NO EJECUTADO como iteración. No confundir pruebas previas con cierre de sprint."
+          }
+        ]
+      }
+    ],
+    "page_count": 3
+  },
+  {
+    "name": "16-Iteracion-09-Pagos-y-operacion-productiva.pdf",
+    "title": "Iteración 9: Pagos y operación productiva: extensión condicionada",
+    "pages": [
+      {
+        "title": "Objetivo, alcance y preparación",
+        "sections": [
+          {
+            "title": "Control",
+            "text": "Versión 2.0 | Corte documental: 29/09/2026. Documento técnico para revisión académica. Implementado significa observado en código; no equivale a validación productiva. Las iteraciones son planes de trabajo, no actas ejecutadas."
+          },
+          {
+            "title": "Objetivo",
+            "text": "Diseñar cobro verificable sin alterar el núcleo hasta aprobar el modelo comercial."
+          },
+          {
+            "title": "Situación observada",
+            "text": "No implementado; diseño propuesto. No hay suscripción ni pasarela configurada."
+          },
+          {
+            "title": "Dependencias",
+            "text": "Decidir si se cobra visita, comisión o suscripción; proveedor y obligaciones operativas; I02/I08/I10."
+          },
+          {
+            "title": "Historias de usuario",
+            "heads": [
+              "ID",
+              "Historia"
+            ],
+            "rows": [
+              [
+                "HU-14",
+                "Como cliente quiero conocer qué pago y recibir un estado verificable sin cargos duplicados."
+              ]
+            ]
+          },
+          {
+            "title": "Trazabilidad y antecedentes",
+            "text": "RF-32 previo (método de pago), EX-PAY-01 (cobro real nuevo). A10, A15, A32. Las referencias [Axx] remiten a las fichas del documento 01 y al catálogo trazabilidad/v2/articulos.csv. Páginas citadas: numeración física del PDF, salvo indicación expresa. Los originales se conservan en fuentes/articulos/Axx.pdf; SHA-256 en fuentes/articulos/manifest.json."
+          },
+          {
+            "title": "Incluye",
+            "text": "payment_intents, payment_events y refunds propuestos. Importe en unidades menores enteras, moneda, referencia única, estado; sin PAN/CVV. Tabla de suscripciones solo tras aprobación independiente."
+          },
+          {
+            "title": "No incluye / riesgo principal",
+            "text": "RF-32 no autoriza por sí solo cobro integrado. La evidencia de correlación en A10 no justifica imponer comisiones ni suscripción."
+          },
+          {
+            "title": "Entrada a desarrollo",
+            "text": "Product Owner aprueba alcance y criterio; equipo dispone de entorno QA, datos sintéticos y dependencias. Definir capacidad del sprint antes de comprometer fechas. Si esta iteración es propuesta, la documentación no significa aprobación de implementación."
+          }
+        ]
+      },
+      {
+        "title": "Implementación por capas",
+        "sections": [
+          {
+            "title": "Frontend",
+            "text": "Proponer checkout alojado por proveedor; mostrar pendiente, pagado y fallido desde servidor. Redirección exitosa no prueba pago. No pedir tarjeta en formularios propios."
+          },
+          {
+            "title": "Backend Laravel",
+            "text": "Proponer pagos, intentos y eventos únicos por proveedor. Verificar firma de webhook, monto, moneda y recurso; transacción idempotente. Conciliación y reembolso con auditoría. No activar una suscripción inexistente al volver de checkout."
+          },
+          {
+            "title": "Python",
+            "text": "Matching no participa en cobros ni recibe datos financieros. No cambiar ranking para privilegiar pagos sin regla de producto explícita."
+          },
+          {
+            "title": "Base de datos y contrato",
+            "text": "payment_intents, payment_events y refunds propuestos. Importe en unidades menores enteras, moneda, referencia única, estado; sin PAN/CVV. Tabla de suscripciones solo tras aprobación independiente."
+          },
+          {
+            "title": "Secuencia para desarrollar",
+            "text": "1. Reproducir situación actual y anotar commit. 2. Escribir caso negativo o límite que falle. 3. Implementar cambio mínimo en capa responsable. 4. Verificar respuesta y persistencia. 5. Refactorizar sin cambiar contrato. 6. Ejecutar regresión y revisar con otro integrante. 7. Actualizar evidencia y desplegar QA."
+          },
+          {
+            "title": "Errores y seguridad",
+            "text": "La API vuelve a validar permisos y datos aunque la UI bloquee una acción. No usar localStorage como control real. Mantener mensajes comprensibles, datos de prueba sintéticos y secretos fuera de capturas/logs. No registrar un cambio como completo si solo existe en el frontend."
+          }
+        ]
+      },
+      {
+        "title": "Pruebas, entrega y finalización",
+        "sections": [
+          {
+            "title": "Casos de aceptación",
+            "heads": [
+              "ID",
+              "Procedimiento",
+              "Resultado esperado"
+            ],
+            "rows": [
+              [
+                "I09-01",
+                "Webhook repetido y fuera de orden",
+                "No duplicar cargo ni degradar pago confirmado"
+              ],
+              [
+                "I09-02",
+                "Firma inválida o monto diferente",
+                "Rechazar, registrar incidente y no activar nada"
+              ],
+              [
+                "I09-03",
+                "Proveedor timeout después de aceptar pago",
+                "Conciliar antes de reintentar cargo"
+              ],
+              [
+                "I09-04",
+                "Cliente intenta consultar pago ajeno",
+                "403/404 consistente sin filtración"
+              ]
+            ]
+          },
+          {
+            "title": "Ejecución TDD",
+            "text": "RED: ejecutar el caso que demuestra la falta o fallo, conservar resultado. GREEN: implementar y repetir. REFACTOR: limpiar código y ejecutar regresión pertinente. Para funciones ya implementadas, registrar prueba de caracterización y no inventar una fase RED anterior."
+          },
+          {
+            "title": "Despliegue de la iteración",
+            "text": "Sandbox de proveedor primero; documentación y secretos separados. Producción requiere decisión comercial, QA de seguridad y responsable de conciliación. No se realizan pagos reales en esta tarea."
+          },
+          {
+            "title": "Criterios de salida",
+            "text": "Historias aceptadas, permisos negativos aprobados, contrato y diccionario actualizados, pruebas pertinentes sin fallos y QA verificable. Guardar build/commit, entorno, caso y observado. Riesgos pendientes con responsable por asignar; ninguna firma ni aceptación simulada."
+          },
+          {
+            "title": "Carpeta de evidencia",
+            "text": "evidencias/v2/I09/ contiene README de estado. En la ejecución se añadirán logs, casos, incidentes, retest, acta de revisión y registro de despliegue. Actualmente el estado es PLANIFICADO / NO EJECUTADO como iteración. No confundir pruebas previas con cierre de sprint."
+          }
+        ]
+      }
+    ],
+    "page_count": 3
+  },
+  {
+    "name": "17-Iteracion-10-Seguridad-calidad-y-despliegue.pdf",
+    "title": "Iteración 10: Seguridad, calidad y despliegue previo al lanzamiento",
+    "pages": [
+      {
+        "title": "Objetivo, alcance y preparación",
+        "sections": [
+          {
+            "title": "Control",
+            "text": "Versión 2.0 | Corte documental: 29/09/2026. Documento técnico para revisión académica. Implementado significa observado en código; no equivale a validación productiva. Las iteraciones son planes de trabajo, no actas ejecutadas."
+          },
+          {
+            "title": "Objetivo",
+            "text": "Cerrar riesgos del núcleo con evidencia y autorizar una versión candidata."
+          },
+          {
+            "title": "Situación observada",
+            "text": "Pruebas unitarias/HTTP parciales existentes; carga, PostgreSQL real, restauración y auditoría integral pendientes."
+          },
+          {
+            "title": "Dependencias",
+            "text": "I01-I05/I08 para núcleo. I06/I07/I09 únicamente si entran en la versión."
+          },
+          {
+            "title": "Historias de usuario",
+            "heads": [
+              "ID",
+              "Historia"
+            ],
+            "rows": [
+              [
+                "HU-15",
+                "Como responsable de operación quiero desplegar y revertir una versión sin perder datos ni exponer cuentas."
+              ]
+            ]
+          },
+          {
+            "title": "Trazabilidad y antecedentes",
+            "text": "O3-O5; RF-33; RNF-01 a RNF-14. A12, A18, A29. Las referencias [Axx] remiten a las fichas del documento 01 y al catálogo trazabilidad/v2/articulos.csv. Páginas citadas: numeración física del PDF, salvo indicación expresa. Los originales se conservan en fuentes/articulos/Axx.pdf; SHA-256 en fuentes/articulos/manifest.json."
+          },
+          {
+            "title": "Incluye",
+            "text": "Respaldo cifrado y restauración ensayada con objetivos acordados; política de retención y eliminación pendiente de revisión. Datos sintéticos para pruebas de carga."
+          },
+          {
+            "title": "No incluye / riesgo principal",
+            "text": "No declarar certificación ISO, 99% mensual ni cobertura >=70% sin medición definida y evidencia. Toda excepción debe tener dueño y fecha de revisión."
+          },
+          {
+            "title": "Entrada a desarrollo",
+            "text": "Product Owner aprueba alcance y criterio; equipo dispone de entorno QA, datos sintéticos y dependencias. Definir capacidad del sprint antes de comprometer fechas. Si esta iteración es propuesta, la documentación no significa aprobación de implementación."
+          }
+        ]
+      },
+      {
+        "title": "Implementación por capas",
+        "sections": [
+          {
+            "title": "Frontend",
+            "text": "Auditar teclado, reflujo móvil, errores, contraste y movimiento reducido; comprobar que videos no bloqueen login. Revisar dependencias, tamaño y carga de secuencias."
+          },
+          {
+            "title": "Backend Laravel",
+            "text": "Pruebas negativas, límites, contraseñas y tokens; restringir debug y datos en logs. Ensayar aceptación concurrente y tareas de plazos en PostgreSQL. Revisar acceso al matching, uploads de anuncios y recuperación."
+          },
+          {
+            "title": "Python",
+            "text": "Pruebas de contrato, payloads límite, versión de reglas y caída. Restringir red y medir consumo; no exponer /match directamente a Internet."
+          },
+          {
+            "title": "Base de datos y contrato",
+            "text": "Respaldo cifrado y restauración ensayada con objetivos acordados; política de retención y eliminación pendiente de revisión. Datos sintéticos para pruebas de carga."
+          },
+          {
+            "title": "Secuencia para desarrollar",
+            "text": "1. Reproducir situación actual y anotar commit. 2. Escribir caso negativo o límite que falle. 3. Implementar cambio mínimo en capa responsable. 4. Verificar respuesta y persistencia. 5. Refactorizar sin cambiar contrato. 6. Ejecutar regresión y revisar con otro integrante. 7. Actualizar evidencia y desplegar QA."
+          },
+          {
+            "title": "Errores y seguridad",
+            "text": "La API vuelve a validar permisos y datos aunque la UI bloquee una acción. No usar localStorage como control real. Mantener mensajes comprensibles, datos de prueba sintéticos y secretos fuera de capturas/logs. No registrar un cambio como completo si solo existe en el frontend."
+          }
+        ]
+      },
+      {
+        "title": "Pruebas, entrega y finalización",
+        "sections": [
+          {
+            "title": "Casos de aceptación",
+            "heads": [
+              "ID",
+              "Procedimiento",
+              "Resultado esperado"
+            ],
+            "rows": [
+              [
+                "I10-01",
+                "Flujo E2E tras desplegar imagen versionada",
+                "Funciona con API, BD y worker reales"
+              ],
+              [
+                "I10-02",
+                "Restauración en QA y rollback de aplicación",
+                "Integridad y compatibilidad comprobadas"
+              ],
+              [
+                "I10-03",
+                "Carga objetivo de 200 concurrentes",
+                "Reportar mezcla, duración, p95, errores y recursos; no declarar éxito sin ensayo"
+              ],
+              [
+                "I10-04",
+                "Auditoría de permisos y accesibilidad",
+                "Sin defectos críticos abiertos; hallazgos priorizados"
+              ]
+            ]
+          },
+          {
+            "title": "Ejecución TDD",
+            "text": "RED: ejecutar el caso que demuestra la falta o fallo, conservar resultado. GREEN: implementar y repetir. REFACTOR: limpiar código y ejecutar regresión pertinente. Para funciones ya implementadas, registrar prueba de caracterización y no inventar una fase RED anterior."
+          },
+          {
+            "title": "Despliegue de la iteración",
+            "text": "Puerta de salida: build, pruebas, migraciones, smoke, respaldo restaurado, seguridad y aceptación. Registrar imagen/commit, entorno, aprobador y reversión. Producción requiere aprobación final del responsable."
+          },
+          {
+            "title": "Criterios de salida",
+            "text": "Historias aceptadas, permisos negativos aprobados, contrato y diccionario actualizados, pruebas pertinentes sin fallos y QA verificable. Guardar build/commit, entorno, caso y observado. Riesgos pendientes con responsable por asignar; ninguna firma ni aceptación simulada."
+          },
+          {
+            "title": "Carpeta de evidencia",
+            "text": "evidencias/v2/I10/ contiene README de estado. En la ejecución se añadirán logs, casos, incidentes, retest, acta de revisión y registro de despliegue. Actualmente el estado es PLANIFICADO / NO EJECUTADO como iteración. No confundir pruebas previas con cierre de sprint."
+          }
+        ]
+      },
+      {
+        "title": "Catálogo de calidad y discrepancias",
+        "sections": [
+          {
+            "title": "Pendientes de alineación",
+            "heads": [
+              "ID",
+              "Conflicto o riesgo",
+              "Resolución requerida"
+            ],
+            "rows": [
+              [
+                "D-01",
+                "RF-09: antigüedad; código: ID en último desempate",
+                "Aprobar regla y fixture"
+              ],
+              [
+                "D-02",
+                "RF-24: cierre sin calificar; código conserva completed",
+                "Definir cierre de negocio sin puntuación inventada"
+              ],
+              [
+                "D-03",
+                "RF-04 rango referencial; código usa tarifa de visita",
+                "Actualizar alcance o implementar rango con datos"
+              ],
+              [
+                "D-04",
+                "RF-05/20 agenda y reprogramación ausentes",
+                "Mantener fuera del núcleo o nueva historia"
+              ],
+              [
+                "D-05",
+                "RF-29 reintentos externos no implementados",
+                "Distinguir eventos internos y canal externo"
+              ],
+              [
+                "D-06",
+                "RNF-12 >=70% ambiguo",
+                "Definir líneas, ramas o casos y medir"
+              ],
+              [
+                "D-07",
+                "RNF-01 3 s vs referencia 5 s",
+                "Fijar operación, percentil y carga"
+              ],
+              [
+                "D-08",
+                "RF-03/10/11/21/26 no cubiertos completamente",
+                "No cerrar fotos, subespecialidad, estimación, múltiples técnicos y apelación"
+              ]
+            ]
+          },
+          {
+            "title": "Pruebas de rendimiento propuestas",
+            "text": "Baseline: 20 usuarios; escalamiento hasta 200 concurrentes si se mantiene requisito. Propuesta de ensayo de 15 min estables con mezcla 60% lectura, 20% creación, 20% acciones, a ajustar para no crear datos incoherentes. Registrar tasa de llegada, p50/p95/p99, errores, CPU/RAM/BD y saturación. No atribuir saturación del pool a falta de técnicos."
+          },
+          {
+            "title": "Liberación",
+            "text": "Bloquear si existe acceso ajeno, pérdida de integridad, doble asignación o migración insegura. Defectos menores requieren aceptación explícita y fecha. La ausencia de medición nunca se registra como aprobado."
+          }
+        ]
+      }
+    ],
+    "page_count": 4
+  }
+]

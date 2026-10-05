@@ -1,0 +1,13 @@
+﻿Antecedente en S3,Aporte al diseño,Aplicación en TécnicoYa,Estado de auditoría del código
+"Biswas, Alfandari y Archetti","Asignación multicriterio, ubicación y calidad.",RF-06/08/12: comparar candidatos y consistencia del orden. No asumir algoritmo matemático implementado.,Pendiente de verificación integral; consultar inventario de pruebas.
+Nowak y Szufel,Especialidad y técnicos independientes.,"RF-05/07/10/17: disponibilidad, habilidades, exclusión y reasignación.",Pendiente de verificación integral; consultar inventario de pruebas.
+"Lin, Ma y Ying","Oferta, demanda y restricciones de servicio.",RF-06/14: escenarios con y sin oferta; continuidad y alternativas.,Pendiente de verificación integral; consultar inventario de pruebas.
+Jonker-Hoffren,Distancia y competencia entre propuestas.,"RF-12/13: distancia y cantidad de notificados, con parámetros aprobados.",Pendiente de verificación integral; consultar inventario de pruebas.
+"Chen, Thomas y Hewitt",Experiencia y tiempo de atención.,RF-11/25: historial suficiente/insuficiente y estimación coherente.,Pendiente de verificación integral; consultar inventario de pruebas.
+Christiaens,Riesgos de reputación y calificaciones.,"RF-23–27: cierre sin nota ficticia, apelación autorizada y transparencia.",Pendiente de verificación integral; consultar inventario de pruebas.
+Arriagada y colaboradores,Condiciones de trabajo y gestión algorítmica.,"RF-26/27/32: comprensión de criterios, apelación y claridad del método de pago.",Pendiente de verificación integral; consultar inventario de pruebas.
+Weichbroth,"Eficacia, eficiencia, satisfacción y aprendizaje.","RNF-04/05: SUS, tareas, tiempo, errores y ayudas.",Pendiente de verificación integral; consultar inventario de pruebas.
+CareAtHome,Autenticación y sincronización de reservas.,"RF-15/28/29: integración, reintentos y consistencia. Firebase no se asume como stack de TécnicoYa.",Pendiente de verificación integral; consultar inventario de pruebas.
+Deva y Prasad,"Economía, tecnología y preferencias del consumidor.","RF-04/32 y RNF-04/05: claridad de tarifa y método, rapidez y comprensión.",Pendiente de verificación integral; consultar inventario de pruebas.
+"Demiray, Tolga y Yücel",Habilidades múltiples y sincronización.,RF-20/21: conflicto horario y coordinación; no imponer ALNS como implementación.,Pendiente de verificación integral; consultar inventario de pruebas.
+Gamst y Pisinger,Recursos y cobertura de servicios.,RF-31: agrupación por zona/especialidad y tratamiento de datos insuficientes.,Pendiente de verificación integral; consultar inventario de pruebas.

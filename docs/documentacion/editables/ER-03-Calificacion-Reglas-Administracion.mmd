@@ -1,0 +1,479 @@
+erDiagram
+    direction TB
+    %% TecnicoYa Huancayo - D3: Calificación, comunicados, reglas de negocio, soporte y auditoría
+    %% FK fisicas: etiqueta FK. LOGICA/POLI/DERIVA: no crean FK.
+    %% UK puede formar parte de una UQ compuesta; ver comentario del atributo.
+
+    %% ratings: Dependiente; modulo E
+    ratings["ratings"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned participation_id FK, UK "NOT NULL; participations.id"
+        bigint_unsigned author_id FK "NOT NULL; users.id"
+        tinyint_unsigned score "NOT NULL"
+        text comment "NOT NULL"
+        int_unsigned current_version_no "NOT NULL"
+        varchar(32) status "NOT NULL"
+        datetime(6) first_rated_at "NOT NULL"
+        datetime(6) editable_until "NOT NULL"
+        int_unsigned version "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% rating_versions: Dependiente; modulo E
+    rating_versions["rating_versions"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned rating_id FK, UK "NOT NULL; UQ(rating_id,version_no); ratings.id"
+        int_unsigned version_no UK "NOT NULL; UQ(rating_id,version_no)"
+        tinyint_unsigned score "NOT NULL"
+        text comment "NOT NULL"
+        bigint_unsigned changed_by FK "NOT NULL; users.id"
+        varchar(32) change_kind "NOT NULL"
+        text reason "NULL"
+        datetime(6) changed_at "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+    }
+
+    %% rating_replies: Dependiente; modulo E
+    rating_replies["rating_replies"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned rating_id FK, UK "NOT NULL; ratings.id"
+        bigint_unsigned author_id FK "NOT NULL; users.id"
+        text text "NOT NULL"
+        varchar(32) status "NOT NULL"
+        int_unsigned version "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% rating_appeals: Dependiente; modulo E
+    rating_appeals["rating_appeals"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned rating_id FK "NOT NULL; ratings.id"
+        bigint_unsigned submitted_by FK "NOT NULL; users.id"
+        bigint_unsigned submitted_version_id FK "NOT NULL; rating_versions.id"
+        text reason "NOT NULL"
+        varchar(32) status "NOT NULL"
+        datetime(6) submitted_at "NOT NULL"
+        datetime(6) appeal_deadline_at "NULL"
+        bigint_unsigned open_rating_id UK "NULL; GENERADA"
+        int_unsigned version "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% appeal_evidence: Pivot; modulo E
+    appeal_evidence["appeal_evidence"] {
+        bigint_unsigned appeal_id PK, FK "NOT NULL; PK compuesta; rating_appeals.id"
+        bigint_unsigned media_id PK, FK "NOT NULL; PK compuesta; media_files.id"
+        datetime(6) created_at "NOT NULL"
+    }
+
+    %% rating_resolutions: Dependiente; modulo E/F
+    rating_resolutions["rating_resolutions"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned appeal_id FK, UK "NOT NULL; rating_appeals.id"
+        bigint_unsigned reviewed_version_id FK "NOT NULL; rating_versions.id"
+        bigint_unsigned resolved_by FK "NOT NULL; users.id"
+        varchar(32) decision "NOT NULL"
+        text reason "NOT NULL"
+        bigint_unsigned result_version_id FK "NULL; rating_versions.id"
+        datetime(6) resolved_at "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+    }
+
+    %% notifications: Polimórfica; modulo F/C
+    notifications["notifications"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        char(36) event_uuid UK "NOT NULL; UQ(event_uuid,recipient_id)"
+        bigint_unsigned recipient_id FK, UK "NOT NULL; UQ(event_uuid,recipient_id); users.id"
+        varchar(80) event_type "NOT NULL"
+        varchar(40) subject_type "NOT NULL; polimorfico SIN FK"
+        bigint_unsigned subject_id "NOT NULL; polimorfico SIN FK"
+        varchar(160) title "NOT NULL"
+        json data "NOT NULL"
+        datetime(6) read_at "NULL"
+        datetime(6) withdrawn_at "NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% notification_attempts: Dependiente; modulo F/C
+    notification_attempts["notification_attempts"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned notification_id FK, UK "NOT NULL; UQ(notification_id,channel,attempt_no); notifications.id"
+        varchar(32) channel UK "NOT NULL; UQ(notification_id,channel,attempt_no)"
+        tinyint_unsigned attempt_no UK "NOT NULL; UQ(notification_id,channel,attempt_no)"
+        varchar(32) status "NOT NULL"
+        datetime(6) scheduled_at "NOT NULL"
+        datetime(6) attempted_at "NULL"
+        varchar(80) failure_code "NULL"
+        varchar(160) provider_reference "NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% notification_preferences: Pivot; modulo F
+    notification_preferences["notification_preferences"] {
+        bigint_unsigned user_id PK, FK "NOT NULL; PK compuesta; users.id"
+        varchar(32) channel PK "NOT NULL; PK compuesta"
+        varchar(80) topic PK "NOT NULL; PK compuesta"
+        tinyint_unsigned enabled "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% announcements: Dependiente; modulo F
+    announcements["announcements"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        varchar(160) title "NOT NULL"
+        text body "NOT NULL"
+        bigint_unsigned image_id FK "NULL; media_files.id"
+        varchar(2048) link_url "NULL"
+        varchar(80) link_label "NULL"
+        varchar(32) status "NOT NULL"
+        datetime(6) starts_at "NULL"
+        smallint_unsigned duration_days "NOT NULL"
+        datetime(6) ends_at "NULL; GENERADA"
+        int_unsigned priority "NOT NULL"
+        bigint_unsigned created_by FK "NOT NULL; users.id"
+        bigint_unsigned updated_by FK "NOT NULL; users.id"
+        datetime(6) retired_at "NULL"
+        int_unsigned version "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% announcement_audiences: Pivot; modulo F
+    announcement_audiences["announcement_audiences"] {
+        bigint_unsigned announcement_id PK, FK "NOT NULL; PK compuesta; announcements.id"
+        bigint_unsigned role_id PK, FK "NOT NULL; PK compuesta; roles.id"
+        datetime(6) created_at "NOT NULL"
+    }
+
+    %% rule_parameters: Independiente; modulo F
+    rule_parameters["rule_parameters"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        varchar(80) code UK "NOT NULL"
+        varchar(32) value_type "NOT NULL"
+        varchar(30) unit "NOT NULL"
+        text description "NOT NULL"
+        decimal min_value "DECIMAL(14,4); NULL"
+        decimal max_value "DECIMAL(14,4); NULL"
+        tinyint_unsigned required "NOT NULL"
+        tinyint_unsigned editable "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% rule_versions: Dependiente; modulo F
+    rule_versions["rule_versions"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        int_unsigned version_no UK "NOT NULL"
+        varchar(32) status "NOT NULL"
+        bigint_unsigned created_by FK "NOT NULL; users.id"
+        bigint_unsigned published_by FK "NULL; users.id"
+        text change_reason "NOT NULL"
+        datetime(6) effective_at "NULL"
+        datetime(6) published_at "NULL"
+        char(64) content_hash "NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% rule_values: Pivot; modulo F
+    rule_values["rule_values"] {
+        bigint_unsigned rule_version_id PK, FK "NOT NULL; PK compuesta; rule_versions.id"
+        bigint_unsigned parameter_id PK, FK "NOT NULL; PK compuesta; rule_parameters.id"
+        json value_json "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+    }
+
+    %% matching_weights: Dependiente; modulo F/B
+    matching_weights["matching_weights"] {
+        bigint_unsigned rule_version_id PK, FK "NOT NULL; rule_versions.id"
+        decimal proximity_pct "DECIMAL(5,2); NOT NULL"
+        decimal price_pct "DECIMAL(5,2); NOT NULL"
+        decimal rating_pct "DECIMAL(5,2); NOT NULL"
+        decimal experience_pct "DECIMAL(5,2); NOT NULL"
+        datetime(6) created_at "NOT NULL"
+    }
+
+    %% support_tickets: Dependiente; modulo F
+    support_tickets["support_tickets"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned opened_by FK "NOT NULL; users.id"
+        bigint_unsigned request_id FK "NULL; service_requests.id"
+        varchar(180) subject "NOT NULL"
+        text description "NOT NULL"
+        varchar(32) status "NOT NULL"
+        varchar(32) priority "NOT NULL"
+        bigint_unsigned assigned_admin_id FK "NULL; users.id"
+        datetime(6) resolved_at "NULL"
+        datetime(6) closed_at "NULL"
+        int_unsigned version "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% support_ticket_updates: Dependiente; modulo F
+    support_ticket_updates["support_ticket_updates"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned ticket_id FK "NOT NULL; support_tickets.id"
+        bigint_unsigned author_id FK "NOT NULL; users.id"
+        varchar(32) kind "NOT NULL"
+        text body "NOT NULL"
+        tinyint_unsigned is_internal "NOT NULL"
+        varchar(32) new_status "NULL"
+        datetime(6) created_at "NOT NULL"
+    }
+
+    %% support_attachments: Pivot; modulo F
+    support_attachments["support_attachments"] {
+        bigint_unsigned ticket_id PK, FK "NOT NULL; PK compuesta; support_tickets.id"
+        bigint_unsigned media_id PK, FK "NOT NULL; PK compuesta; media_files.id"
+        bigint_unsigned uploaded_by FK "NOT NULL; users.id"
+        datetime(6) created_at "NOT NULL"
+    }
+
+    %% audit_entries: Polimórfica; modulo F
+    audit_entries["audit_entries"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned actor_id FK "NULL; users.id"
+        varchar(32) actor_kind "NOT NULL"
+        varchar(100) action "NOT NULL"
+        varchar(100) permission_used "NULL"
+        varchar(60) subject_type "NOT NULL; polimorfico SIN FK"
+        bigint_unsigned subject_id "NULL; polimorfico SIN FK"
+        text reason "NOT NULL"
+        json before_values "NULL"
+        json after_values "NULL"
+        varchar(64) correlation_id "NOT NULL"
+        datetime(6) occurred_at "NOT NULL"
+        varchar(100) source_code "NULL"
+    }
+
+    %% operations: Dependiente; modulo F
+    operations["operations"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned requested_by FK "NOT NULL; users.id"
+        varchar(60) type "NOT NULL"
+        varchar(32) status "NOT NULL"
+        json parameters "NOT NULL"
+        datetime(6) started_at "NULL"
+        datetime(6) finished_at "NULL"
+        varchar(80) failure_code "NULL"
+        int_unsigned version "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% export_files: Dependiente; modulo F
+    export_files["export_files"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned operation_id FK, UK "NOT NULL; operations.id"
+        bigint_unsigned media_id FK, UK "NOT NULL; media_files.id"
+        varchar(32) format "NOT NULL"
+        datetime(6) expires_at "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+    }
+
+    %% outbox_events: Polimórfica; modulo F/transversal
+    outbox_events["outbox_events"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        char(36) event_uuid UK "NOT NULL"
+        varchar(100) event_type "NOT NULL"
+        varchar(60) aggregate_type "NOT NULL; polimorfico SIN FK"
+        bigint_unsigned aggregate_id "NOT NULL; polimorfico SIN FK"
+        int_unsigned aggregate_version "NOT NULL"
+        int_unsigned schema_version "NOT NULL"
+        json payload "NOT NULL"
+        datetime(6) occurred_at "NOT NULL"
+        datetime(6) available_at "NOT NULL"
+        varchar(32) status "NOT NULL"
+        datetime(6) published_at "NULL"
+        int_unsigned attempts "NOT NULL"
+    }
+
+    %% outbox_deliveries: Pivot; modulo F
+    outbox_deliveries["outbox_deliveries"] {
+        bigint_unsigned outbox_event_id PK, FK "NOT NULL; PK compuesta; outbox_events.id"
+        bigint_unsigned recipient_id PK, FK "NOT NULL; PK compuesta; users.id"
+        varchar(32) status "NOT NULL"
+        int_unsigned attempts "NOT NULL"
+        datetime(6) next_attempt_at "NULL"
+        datetime(6) sent_at "NULL"
+        varchar(80) failure_code "NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% idempotency_records: Dependiente; modulo F/transversal
+    idempotency_records["idempotency_records"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        bigint_unsigned user_id FK, UK "NOT NULL; UQ(user_id,operation,key_hash); users.id"
+        varchar(160) operation UK "NOT NULL; UQ(user_id,operation,key_hash)"
+        char(64) key_hash UK "NOT NULL; UQ(user_id,operation,key_hash)"
+        char(64) request_hash "NOT NULL"
+        varchar(32) status "NOT NULL"
+        smallint_unsigned response_status "NULL"
+        json response_body "NULL"
+        datetime(6) expires_at "NOT NULL"
+        datetime(6) created_at "NOT NULL"
+        datetime(6) updated_at "NOT NULL"
+    }
+
+    %% jobs: Independiente; modulo Infraestructura
+    jobs["jobs"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        varchar(255) queue "NOT NULL"
+        longtext payload "NOT NULL"
+        tinyint_unsigned attempts "NOT NULL"
+        int_unsigned reserved_at "NULL"
+        int_unsigned available_at "NOT NULL"
+        int_unsigned created_at "NOT NULL"
+    }
+
+    %% failed_jobs: Independiente; modulo Infraestructura
+    failed_jobs["failed_jobs"] {
+        bigint_unsigned id PK "NOT NULL; AI"
+        varchar(255) uuid UK "NOT NULL"
+        text connection "NOT NULL"
+        text queue "NOT NULL"
+        longtext payload "NOT NULL"
+        longtext exception "NOT NULL"
+        datetime(6) failed_at "NOT NULL"
+    }
+
+    %% cache: Independiente; modulo Infraestructura
+    cache["cache"] {
+        varchar(255) key PK "NOT NULL"
+        mediumtext value "NOT NULL"
+        int expiration "NOT NULL"
+    }
+
+    %% cache_locks: Independiente; modulo Infraestructura
+    cache_locks["cache_locks"] {
+        varchar(255) key PK "NOT NULL"
+        varchar(255) owner "NOT NULL"
+        int expiration "NOT NULL"
+    }
+
+    %% migrations: Independiente; modulo Infraestructura
+    migrations["migrations"] {
+        int_unsigned id PK "NOT NULL; AI"
+        varchar(255) migration "NOT NULL"
+        int batch "NOT NULL"
+    }
+
+    %% Entidades compartidas: solo identificador; definicion completa en su diagrama propietario.
+    %% media_files: Dependiente; modulo F
+    media_files["media_files (ref. D1)"] {
+        bigint_unsigned id PK "NOT NULL; AI; referencia D1"
+    }
+
+    %% offers: Dependiente; modulo C
+    offers["offers (ref. D2)"] {
+        bigint_unsigned id PK "NOT NULL; AI; referencia D2"
+    }
+
+    %% participations: Dependiente; modulo D
+    participations["participations (ref. D2)"] {
+        bigint_unsigned id PK "NOT NULL; AI; referencia D2"
+    }
+
+    %% roles: Independiente; modulo F
+    roles["roles (ref. D1)"] {
+        bigint_unsigned id PK "NOT NULL; AI; referencia D1"
+    }
+
+    %% service_requests: Dependiente; modulo A/D
+    service_requests["service_requests (ref. D2)"] {
+        bigint_unsigned id PK "NOT NULL; AI; referencia D2"
+    }
+
+    %% users: Dependiente; modulo F
+    users["users (ref. D1)"] {
+        bigint_unsigned id PK "NOT NULL; AI; referencia D1"
+    }
+
+    %% Vista derivada: NO tabla, NO PK/FK propias, NO escritura directa.
+    v_service_history["v_service_history (VISTA)"] {
+        bigint_unsigned request_id "NOT NULL; service_requests.id; SIN FK propia"
+        bigint_unsigned client_id "NOT NULL"
+        bigint_unsigned subcategory_id "NOT NULL"
+        bigint_unsigned district_id "NOT NULL"
+        varchar(32) request_status "NOT NULL"
+        datetime(6) submitted_at "NULL"
+        bigint_unsigned participation_id "NULL; SIN FK propia"
+        bigint_unsigned technician_id "NULL"
+        varchar(32) slot "NULL"
+        varchar(32) participation_status "NULL"
+        datetime(6) assigned_at "NULL"
+        datetime(6) completed_at "NULL"
+        decimal reference_fee "DECIMAL(12,2); NULL"
+        char(3) currency "NOT NULL"
+        bigint_unsigned rating_id "NULL; SIN FK propia"
+        tinyint_unsigned rating_score "NULL"
+        varchar(32) rating_status "NULL"
+    }
+
+    %% Relaciones fisicas: cada linea corresponde a una FK del diccionario.
+    participations ||..o| ratings : "FK participation_id"
+    users ||..o{ ratings : "FK author_id"
+    ratings ||..o{ rating_versions : "FK rating_id"
+    users ||..o{ rating_versions : "FK changed_by"
+    ratings ||..o| rating_replies : "FK rating_id"
+    users ||..o{ rating_replies : "FK author_id"
+    ratings ||..o{ rating_appeals : "FK rating_id"
+    users ||..o{ rating_appeals : "FK submitted_by"
+    rating_versions ||..o{ rating_appeals : "FK submitted_version_id"
+    rating_appeals ||--o{ appeal_evidence : "FK appeal_id"
+    media_files ||--o{ appeal_evidence : "FK media_id"
+    rating_appeals ||..o| rating_resolutions : "FK appeal_id"
+    rating_versions ||..o{ rating_resolutions : "FK reviewed_version_id"
+    users ||..o{ rating_resolutions : "FK resolved_by"
+    rating_versions |o..o{ rating_resolutions : "FK result_version_id"
+    users ||..o{ notifications : "FK recipient_id"
+    notifications ||..o{ notification_attempts : "FK notification_id"
+    users ||--o{ notification_preferences : "FK user_id"
+    media_files |o..o{ announcements : "FK image_id"
+    users ||..o{ announcements : "FK created_by"
+    users ||..o{ announcements : "FK updated_by"
+    announcements ||--o{ announcement_audiences : "FK announcement_id"
+    roles ||--o{ announcement_audiences : "FK role_id"
+    users ||..o{ rule_versions : "FK created_by"
+    users |o..o{ rule_versions : "FK published_by"
+    rule_versions ||--o{ rule_values : "FK rule_version_id"
+    rule_parameters ||--o{ rule_values : "FK parameter_id"
+    rule_versions ||--o| matching_weights : "FK rule_version_id"
+    users ||..o{ support_tickets : "FK opened_by"
+    service_requests |o..o{ support_tickets : "FK request_id"
+    users |o..o{ support_tickets : "FK assigned_admin_id"
+    support_tickets ||..o{ support_ticket_updates : "FK ticket_id"
+    users ||..o{ support_ticket_updates : "FK author_id"
+    support_tickets ||--o{ support_attachments : "FK ticket_id"
+    media_files ||--o{ support_attachments : "FK media_id"
+    users ||..o{ support_attachments : "FK uploaded_by"
+    users |o..o{ audit_entries : "FK actor_id"
+    users ||..o{ operations : "FK requested_by"
+    operations ||..o| export_files : "FK operation_id"
+    media_files ||..o| export_files : "FK media_id"
+    outbox_events ||--o{ outbox_deliveries : "FK outbox_event_id"
+    users ||--o{ outbox_deliveries : "FK recipient_id"
+    users ||..o{ idempotency_records : "FK user_id"
+
+    %% Polimorfismo XOR: cada notificacion apunta a UN destino segun subject_type.
+    %% 0..1 por alternativa; exactamente un destino en conjunto. Sin FK nativa.
+    service_requests |o..o{ notifications : "POLI XOR request"
+    offers |o..o{ notifications : "POLI XOR offer"
+    participations |o..o{ notifications : "POLI XOR participation"
+    ratings |o..o{ notifications : "POLI XOR rating"
+    rating_appeals |o..o{ notifications : "POLI XOR appeal"
+    announcements |o..o{ notifications : "POLI XOR announcement"
+    support_tickets |o..o{ notifications : "POLI XOR support_ticket"
+
+    %% Derivacion de vista, no relaciones FK.
+    service_requests ||..|{ v_service_history : "DERIVA solicitud"
+    participations |o..|| v_service_history : "DERIVA participacion"
+    ratings |o..|| v_service_history : "DERIVA resena"

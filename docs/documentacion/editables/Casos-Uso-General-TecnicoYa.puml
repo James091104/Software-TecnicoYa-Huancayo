@@ -1,0 +1,204 @@
+@startuml Casos_Uso_General_TecnicoYa
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ArrowColor #475569
+skinparam actorBorderColor #334155
+skinparam usecase {
+  BackgroundColor #F0F9FF
+  BorderColor #0369A1
+  FontColor #0F172A
+}
+skinparam package {
+  BackgroundColor #F8FAFC
+  BorderColor #94A3B8
+  FontColor #0F172A
+}
+skinparam note {
+  BackgroundColor #FFF7ED
+  BorderColor #C2410C
+}
+
+title TécnicoYa Huancayo · Diagrama general de casos de uso
+
+actor "Cliente" as Cliente
+actor "Especialista técnico" as Tecnico
+actor "Administrador" as Admin
+actor "Servicio de\nnotificaciones" as Notificador <<servicio>>
+actor "Programador de tareas\n(sistema)" as Scheduler <<sistema>>
+
+rectangle "TécnicoYa Huancayo · Aplicación de negocio" {
+
+  package "Identidad y oferta profesional" {
+    usecase "Registrarse como\ncliente o técnico" as UC_REGISTRO
+    usecase "Autenticarse y gestionar\nla sesión" as UC_AUTH
+    usecase "Gestionar perfil profesional,\nservicios, tarifas y disponibilidad" as UC_PERFIL
+    usecase "Verificar y habilitar\ntécnicos" as UC_VERIFICAR
+    usecase "Administrar cuentas\ny permisos administrativos" as UC_PERMISOS
+  }
+
+  package "Solicitud, búsqueda y asignación" {
+    usecase "Buscar y consultar\nperfiles de técnicos" as UC_BUSCAR
+    usecase "Solicitar servicio con\nbúsqueda automática" as UC_SOL_AUTO
+    usecase "Solicitar a un técnico\ndesde su perfil" as UC_SOL_DIRECTA
+    usecase "Buscar alternativas\ncon autorización del cliente" as UC_ALTERNATIVAS
+    usecase "Registrar solicitud\nen cinco pasos" as UC_SOLICITUD
+    usecase "Validar datos, catálogo\ny cobertura de la solicitud" as UC_VALIDAR_SOL
+    usecase "Ejecutar matching:\nfiltrar elegibles y ordenar candidatos" as UC_MATCH
+    usecase "Abrir ronda automática\ny notificar hasta tres técnicos" as UC_RONDA
+    usecase "Registrar vencimiento\ndel SLA de diez minutos" as UC_ABRIR_SLA
+    usecase "Responder oferta:\naceptar o rechazar" as UC_RESPONDER
+    usecase "Validar destinatario,\nvigencia de oferta y SLA" as UC_VALIDAR_RESP
+    usecase "Evaluar respuestas\ny vencimiento de la ronda" as UC_EVALUAR
+    usecase "Elegir y confirmar\nal técnico" as UC_CONFIRMAR
+    usecase "Revalidar disponibilidad\ny formalizar asignación y agenda" as UC_ASIGNAR
+    usecase "Reasignar automáticamente\na una nueva ronda" as UC_REASIG_AUTO
+    usecase "Registrar Pendiente\nde disponibilidad" as UC_PENDIENTE
+  }
+
+  package "Atención, calificación y apelación" {
+    usecase "Consultar seguimiento\ne historial propio del servicio" as UC_SEGUIMIENTO
+    usecase "Iniciar y finalizar atención\ncon reporte" as UC_ATENDER
+    usecase "Abrir ventana individual\nde calificación de 48 horas" as UC_ABRIR_NOTA
+    usecase "Calificar atención\ncon puntaje 1–5 y comentario" as UC_CALIFICAR
+    usecase "Validar plazo, guardar versión\ny cerrar atención calificada" as UC_CIERRE_NOTA
+    usecase "Consultar calificaciones\ny sus versiones permitidas" as UC_CONSULTAR_NOTAS
+    usecase "Presentar apelación\ncon motivo y evidencias" as UC_APELAR
+    usecase "Resolver apelación:\nmantener, ajustar o anular" as UC_RESOLVER_APEL
+  }
+
+  package "Notificaciones y control temporal" {
+    usecase "Emitir notificaciones\na destinatarios autorizados" as UC_NOTIFICAR
+    usecase "Consultar notificaciones\ny gestionar preferencias propias" as UC_NOTIFICACIONES
+    usecase "Controlar ventanas\ny vencimientos vigentes" as UC_CONTROL_PLAZOS
+    usecase "Reintentar búsqueda\nde solicitudes pendientes" as UC_REINTENTAR
+    usecase "Expirar solicitud pendiente\nal vencer 24 horas" as UC_EXPIRAR
+    usecase "Cerrar atención Sin calificar\nal vencer 48 horas sin nota" as UC_SIN_NOTA
+  }
+
+  package "Administración y gobierno" {
+    usecase "Supervisar solicitudes,\nSLA, cobertura e incidencias" as UC_SUPERVISAR
+    usecase "Proponer reasignación manual\ncon técnico destino y motivo" as UC_REASIG_MANUAL
+    usecase "Validar intervención y técnico;\nenviar oferta de sustitución" as UC_OFERTA_MANUAL
+    usecase "Mantener catálogo\ny distritos de cobertura" as UC_CATALOGO
+    usecase "Modificar reglas de negocio\ny pesos del matching" as UC_REGLAS
+    usecase "Validar y versionar\nconfiguración" as UC_VERSIONAR
+    usecase "Publicar o actualizar\ncomunicados" as UC_COMUNICADOS
+    usecase "Validar audiencia\ny vigencia" as UC_AUDIENCIA
+    usecase "Consultar comunicados\nvigentes para el propio rol" as UC_LEER_COM
+    usecase "Consultar reportes\ny métricas autorizadas" as UC_REPORTES
+    usecase "Exportar reporte\na PDF o Excel" as UC_EXPORTAR
+    usecase "Consultar registro\nde auditoría" as UC_CONSULTAR_AUDIT
+    usecase "Registrar auditoría\nde acción sensible" as UC_AUDITAR
+  }
+
+  package "Soporte" {
+    usecase "Crear ticket de soporte\no reportar incidencia" as UC_SOPORTE
+    usecase "Revisar y resolver\ntickets de soporte" as UC_RESOLVER_SOPORTE
+  }
+}
+
+' Asociaciones de actores. No expresan orden de ejecución ni herencia de permisos.
+Cliente -- UC_REGISTRO
+Cliente -- UC_AUTH
+Cliente -- UC_BUSCAR
+Cliente -- UC_SOL_AUTO
+Cliente -- UC_SOL_DIRECTA
+Cliente -- UC_ALTERNATIVAS
+Cliente -- UC_CONFIRMAR
+Cliente -- UC_SEGUIMIENTO
+Cliente -- UC_CALIFICAR
+Cliente -- UC_CONSULTAR_NOTAS
+Cliente -- UC_NOTIFICACIONES
+Cliente -- UC_LEER_COM
+Cliente -- UC_SOPORTE
+
+Tecnico -- UC_REGISTRO
+Tecnico -- UC_AUTH
+Tecnico -- UC_PERFIL
+Tecnico -- UC_RESPONDER
+Tecnico -- UC_SEGUIMIENTO
+Tecnico -- UC_ATENDER
+Tecnico -- UC_CONSULTAR_NOTAS
+Tecnico -- UC_APELAR
+Tecnico -- UC_NOTIFICACIONES
+Tecnico -- UC_LEER_COM
+Tecnico -- UC_SOPORTE
+
+Admin -- UC_AUTH
+Admin -- UC_NOTIFICACIONES
+Admin -- UC_VERIFICAR
+Admin -- UC_PERMISOS
+Admin -- UC_SUPERVISAR
+Admin -- UC_REASIG_MANUAL
+Admin -- UC_RESOLVER_APEL
+Admin -- UC_CATALOGO
+Admin -- UC_REGLAS
+Admin -- UC_COMUNICADOS
+Admin -- UC_REPORTES
+Admin -- UC_EXPORTAR
+Admin -- UC_CONSULTAR_AUDIT
+Admin -- UC_RESOLVER_SOPORTE
+
+UC_NOTIFICAR -- Notificador
+UC_CONTROL_PLAZOS -- Scheduler
+UC_REINTENTAR -- Scheduler
+
+' include: el caso base siempre incorpora el comportamiento indicado.
+UC_SOL_AUTO ..> UC_SOLICITUD : <<include>>
+UC_SOL_AUTO ..> UC_MATCH : <<include>>
+UC_SOL_DIRECTA ..> UC_SOLICITUD : <<include>>
+UC_SOL_DIRECTA ..> UC_NOTIFICAR : <<include>>
+UC_SOL_DIRECTA ..> UC_ABRIR_SLA : <<include>>
+UC_ALTERNATIVAS ..> UC_MATCH : <<include>>
+UC_SOLICITUD ..> UC_VALIDAR_SOL : <<include>>
+UC_RONDA ..> UC_ABRIR_SLA : <<include>>
+UC_RONDA ..> UC_NOTIFICAR : <<include>>
+UC_RESPONDER ..> UC_VALIDAR_RESP : <<include>>
+UC_RESPONDER ..> UC_EVALUAR : <<include>>
+UC_CONFIRMAR ..> UC_ASIGNAR : <<include>>
+UC_REASIG_AUTO ..> UC_MATCH : <<include>>
+UC_REINTENTAR ..> UC_MATCH : <<include>>
+UC_ATENDER ..> UC_ABRIR_NOTA : <<include>>
+UC_CALIFICAR ..> UC_CIERRE_NOTA : <<include>>
+UC_RESOLVER_APEL ..> UC_AUDITAR : <<include>>
+UC_RESOLVER_APEL ..> UC_NOTIFICAR : <<include>>
+UC_REASIG_MANUAL ..> UC_OFERTA_MANUAL : <<include>>
+UC_REASIG_MANUAL ..> UC_AUDITAR : <<include>>
+UC_OFERTA_MANUAL ..> UC_NOTIFICAR : <<include>>
+UC_OFERTA_MANUAL ..> UC_ABRIR_SLA : <<include>>
+UC_VERIFICAR ..> UC_AUDITAR : <<include>>
+UC_PERMISOS ..> UC_AUDITAR : <<include>>
+UC_CATALOGO ..> UC_AUDITAR : <<include>>
+UC_REGLAS ..> UC_VERSIONAR : <<include>>
+UC_REGLAS ..> UC_AUDITAR : <<include>>
+UC_COMUNICADOS ..> UC_AUDIENCIA : <<include>>
+UC_COMUNICADOS ..> UC_AUDITAR : <<include>>
+UC_EXPORTAR ..> UC_AUDITAR : <<include>>
+
+' extend: la flecha va de la extensión al caso base, bajo la condición escrita.
+UC_SOL_DIRECTA ..> UC_BUSCAR : <<extend>>\n[cliente solicita desde el perfil]
+UC_ALTERNATIVAS ..> UC_SOL_DIRECTA : <<extend>>\n[rechazo o silencio; cliente autoriza alternativas]
+UC_RONDA ..> UC_MATCH : <<extend>>\n[búsqueda autorizada con candidatos elegibles]
+UC_PENDIENTE ..> UC_MATCH : <<extend>>\n[búsqueda sin candidatos elegibles]
+UC_REASIG_AUTO ..> UC_EVALUAR : <<extend>>\n[ruta automática; sin aceptaciones ni\nrespuestas pendientes; siguientes candidatos]
+UC_PENDIENTE ..> UC_EVALUAR : <<extend>>\n[ruta automática; sin aceptaciones,\nsin respuestas pendientes y sin candidatos]
+UC_EVALUAR ..> UC_CONTROL_PLAZOS : <<extend>>\n[ronda vigente con SLA vencido]
+UC_EXPIRAR ..> UC_CONTROL_PLAZOS : <<extend>>\n[sigue pendiente y venció el límite de 24 h]
+UC_SIN_NOTA ..> UC_CONTROL_PLAZOS : <<extend>>\n[atención finalizada hace 48 h y sin nota]
+UC_REASIG_MANUAL ..> UC_SUPERVISAR : <<extend>>\n[intervención justificada y permitida]
+UC_APELAR ..> UC_CONSULTAR_NOTAS : <<extend>>\n[técnico evaluado; apelación admisible según P07]
+UC_EXPORTAR ..> UC_REPORTES : <<extend>>\n[administrador solicita exportación permitida]
+
+' Notas ampliadas de permisos, plazos y alcance en el CANVAS asociado.
+legend bottom
+  |= Relación |= Significado |
+  | Actor -- caso | Participación o colaboración; no secuencia temporal |
+  | Base ..> incluido : <<include>> | Comportamiento obligatorio del caso base |
+  | Extensión ..> base : <<extend>> | Comportamiento condicionado; condición entre corchetes |
+  Las asociaciones no conceden permisos globales. Consultar el detalle RBAC del Diseño Técnico.
+endlegend
+@enduml
