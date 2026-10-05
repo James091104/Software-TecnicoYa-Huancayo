@@ -2,8 +2,12 @@ import rules from './rules.json';
 export {rules};
 export const specialtyNames = {computo:'Cómputo',refrigeracion:'Refrigeración comercial',electricidad:'Electricidad'};
 export const statusNames = {searching:'Buscando técnico',pending_availability:'Pendiente de disponibilidad',proposed:'Técnico propuesto',confirmed:'Servicio confirmado',in_progress:'En ejecución',completed:'Completado',rated:'Calificado',cancelled:'Cancelado',unassigned:'Sin cobertura disponible'};
+export const subcategoriesFor = specialty => rules.subcategories.filter(s=>s.active && s.specialty===specialty);
+export const validSubcategory = (specialty,id) => subcategoriesFor(specialty).some(s=>s.id===id);
+export const subcategoryName = id => rules.subcategories.find(s=>s.id===id)?.name || 'Sin subcategoría (solicitud anterior)';
 export function rankTechnicians(request, technicians, excluded=[]) {
-  const eligible = technicians.filter(t=>t.verified && t.available && t.specialties.includes(request.specialty) && t.zones.includes(request.zone) && !excluded.includes(t.id));
+  if(request.subcategory && !validSubcategory(request.specialty,request.subcategory))return [];
+  const eligible = technicians.filter(t=>t.verified && t.available && t.active!==false && (!request.subcategory || (t.subcategories||[]).includes(request.subcategory)) && t.specialties.includes(request.specialty) && t.zones.includes(request.zone) && !excluded.includes(t.id));
   if (!eligible.length) return [];
   const min = Math.min(...eligible.map(t=>Number(t.fee))), max = Math.max(...eligible.map(t=>Number(t.fee)));
   return eligible.map(t=>{
